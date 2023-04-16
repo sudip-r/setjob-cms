@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\AlterBase\Models\User\User;
 use App\AlterBase\Models\User\UserSetting;
+use App\AlterBase\Models\User\Role;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,6 +20,7 @@ class UserTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=0');
         app(User::class)->truncate();
         app(UserSetting::class)->truncate();
+        app(Role::class)->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $data = [
@@ -39,5 +41,11 @@ class UserTableSeeder extends Seeder
         ];
 
         UserSetting::create($data);
+
+        $data = [
+            'name' => 'Admin'
+        ];
+
+        Role::create($data);
     }
 }
