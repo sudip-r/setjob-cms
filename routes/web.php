@@ -15,9 +15,9 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\Front\HomeController::class, 'index'])->name('home');
+
+Route::get('/home', [App\Http\Controllers\Front\HomeController::class, 'index'])->name('home');
 
 Auth::routes();
 
@@ -31,4 +31,3 @@ Route::get('logout', function () {
 
 Route::post('/login/user', [App\Http\Controllers\Auth\LoginController::class, 'alterLogin'])->name('post.alter.login');
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
