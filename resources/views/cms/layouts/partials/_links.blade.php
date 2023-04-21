@@ -19,6 +19,14 @@
 <!-- summernote -->
 <link rel="stylesheet" href="{!! asset('cms/plugins/summernote/summernote-bs4.min.css') !!}">
 
+<link rel="stylesheet" href="{!! asset('cms/plugins/fancy-file-uploader/fancy_fileupload.css') !!}">
+
+<link rel="stylesheet" href="{!! asset('cms/plugins/select2/css/select2.min.css') !!}">
+
+<link href="{!! asset('cms/plugins/flatpicker/flatpicker.min.css') !!}" rel="stylesheet" />
+
 <link rel="stylesheet" href="{!! asset('cms/dist/css/style.css') !!}">
 
 <link rel="icon" type="image/png" href="{!! asset('cms/dist/img/favicon.png') !!}">
+
+@yield("custom-styles")
