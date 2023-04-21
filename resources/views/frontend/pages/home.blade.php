@@ -19,7 +19,7 @@
     </div>
 
     <div class="__browse_jobs">
-      <h4><a href="">Browse Jobs</a></h4>
+      <h4><a href="{{route('jobs.list')}}">Browse Jobs</a></h4>
     </div>
   </div>
 

@@ -510,6 +510,10 @@ $(document).ready(function () {
             $("#register-btn-one").trigger("click");
         }
     });
+
+    $("#search-btn").click(function(){
+        window.location.href = baseUrl + "/jobs";
+    });
 });
 function convertToCurrency(currency) {
     currency = parseInt(currency);

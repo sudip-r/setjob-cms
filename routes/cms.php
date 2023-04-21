@@ -5,6 +5,7 @@ use App\Http\Controllers\alterCMS\Category\CategoryController;
 use App\Http\Controllers\alterCMS\HomeController;
 use App\Http\Controllers\alterCMS\Media\MediaController;
 use App\Http\Controllers\alterCMS\Post\PostController;
+use App\Http\Controllers\alterCMS\Page\PageController;
 use App\Http\Controllers\alterCMS\Setting\SettingController;
 use App\Http\Controllers\alterCMS\User\RoleController;
 use App\Http\Controllers\alterCMS\User\UserController;
@@ -150,3 +151,21 @@ Route::get('posts/search', [PostController::class, 'search'])->name('posts.searc
 Route::get('posts/status/{post}', [PostController::class, 'statusToggle'])->name('posts.status');
 
 Route::post('posts/quicksave/{id}', [PostController::class, 'quickSave'])->name('posts.quick.save');
+
+/* ==================================================================================
+Page Module
+====================================================================================*/
+
+$router->get('pages', [PageController::class, 'index'])->name('pages.index');
+
+$router->get('pages/create', [PageController::class, 'create'])->name('pages.create');
+
+$router->post('pages/store', [PageController::class, 'store'])->name('pages.store');
+
+$router->get('pages/edit/{page}', [PageController::class, 'edit'])->name('pages.edit');
+
+$router->patch('pages/update/{page}', [PageController::class, 'update'])->name('pages.update');
+
+$router->delete('pages/delete/{page}', [PageController::class, 'delete'])->name('pages.delete');
+
+$router->get('pages/search', [PageController::class, 'search'])->name('pages.search');

@@ -5,7 +5,7 @@
   <!-- /.login-logo -->
   <div class="__header_box">
     <div class="__login_box_header text-center">
-      <a href="javascript:void(0);" class="h1"><b>Alter</b>CMS</a>
+      <a href="javascript:void(0);" class="h1"><b>Set</b>Jobs</a>
     </div>
       <p class="login-box-msg">{{ __('Sign in to start your session') }}</p>
     <hr>
@@ -67,8 +67,8 @@
   <!-- /.card -->
   <div class="__footer_box">
     <hr>
-    <p class="__credits">Photo Credit: <a href="https://unsplash.com/@lycansu" target="_blank">unsplash.com/@lycansu</a></p>
-    <p class="__credits">Powered by: <a href="https://alterbasestudios.com/" target="_blank">Alterbase Studios</a></p>
+    {{-- <p class="__credits">Photo Credit: <a href="https://unsplash.com/@lycansu" target="_blank">unsplash.com/@lycansu</a></p> --}}
+    <p class="__credits">Powered by: <a href="" target="_blank">alterCMS</a></p>
   </div>
 </div>
 <!-- /.login-box -->

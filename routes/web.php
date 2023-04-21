@@ -49,3 +49,11 @@ Route::get('/jobs', [App\Http\Controllers\Front\HomeController::class, 'jobs'])-
 
 Route::get('/jobs-detail', [App\Http\Controllers\Front\HomeController::class, 'jobDetail'])->name('jobs.detail');
 
+Route::get('/about-us', [App\Http\Controllers\Front\HomeController::class, 'about'])->name('about');
+
+Route::get('/terms-and-conditions', [App\Http\Controllers\Front\HomeController::class, 'terms'])->name('terms');
+
+Route::get('/privacy-policies', [App\Http\Controllers\Front\HomeController::class, 'privacy'])->name('privacy');
+
+
+
