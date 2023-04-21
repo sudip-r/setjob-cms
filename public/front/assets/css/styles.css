@@ -52,6 +52,20 @@ a:hover {
 .__filter_loading{
   display:none;
 }
+.__loading_box {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  z-index: 9999999999;
+  background-image: url(../images/loading.gif);
+  background-size: auto;
+  background-repeat: no-repeat;
+  background-color: #AAAAAAAA;
+  top: 0;
+  left: 0;
+  background-position: center;
+  display: none;
+}
 .__b_10 {
   margin-bottom: 10px;
 }
@@ -122,6 +136,10 @@ a:hover {
 }
 .__top_40 {
   margin-top: 40px;
+}
+.__err{
+  color:#850d0d;
+  font-size: 11px;
 }
 /*----------NAVIGATION---------*/
 .__navigation_bar {
@@ -267,6 +285,9 @@ header {
 .__register_btn:hover {
   color: var(--white);
 }
+.__register_step_2{
+  display:none;
+}
 .__nav_btn {
   float: right;
   padding: 13px;
@@ -307,6 +328,9 @@ header {
 
 .__burger_icon.clicked span:nth-child(2) {
   opacity: 0;
+}
+.select2-dropdown {
+  z-index: 999999999;
 }
 
 /*-------HOME SEARCH---------*/
@@ -658,6 +682,18 @@ footer {
   height: auto;
   padding: 10px 20px 0px 20px;
 }
+
+.__form_half_group {
+  width: 48%;
+  height: auto;
+  padding: 10px 20px 0px 20px;
+  float:left;
+}
+
+.__ml_2per{
+  margin-left:4%;
+}
+
 .__form_input {
   width: 100%;
   height: 50px;
@@ -687,6 +723,16 @@ footer {
   border: none;
   outline: none;
   background: black;
+  color: white;
+  padding: 15px;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+.__back_btn {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: #831515;
   color: white;
   padding: 15px;
   font-size: 13px;

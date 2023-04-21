@@ -56,6 +56,7 @@ class LoginController extends Controller
 
     $credentials = $request->only('email', 'password');
     $credentials['active'] = 1;
+    $credentials['guard'] = "web";
 
     if (Auth::attempt($credentials)) {
       $request->session()->regenerate();

@@ -73,7 +73,7 @@ function readURL(input, divId = "featured-img-tag") {
 
  
   $(document).ready(function(){
-    var dark_mode = '{{$setting->dark_mode}}';
+    var dark_mode = '{{$setting->dark_mode ?? 0}}';
     if(dark_mode == '1')
     {
       turnOffTheLight();

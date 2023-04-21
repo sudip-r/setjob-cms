@@ -16,6 +16,7 @@ class CreateUserProfileTable extends Migration
     Schema::create('user_profile', function (Blueprint $table) {
       $table->id();
       $table->unsignedBigInteger('user_id');
+      $table->bigInteger('city_id')->nullable();
       $table->string('name')->nullable();
       $table->string('address')->nullable();
       $table->string('contact')->nullable();
@@ -26,6 +27,7 @@ class CreateUserProfileTable extends Migration
       $table->text('summary')->nullable();
       $table->text('categories')->nullable();
       $table->text('map')->nullable();
+      $table->string('postal_code')->nullable();
       $table->timestamps();
 
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

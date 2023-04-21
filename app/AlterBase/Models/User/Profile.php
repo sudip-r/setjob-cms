@@ -23,6 +23,8 @@ class Profile extends Model
     'description',
     'summary',
     'categories',
-    'map'
+    'map',
+    'city_id',
+    'postal_code'
   ];
 }
