@@ -4,6 +4,11 @@ function pageRedirect(id) {
     if (id !== "0") window.location.href = "/" + id;
 }
 $(document).ready(function () {
+
+    $('html, body').animate({
+        scrollTop: 0
+    }, 200);
+
     csrf = $('meta[name="csrf-token"]').attr("content");
     baseUrl = $('meta[name="base"]').attr("content");
 
