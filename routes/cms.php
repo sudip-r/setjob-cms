@@ -1,7 +1,10 @@
 <?php
 
 use App\Http\Controllers\alterCMS\API\APIController;
+use App\Http\Controllers\alterCMS\Category\CategoryController;
 use App\Http\Controllers\alterCMS\HomeController;
+use App\Http\Controllers\alterCMS\Media\MediaController;
+use App\Http\Controllers\alterCMS\Post\PostController;
 use App\Http\Controllers\alterCMS\Setting\SettingController;
 use App\Http\Controllers\alterCMS\User\RoleController;
 use App\Http\Controllers\alterCMS\User\UserController;
@@ -89,14 +92,62 @@ Route::patch('message/{message}', [SettingController::class, 'sendMessage'])->na
 Category Module
 ====================================================================================*/
 
-//  Route::get('categories', 'Category\CategoryController@index')->name('categories.index');
+Route::get('categories', [CategoryController::class, 'index'])->name('categories.index');
 
-// Route::get('categories/add', 'Category\CategoryController@create')->name('categories.create');
+Route::get('categories/create', [CategoryController::class, 'create'])->name('categories.create');
 
-// Route::get('categories/edit/{category}', 'Category\CategoryController@edit')->name('categories.edit');
+Route::post('categories/store', [CategoryController::class, 'store'])->name('categories.store');
 
-// Route::delete('categories/delete/{category}', 'Category\CategoryController@delete')->name('categories.delete');
+Route::get('categories/edit/{category}', [CategoryController::class, 'edit'])->name('categories.edit');
 
-// Route::patch('categories/update/{category}', 'Category\CategoryController@update')->name('categories.update');
+Route::patch('categories/update/{category}', [CategoryController::class, 'update'])->name('categories.update');
 
-// Route::post('categories/store','Category\CategoryController@store')->name('categories.store');
+Route::delete('categories/delete/{category}', [CategoryController::class, 'delete'])->name('categories.delete');
+
+Route::get('categories/search', [CategoryController::class, 'search'])->name('categories.search');
+
+/* ==================================================================================
+Media Module
+====================================================================================*/
+
+Route::get('medias', [MediaController::class, 'index'])->name('medias.index');
+
+Route::get('medias/add', [MediaController::class, 'create'])->name('medias.create');
+
+Route::get('medias/edit/{media}', [MediaController::class, 'edit'])->name('medias.edit');
+
+Route::delete('medias/delete/{media}', [MediaController::class, 'delete'])->name('medias.delete');
+
+Route::patch('medias/update/{media}', [MediaController::class, 'update'])->name('medias.update');
+
+Route::post('medias/store', [MediaController::class, 'store'])->name('medias.store');
+
+Route::get('/allMedia/{search?}', [MediaController::class, 'listMedia'])->name('media.all');
+
+Route::post('/uploadFiles', [MediaController::class, 'uploadFiles'])->name('uploadFiles');
+
+Route::post('/updateMedia/{id}', [MediaController::class, 'updateMedia'])->name('media.update');
+
+Route::delete('/deleteMedia/{id}', [MediaController::class, 'deleteMedia'])->name('media.delete');
+
+/* ==================================================================================
+Post Module
+====================================================================================*/
+
+Route::get('posts', [PostController::class, 'index'])->name('posts.index');
+
+Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+
+Route::post('posts/store', [PostController::class, 'store'])->name('posts.store');
+
+Route::get('posts/edit/{post}', [PostController::class, 'edit'])->name('posts.edit');
+
+Route::patch('posts/update/{post}', [PostController::class, 'update'])->name('posts.update');
+
+Route::delete('posts/delete/{post}', [PostController::class, 'delete'])->name('posts.delete');
+
+Route::get('posts/search', [PostController::class, 'search'])->name('posts.search');
+
+Route::get('posts/status/{post}', [PostController::class, 'statusToggle'])->name('posts.status');
+
+Route::post('posts/quicksave/{id}', [PostController::class, 'quickSave'])->name('posts.quick.save');

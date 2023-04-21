@@ -63,9 +63,11 @@ abstract class Repository implements RepositoryInterface
      * @param string $orderBy
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
      */
-    public function paginate($limit = 15,$orderBy = 'desc')
+    public function paginate($limit = 15, $order = "id", $orderBy = 'desc')
     {
-        return $this->model->orderBy('id',$orderBy)->paginate($limit);
+        return $this->model
+            ->orderBy($order, $orderBy)
+            ->paginate($limit);
     }
     /**
      * Store newly created resource
@@ -183,5 +185,94 @@ abstract class Repository implements RepositoryInterface
     )
     {
         return $this->model->where($conditions)->orderBy($orderBy, $orderType)->get($columns);
+    }
+
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
+    public function getInArray(
+        $conditions,
+        $id,
+        $array,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $columns = array('*'),
+        $limit = 10
+    ) {
+        return $this->model
+            ->where($conditions)
+            ->whereIn($id, $array)
+            ->orderBy($orderBy, $orderType)
+            ->limit($limit)
+            ->get($columns);
+    }
+
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
+    public function paginateInArray(
+        $conditions,
+        $id,
+        $array,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $columns = array('*'),
+        $limit = 10
+    ) {
+        return $this->model
+            ->where($conditions)
+            ->whereIn($id, $array)
+            ->orderBy($orderBy, $orderType)
+            ->select($columns)
+            ->paginate($limit);
+    }
+
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
+    public function paginateWithCondition(
+        $column,
+        $condition,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $limit = 40
+    ) {
+        return $this->model
+            ->where($column, 'like', '%' . $condition . '%')
+            ->orderBy($orderBy, $orderType)
+            ->paginate($limit);
+    }
+
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
+    public function paginateWithMultipleCondition(
+        $condition,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $limit = 40,
+        $column = ['*']
+    ) {
+        return $this->model
+            ->where($condition)
+            ->orderBy($orderBy, $orderType)
+            ->select($column)
+            ->paginate($limit);
     }
 }

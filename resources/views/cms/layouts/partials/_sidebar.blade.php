@@ -66,6 +66,10 @@
         @if($module->slug == "cms::settings")
         <li class="nav-header">{{$module->description}}</li>
         @endif
+
+        @if($module->slug == "cms::categories")
+        <li class="nav-header">{{$module->description}}</li>
+        @endif
         
         <li class="nav-item {{ $menu }}">
           <a href="javascript:void(0);" class="nav-link {{ $current }}">
