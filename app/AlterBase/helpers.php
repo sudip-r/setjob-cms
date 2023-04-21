@@ -119,6 +119,27 @@ function mpath($str)
 }
 
 /**
+ * Image path filter for custom file uploads
+ *
+ * @param $str
+ * @return String
+ */
+function upath($str)
+{
+    if(isUrl($str))
+      return $str;
+
+    if(!file_exists(public_path($str)))
+        return asset("front/assets/images/user.png");
+
+    if (env('APP_ENV') == 'local') {
+        return asset($str);
+    }
+
+    return env('IMG_URL', asset('')) . '/' . $str;
+}
+
+/**
  * Check if string is a url
  * 
  * @param $str

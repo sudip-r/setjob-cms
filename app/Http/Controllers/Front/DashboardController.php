@@ -30,10 +30,10 @@ class DashboardController extends Controller
      */
     public function dashboard()
     {
-        $userId = auth()->user()->id;
-
-        if($userId == null)  
+        if(auth()->user() == null)  
             return redirect()->route('home');
+
+        $userId = auth()->user()->id;
 
         $user = $this->user->find($userId);
 
@@ -42,6 +42,48 @@ class DashboardController extends Controller
 
         if($user->guard == "business")
             return view('frontend.pages.employer.dashboard')->with('user', $user);
+    }
+
+    /**
+     * Show the user profile
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function profile()
+    {
+        if(auth()->user() == null)  
+            return redirect()->route('home');
+
+        $userId = auth()->user()->id;
+
+        $user = $this->user->find($userId);
+
+        if($user->guard == "client")
+            return view('frontend.pages.employee.profile')->with('user', $user);
+
+        if($user->guard == "business")
+            return view('frontend.pages.employer.profile')->with('user', $user);
+    }
+
+    /**
+     * Show the user profile
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function updateProfile()
+    {
+        if(auth()->user() == null)  
+            return redirect()->route('home');
+            
+        $userId = auth()->user()->id;
+
+        $user = $this->user->find($userId);
+
+        if($user->guard == "client")
+            return view('frontend.pages.employee.update-profile')->with('user', $user);
+
+        if($user->guard == "business")
+            return view('frontend.pages.employer.update-profile')->with('user', $user);
     }
 
     

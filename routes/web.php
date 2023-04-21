@@ -41,4 +41,11 @@ Route::post('/login/user', [App\Http\Controllers\Auth\LoginController::class, 'a
 
 Route::get('/dashboard', [App\Http\Controllers\Front\DashboardController::class, 'dashboard'])->name('user.dashboard');
 
+Route::get('/update/profile', [App\Http\Controllers\Front\DashboardController::class, 'updateProfile'])->name('user.update.profile');
+
+Route::get('/profile', [App\Http\Controllers\Front\DashboardController::class, 'profile'])->name('user.view.profile');
+
 Route::get('/jobs', [App\Http\Controllers\Front\HomeController::class, 'jobs'])->name('jobs.list');
+
+Route::get('/jobs-detail', [App\Http\Controllers\Front\HomeController::class, 'jobDetail'])->name('jobs.detail');
+

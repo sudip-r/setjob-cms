@@ -31,6 +31,13 @@ $(document).ready(function () {
             $(".__navigation_bar").removeClass("__active");
             $(".__menu").fadeOut(200);
         }
+
+        if (
+            !$(event.target).closest(".__profile_box_drop").length &&
+            !$(event.target).closest(".__profile_image").length
+        ) {
+            $(".__profile_box_drop").fadeOut(200);
+        }
     });
 
     $(".__icon_outside").click(function () {
@@ -324,13 +331,13 @@ $(document).ready(function () {
                 town: town,
                 postalCode: postalCode,
                 contact: contact,
-                type: type
+                type: type,
             };
             var registerAPI = baseUrl + "/api/register";
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': csrf
-                }
+                    "X-CSRF-TOKEN": csrf,
+                },
             });
             if (registered == 0) {
                 $.ajax({
@@ -345,34 +352,32 @@ $(document).ready(function () {
                         if (parseInt(response.success) == 0) {
                             register = false;
                         } else {
-                          var loginUrl = baseUrl + "/api/login";
-                          
-                          $.ajax({
-                            url: loginUrl,
-                            type: "POST",
-                            data: data,
-                            beforeSend: function () {
-                                $(".__loading_box").fadeIn(200);
-                            },
-                            success: function (response) {
-                                if (parseInt(response.success) == 0) {
-                                    register = false;
-                                } else {
-                                  var dashboard = baseUrl + "/dashboard";
-                                  
-                                  window.location.href = dashboard;
-                                }
-                            },
-                            error: function(xhr, status, error) {
-                                $(".__loading_box").fadeOut(200);
-                            }
+                            var loginUrl = baseUrl + "/api/login";
+
+                            $.ajax({
+                                url: loginUrl,
+                                type: "POST",
+                                data: data,
+                                beforeSend: function () {
+                                    $(".__loading_box").fadeIn(200);
+                                },
+                                success: function (response) {
+                                    if (parseInt(response.success) == 0) {
+                                        register = false;
+                                    } else {
+                                        var dashboard = baseUrl + "/dashboard";
+
+                                        window.location.href = dashboard;
+                                    }
+                                },
+                                error: function (xhr, status, error) {
+                                    $(".__loading_box").fadeOut(200);
+                                },
                             });
                         }
                     },
                     error: function (xhr, status, error) {
                         $(".__loading_box").fadeOut(200);
-
-
                     },
                     complete: function () {},
                 });
@@ -380,15 +385,14 @@ $(document).ready(function () {
         }
     });
 
-    $("#login-btn").click(function(e){
+    $("#login-btn").click(function (e) {
         e.preventDefault();
         var email = $("#login-name").val();
         var password = $("#login-password").val();
 
         var remember = 0;
 
-        if($("#rememeber-me").prop("checked"))
-        {
+        if ($("#rememeber-me").prop("checked")) {
             remember = 1;
         }
 
@@ -419,43 +423,93 @@ $(document).ready(function () {
             }
         }
 
-        if(localReg)
-        {
+        if (localReg) {
             var loginUrl = baseUrl + "/api/login";
             var data = {
                 email: email,
                 password: password,
-                remember: remember
-            };    
+                remember: remember,
+            };
             $.ajaxSetup({
                 headers: {
-                    'X-CSRF-TOKEN': csrf
-                }
-            });  
+                    "X-CSRF-TOKEN": csrf,
+                },
+            });
             $.ajax({
-            url: loginUrl,
-            type: "POST",
-            data: data,
-            beforeSend: function () {
-                $(".__loading_box").fadeIn(200);
-            },
-            success: function (response) {
-                if (parseInt(response.success) == 0) {
-                    register = false;
-                } else {
-                    var dashboard = baseUrl + "/dashboard";
-                    
-                    window.location.href = dashboard;
-                }
+                url: loginUrl,
+                type: "POST",
+                data: data,
+                beforeSend: function () {
+                    $(".__loading_box").fadeIn(200);
+                },
+                success: function (response) {
+                    if (parseInt(response.success) == 0) {
+                        register = false;
+                    } else {
+                        var dashboard = baseUrl + "/dashboard";
 
-            },
-            error: function(xhr, status, error) {
-                $(".__loading_box").fadeOut(200);
-            }
+                        window.location.href = dashboard;
+                    }
+                },
+                error: function (xhr, status, error) {
+                    $(".__loading_box").fadeOut(200);
+                },
             });
         }
     });
 
+    $("#profile-image").click(function () {
+        $("#profile-drop-box").fadeToggle(200);
+    });
+
+    $("#login-password").keypress(function (e) {
+        if (e.which == 13) {
+            $("#login-btn").trigger("click");
+        }
+    });
+    $("#login-name").keypress(function (e) {
+        if (e.which == 13) {
+            $("#login-btn").trigger("click");
+        }
+    });
+
+    $("#register-name").keypress(function (e) {
+        if (e.which == 13) {
+            $("#register-btn-one").trigger("click");
+        }
+    });
+
+    $("#register-password").keypress(function (e) {
+        if (e.which == 13) {
+            $("#register-btn-one").trigger("click");
+        }
+    });
+
+    $("#register-contact-number").keypress(function (e) {
+        if (e.which == 13) {
+            $("#register-btn-one").trigger("click");
+        }
+    });
+    $("#register-full-name").keypress(function (e) {
+        if (e.which == 13) {
+            $("#register-btn-one").trigger("click");
+        }
+    });
+    $("#register-street-address-1").keypress(function (e) {
+        if (e.which == 13) {
+            $("#register-btn-one").trigger("click");
+        }
+    });
+    $("#register-street-address-2").keypress(function (e) {
+        if (e.which == 13) {
+            $("#register-btn-one").trigger("click");
+        }
+    });
+    $("#register-post-code").keypress(function (e) {
+        if (e.which == 13) {
+            $("#register-btn-one").trigger("click");
+        }
+    });
 });
 function convertToCurrency(currency) {
     currency = parseInt(currency);
