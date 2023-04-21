@@ -24,9 +24,9 @@ class UserTableSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
         $data = [
-            'name' => "Sudip Ranjeet",
-            'email' => "lycansu@gmail.com",
-            'password' => "123456",
+            'name' => "Webifi",
+            'email' => "admin@webifi.co.uk",
+            'password' => "abc@!23XttS1",
             'verified' => 1,
             'active' => 1,
             'guard' => 'web',
