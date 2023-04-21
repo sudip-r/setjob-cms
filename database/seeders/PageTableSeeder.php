@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\alterBase\Models\Page\Page;
+use App\AlterBase\Models\Page\Page;
 use Illuminate\Support\Facades\DB;
 
 
