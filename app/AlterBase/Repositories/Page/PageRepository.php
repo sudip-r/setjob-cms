@@ -14,7 +14,7 @@ class PageRepository extends Repository
      */
     function getModel()
     {
-        return 'App\alterBase\Models\Page\Page';
+        return 'App\AlterBase\Models\Page\Page';
     }
 
     /**

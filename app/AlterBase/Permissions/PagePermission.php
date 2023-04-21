@@ -2,7 +2,7 @@
 
 namespace App\AlterBase\Permissions;
 
-use App\alterBase\StorePermissions;
+use App\AlterBase\StorePermissions;
 
 class PagePermission
 {
