@@ -7,5 +7,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Chivo:wght@400;700&display=swap" rel="stylesheet">
 <link href="{{ asset('front/assets/vendors/owl/owl.carousel.css')}}" rel="stylesheet">
 <link href="{{ asset('front/assets/vendors/owl/owl.theme.css')}}" rel="stylesheet">
+<link href="{{asset('front/assets/vendors/select2/select2.min.css')}}" rel="stylesheet">
 <link href="{{ asset('front/assets/css/styles.css')}}" rel="stylesheet">
 <link href="{{ asset('front/assets/css/responsive.css')}}" rel="stylesheet">

@@ -26,4 +26,12 @@ class HomeController extends Controller
     {
         return view('frontend.pages.home');
     }
+
+    /**
+     * 
+     */
+    public function jobs()
+    {
+        return view('frontend.pages.jobs');
+    }
 }

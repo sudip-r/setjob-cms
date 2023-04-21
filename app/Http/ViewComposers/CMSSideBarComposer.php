@@ -12,6 +12,10 @@ class CMSSideBarComposer
     public function compose(View $view)
     {
         $user = auth()->user();
+
+        if($user == null)   
+            return redirect()->route('home');
+
         $modules = new Collection();
 
         if($user->isSuperuser()){

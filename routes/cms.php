@@ -26,7 +26,6 @@ use Rap2hpoutre\LaravelLogViewer\LogViewerController;
 /* ==================================================================================
 Dashboard
 ===================================================================================*/
-
 Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
 Route::get('dashboard', [HomeController::class, 'index'])->name('dashboard');
