@@ -15,11 +15,11 @@
     <div class="__gap"></div>
     <div class="__form_group">
       <div class="__err" id="login-email-err"></div>
-      <input type="text" name="login_name" id="login-name" class="__form_input" placeholder="Email" />
+      <input type="text" name="email" id="login-name" class="__form_input" placeholder="Email" />
     </div>
     <div class="__form_group">
       <div class="__err" id="login-password-err"></div>
-      <input type="password" name="login_password" id="login-password" class="__form_input" placeholder="Password" />
+      <input type="password" name="password" id="login-password" class="__form_input" placeholder="Password" />
     </div>
     <div class="__form_group __top_10">
         <input type="checkbox" name="remember_me" id="remember-me" class="__form_checkbox __remember_me">
