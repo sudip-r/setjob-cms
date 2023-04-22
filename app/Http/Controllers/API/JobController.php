@@ -24,6 +24,54 @@ class JobController extends Controller
     }
 
     /**
+     * Get jobs
+     * 
+     * @param Request $request
+     * @return Response
+     */
+    public function jobs(Request $request)
+    {
+      $currentPage = $request->current_page ?? 1;
+      $limit = $request->paginate ?? 40;
+      if(isset($request->user_id))
+      {
+        $jobs = $this->job->paginateWithMultipleCondition(
+          ['user_id' => $request->user_id, 'publish' => 1, 'trash' => 0],
+          'published_on',
+          'desc',
+          $limit,
+          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location'],
+          $currentPage
+        );
+
+        return response(['jobs' => $jobs]);
+      }
+
+      $condition = $request->condition;
+
+      if($condition == null)
+      {
+        $jobs = $this->job->paginateWithMultipleCondition(
+          ['publish' => 1, 'trash' => 0],
+          'published_on',
+          'desc',
+          $limit,
+          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location'],
+          $currentPage
+        );
+
+        if($jobs->count() == 0)
+          return response(['jobs' => null]);
+  
+        return response(['jobs' => $jobs]);
+      }  
+
+
+
+      
+    }
+
+    /**
      * Toggle jobs status
      * 
      * @param Request $request

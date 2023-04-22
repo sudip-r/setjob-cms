@@ -267,12 +267,13 @@ abstract class Repository implements RepositoryInterface
         $orderBy = 'id',
         $orderType = 'desc',
         $limit = 40,
-        $column = ['*']
+        $column = ['*'],
+        $page = 1
     ) {
         return $this->model
             ->where($condition)
             ->orderBy($orderBy, $orderType)
             ->select($column)
-            ->paginate($limit);
+            ->paginate($limit, null, 'page', $page);
     }
 }

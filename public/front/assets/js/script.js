@@ -4,10 +4,13 @@ function pageRedirect(id) {
     if (id !== "0") window.location.href = "/" + id;
 }
 $(document).ready(function () {
-
-    $('html, body').scrollTop(0);
+    $("html, body").scrollTop(0);
     csrf = $('meta[name="csrf-token"]').attr("content");
     baseUrl = $('meta[name="base"]').attr("content");
+
+    if (typeof listJobs === "function") {
+        listJobs();
+    }
 
     $(".__hamburger").click(function () {
         $(".__mobile_side_nav").animate({ left: "0" }, "fast");
@@ -164,36 +167,36 @@ $(document).ready(function () {
         height: "32px",
     });
 
-    $('.__select_ajax').select2({
+    $(".__select_ajax").select2({
         width: "100%",
         height: "32px",
         minimumInputLength: 3, // Only load data after typing at least one character
         ajax: {
-          url: baseUrl + '/api/cities',
-          dataType: 'json',
-          delay: 250, // Wait 250 milliseconds before sending the request (to reduce server load)
-          data: function (params) {
-            return {
-              q: params.term, // The search term entered by the user
-              page: params.page // The current page number
-            };
-          },
-          processResults: function (data, params) {
-            // Map the server response to the format expected by Select2
-            var mappedData = $.map(data.cities.data, function (item) {
-              return {
-                id: item.id,
-                text: item.name
-              };
-            });
-      
-            return {
-              results: mappedData
-            };
-          },
-          cache: true // Cache the results to reduce server load
-        }
-      });
+            url: baseUrl + "/api/cities",
+            dataType: "json",
+            delay: 250, // Wait 250 milliseconds before sending the request (to reduce server load)
+            data: function (params) {
+                return {
+                    q: params.term, // The search term entered by the user
+                    page: params.page, // The current page number
+                };
+            },
+            processResults: function (data, params) {
+                // Map the server response to the format expected by Select2
+                var mappedData = $.map(data.cities.data, function (item) {
+                    return {
+                        id: item.id,
+                        text: item.name,
+                    };
+                });
+
+                return {
+                    results: mappedData,
+                };
+            },
+            cache: true, // Cache the results to reduce server load
+        },
+    });
 
     $(".__favorite_job").click(function () {
         if ($(this).find("i").hasClass("fas")) {
@@ -434,7 +437,7 @@ $(document).ready(function () {
         if (password == "") {
             $("#login-password-err").html("Password is requried!");
             localReg = false;
-        } 
+        }
         if (email == "") {
             $("#login-email-err").html("Email is requried!");
             localReg = false;
@@ -479,8 +482,9 @@ $(document).ready(function () {
                 },
                 error: function (xhr, status, error) {
                     $(".__loading_box").fadeOut(200);
-                    $("#login-email-err").html("The provided credentials do not match our records.");
-
+                    $("#login-email-err").html(
+                        "The provided credentials do not match our records."
+                    );
                 },
             });
         }
@@ -539,11 +543,11 @@ $(document).ready(function () {
         }
     });
 
-    $("#search-btn").click(function(){
+    $("#search-btn").click(function () {
         window.location.href = baseUrl + "/jobs";
     });
 
-    $("#profile-save-btn").on("click", function(e){
+    $("#profile-save-btn").on("click", function (e) {
         e.preventDefault();
         var valid = true;
 
@@ -554,86 +558,140 @@ $(document).ready(function () {
         var postcode = $("#postcode").val();
         var contact = $("#contact").val();
 
-        if(email == "")
-        {
+        if (email == "") {
             valid = false;
             $("#email-err").html("Email cannot be removed");
             scrollToDiv("#email-err");
-        }else{
-            if(!validateEmail(email))
-            {
+        } else {
+            if (!validateEmail(email)) {
                 valid = false;
                 $("#email-err").html("Must be valid email address");
                 scrollToDiv("#email-err");
-            }else{
+            } else {
                 $("#email-err").html("");
             }
         }
 
-        if(name == "")
-        {
+        if (name == "") {
             valid = false;
             $("#name-err").html("Company name cannot be removed");
             scrollToDiv("#name-err");
-        }else{
+        } else {
             $("#name-err").html("");
         }
 
-        if(address == "")
-        {
+        if (address == "") {
             valid = false;
             $("#address-err").html("Address cannot be removed");
             scrollToDiv("#address-err");
-        }else{
+        } else {
             $("#address-err").html("");
         }
 
-        if(city == 0)
-        {
+        if (city == 0) {
             valid = false;
             $("#city-err").html("Select city from dropdown list");
             scrollToDiv("#city-err");
-        }else{
+        } else {
             $("#city-err").html("");
         }
 
-        if(contact == "")
-        {
+        if (contact == "") {
             valid = false;
             $("#contact-err").html("Contact information cannot be removed");
             scrollToDiv("#contact-err");
-        }else{
+        } else {
             $("#contact-err").html("");
         }
 
-        if(valid)
-        {
-           $("#employer-profile-update").submit();
+        if (valid) {
+            $("#employer-profile-update").submit();
         }
-
-        
     });
 
-    $("#profile-upload").change(function(){
-        var file = $("#profile-upload").prop('files')[0];
+    $("#portfolio").on("change", function () {
+        // Get the selected files
+        var files = $(this).prop("files");
 
-        if (file.size <= 2097152 && file.type.includes('image/')) {
+        // Check if the number of files is less than or equal to 8
+        if (files.length > 8) {
+            $("#portfolio-err").html("Maximum of 8 images are allowed");
+            scrollToDiv("#portfolio-err");
+            $(this).val("");
+            valid = false;
+        }
+
+        // Loop through each file and check its type and size
+        for (var i = 0; i < files.length; i++) {
+            var file = files[i];
+            var fileType = file.type;
+            var fileSize = file.size / 1024 / 1024; // Convert to MB
+
+            // Check if the file is an image
+            if (fileType.indexOf("image") == -1) {
+                $("#portfolio-err").html(
+                    "Files must be under 2MB and of image type"
+                );
+                scrollToDiv("#portfolio-err");
+                $(this).val("");
+                return false;
+            }
+
+            // Check if the file size is less than or equal to 2MB
+            if (fileSize > 2) {
+                $("#portfolio-err").html(
+                    "Files must be under 2MB and of image type"
+                );
+                scrollToDiv("#portfolio-err");
+                $(this).val("");
+                return false;
+            }
+        }
+    });
+
+    $("#cv").change(function () {
+        var file = this.files[0];
+
+        // Check if file is a PDF
+        if (file.type !== "application/pdf") {
+            $("#cv-err").html("File must be of pdf type");
+            // Clear file input
+            $("#cv").val("");
+            return;
+        }
+
+        // Check if file size is less than 4MB
+        if (file.size > 5 * 1024 * 1024) {
+            $("#cv-err").html("File must be under 5MB");
+            // Clear file input
+
+            $("#cv").val("");
+            return;
+        } else {
+            $("#cv-err").html("");
+        }
+    });
+
+    $("#profile-upload").change(function () {
+        var file = $("#profile-upload").prop("files")[0];
+
+        if (file.size <= 2097152 && file.type.includes("image/")) {
             readURL(this);
             $("#logo-err").html("");
-          } else {
+        } else {
             // File is not valid, show error message
             $("#logo-err").html("File must be under 2MB and of image type");
             scrollToDiv("#logo-err");
-            $("#profile-upload").val('');
+            $("#profile-upload").val("");
             return false;
-          }
-        
+        }
     });
-    $("#profile-image-box").click(function(){
+
+    $("#profile-image-box").click(function () {
         $("#profile-upload").trigger("click");
     });
 
-    $("#create-job-btn").click(function(e){
+    $("#create-job-btn").click(function (e) {
         e.preventDefault();
         var valid = true;
 
@@ -641,46 +699,40 @@ $(document).ready(function () {
         var salary_min = $("#salary-min").val();
         var summary = $("#summary").val();
 
-        if(title == "")
-        {
+        if (title == "") {
             valid = false;
             $("#title-err").html("Job title is required");
             scrollToDiv("#title-err");
-        }else{
+        } else {
             $("#title-err").html("");
         }
 
-        
-        if(salary_min == "")
-        {
+        if (salary_min == "") {
             valid = false;
             $("#salary-min-err").html("Mention the salary");
             scrollToDiv("#salary-min-err");
-        }else{
+        } else {
             $("#salary-min-err").html("");
         }
 
-        if(summary.trim() == "")
-        {
+        if (summary.trim() == "") {
             valid = false;
             $("#summary-err").html("Summary is required");
             scrollToDiv("#summary-err");
-        }else{
+        } else {
             $("#summary-err").html("");
         }
 
-        if(valid)
-        {
+        if (valid) {
             $("#employer-create-job").submit();
         }
-        
     });
 
-    $(".__toggle_btn").click(function(){
-        var id = $(this).attr('alt');
+    $(".__toggle_btn").click(function () {
+        var id = $(this).attr("alt");
         var jobStatusToggle = baseUrl + "/api/jobStatusToggle";
         var data = {
-            id:id
+            id: id,
         };
         $.ajaxSetup({
             headers: {
@@ -700,31 +752,30 @@ $(document).ready(function () {
                 if (parseInt(response.success) == 0) {
                     $(".__loading_box").fadeOut(200);
                     Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: response.message
+                        icon: "error",
+                        title: "Oops...",
+                        text: response.message,
                     });
                 } else {
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Done',
+                        icon: "success",
+                        title: "Done",
                         text: response.message,
                         showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Ok'
+                        confirmButtonColor: "#3085d6",
+                        cancelButtonColor: "#d33",
+                        confirmButtonText: "Ok",
                     }).then((result) => {
                         if (result.isConfirmed) {
                             window.location.reload();
                         }
-                      });
+                    });
                 }
             },
             error: function (xhr, status, error) {
                 $(".__loading_box").fadeOut(200);
             },
         });
-
     });
 });
 function convertToCurrency(currency) {
@@ -765,20 +816,22 @@ function validatePassword(password) {
     return true;
 }
 
-function scrollToDiv(id)
-{
-    $('html, body').animate({
-        scrollTop: $(id).offset().top - 30
-    }, 200);
+function scrollToDiv(id) {
+    $("html, body").animate(
+        {
+            scrollTop: $(id).offset().top - 30,
+        },
+        200
+    );
 }
 
 function readURL(input, divId = "profile-image-box") {
     if (input.files && input.files[0]) {
-      var reader = new FileReader();
+        var reader = new FileReader();
 
-      reader.onload = function(e) {
-        $('#' + divId).attr('src', e.target.result);
-      }
-      reader.readAsDataURL(input.files[0]);
+        reader.onload = function (e) {
+            $("#" + divId).attr("src", e.target.result);
+        };
+        reader.readAsDataURL(input.files[0]);
     }
-  }
+}

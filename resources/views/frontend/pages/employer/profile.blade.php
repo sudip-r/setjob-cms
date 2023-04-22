@@ -6,7 +6,7 @@
 
   <div class="__breadcrumbs">
       <ul>
-          <li><a href="#">Home</a> / </li>
+          <li><a href="{{route('home')}}">Home</a> / </li>
           <li>Profile</li>
       </ul>
   </div>
@@ -32,7 +32,7 @@
         <div class="__job_list_title __relative">
           <h3>Basic Details</h3>
           <div class="__post_job_wrapper">
-          <a class="__post_job" href="#"><i class="fa fa-eye"></i> View As</a>
+          <a class="__post_job" href="{{route('employer.detail', ['slug' => $user->slug])}}" target="_blank"><i class="fa fa-eye"></i> View As</a>
           </div>
         </div>
         <div class="__about_wrapper">
@@ -78,6 +78,12 @@
                 <label for="contact">Contact</label>
                 <div class="__err_abs" id="contact-err"></div>
                 <input type="text" name="contact" id="contact" class="__form_input" placeholder="Contact" value="{{$user->profile()->contact}}">
+            </div>
+
+            <div class="__profile_form __relative">
+              <label for="website">Website</label>
+              <div class="__err_abs" id="website-err"></div>
+              <input type="text" name="mobile" id="website" class="__form_input" placeholder="Website" value="{{$user->profile()->mobile}}">
             </div>
         </div>
           <div class="__gap_30"></div>

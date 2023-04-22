@@ -9,6 +9,7 @@ use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
@@ -73,10 +74,10 @@ class DashboardController extends Controller
         );
 
         if ($user->guard == "client") {
-            return view('frontend.pages.employee.dashboard')->with('user', $user);
-        } else {
-            return view('frontend.pages.employer.dashboard')->with('user', $user)->with('jobs', $jobs);
+            return view('frontend.pages.employee.dashboard')->with('user', $user)->with('jobs', $jobs);
         }
+        return view('frontend.pages.employer.dashboard')->with('user', $user)->with('jobs', $jobs);
+        
     }
 
     /**
@@ -151,8 +152,66 @@ class DashboardController extends Controller
             $this->user->update($id, $input);
 
             $profileInput = $request->only([
-                'address', 'contact', 'city_id', 'postal_code', 'linkedin', 'twitter', 'facebook', 'instagram', 'summary', 'description'
+                'address', 'mobile','city_id', 'postal_code', 'linkedin', 'twitter', 'facebook', 'instagram', 'summary', 'description'
             ]);
+
+            $profileInput['contact'] = convertNumber($request->contact);
+
+            $this->profile->updateWith('user_id', $id, $profileInput);
+
+            return redirect()->route('user.profile')
+                ->with('success', "Profile updated");
+        } catch (\Exception $e) {
+            $this->log->error((string) $e);
+
+            return redirect()->route('user.profile')
+                ->with('error', "Failed to update.")
+                ->withInput();
+        }
+    }
+
+    /**
+     * Update employer profile
+     *
+     * @param Request $request
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function employeeUpdateProfile(Request $request)
+    {
+        try {
+            $input = $request->only([
+                'name', 'email', 'title'
+            ]);
+
+            $id = $request->id;
+
+            $user = $this->user->find($id);
+
+            if ($request->hasFile('profile_image')) {
+                $input['profile_image'] = $this->uploadImage($request);
+
+                $this->deleteOldProfileImage($user->profile_image);
+            }
+
+            $this->user->update($id, $input);
+
+            $profileInput = $request->only([
+                'address', 'mobile','city_id', 'postal_code', 'linkedin', 'twitter', 'facebook', 'instagram', 'summary', 'description', 'map'
+            ]);
+
+            $profileInput['contact'] = convertNumber($request->contact);
+
+            if( $request->hasFile('contact_person')){
+                $profileInput['contact_person'] = $this->uploadFile($request);
+
+                $this->deleteOldFile($user->profile()->contact_person);
+            }
+
+            if( $request->hasFile('categories')){
+                $profileInput['categories'] = $this->uploadPortfolio($request, $id);
+
+                $this->deletePortfolioFiles($user->profile()->categories, $id);
+            }
 
             $this->profile->updateWith('user_id', $id, $profileInput);
 
@@ -189,10 +248,10 @@ class DashboardController extends Controller
         );
 
         if ($user->guard == "client") {
-            return view('frontend.pages.employee.jobs')->with('user', $user);
-        } else {
-            return view('frontend.pages.employer.jobs.jobs')->with('user', $user)->with('jobs', $jobs);
-        }
+            return view('frontend.pages.employee.jobs')->with('user', $user)->with('jobs', $jobs);
+        } 
+        return view('frontend.pages.employer.jobs.jobs')->with('user', $user)->with('jobs', $jobs);
+        
     }
 
     /**
@@ -226,14 +285,15 @@ class DashboardController extends Controller
                 'summary',
                 'description',
                 'salary_min',
-                'salary_max',
                 'deadline',
                 'location',
                 'responsibilities',
-                'required_skills',
-                'type'
+                'required_skills'
             ]);
 
+            $input['salary_max'] = $request->salary_max ?? "0";
+
+            $input['type'] = str_replace("-", " ", ucwords($request->type));
             $user = $this->user->find($request->id);
 
             $input['slug'] = str_replace(" ", "-", strtolower($request->title))."-".time();
@@ -294,11 +354,12 @@ class DashboardController extends Controller
                 'deadline',
                 'location',
                 'responsibilities',
-                'required_skills',
-                'type'
+                'required_skills'
             ]);
 
             $user = $this->user->find($request->id);
+
+            $input['type'] = str_replace("-", " ", ucwords($request->type));
 
             $input['slug'] = str_replace(" ", "-", strtolower($request->title))."-".time();
             if($request->location == "0")
@@ -351,6 +412,52 @@ class DashboardController extends Controller
     }
 
     /**
+     * Upload image
+     *
+     * @param $request
+     * @return string
+     */
+    private function uploadFile($request)
+    {
+        $file = $request->file('contact_person');
+        $filename = rand(1, 1000000) . time() . '.' . $file->getClientOriginalExtension();
+
+        $destinationPath = public_path('uploads/users/');
+
+        $file->move($destinationPath, $filename);
+
+        return $filename;
+    }
+
+    /**
+     * Upload image
+     *
+     * @param $request
+     * @return string
+     */
+    private function uploadPortfolio($request, $id)
+    {
+        $files = $request->file('categories');
+
+        $filename = [];
+        foreach($files as $file){
+        $name = rand(1, 1000000) . time() . '.' . $file->getClientOriginalExtension();
+
+        $filename[] = $name;
+        $destinationPath = public_path('uploads/users/'.$id);
+
+        if(!file_exists($destinationPath))
+            mkdir($destinationPath, 0775);
+
+        $file->move($destinationPath."/", $name);
+        }
+
+        return json_encode($filename, true);
+    }
+
+    
+
+    /**
      * Delete old image
      *
      * @param $image
@@ -364,6 +471,42 @@ class DashboardController extends Controller
             unlink($path . $image);
         } else {
             return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete old image
+     *
+     * @param $image
+     * @return Boolean
+     */
+    private function deleteOldFile($file)
+    {
+        $path = public_path('uploads/users/');
+
+        if (file_exists($path . $file) && $file != "") {
+            unlink($path . $file);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Delete old image
+     *
+     * @param $image
+     * @return Boolean
+     */
+    private function deletePortfolioFiles($files, $id)
+    {
+        $path = public_path('uploads/users/'.$id."/");
+
+        foreach(json_decode($files) as $file){
+            if (file_exists($path . $file) && $file != "") {
+                unlink($path . $file);
+            } 
         }
         return true;
     }

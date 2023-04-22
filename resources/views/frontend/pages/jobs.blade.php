@@ -79,36 +79,8 @@
           <h5>Lasted jobs</h5>
         </div>
 
-        @if($jobs->count() > 0)
-          @foreach($jobs as $job)
-          <div class="__list_wrapper">
-            <div class="__favorite_job"><i class="far fa-heart"></i></div>
-            <h2>{{$job->title}}</h2>
-            <p class="__sub_title">{{date('M d, Y', strtotime($job->published_on))}} by <strong><a href="">{{$job->user()->name}}</a></strong></p>
-            <ul class="__job_features">
-              @if($job->salary_max == "")
-              <li><i class="fas fa-pound-sign __right_10"></i> £{{$job->salary_min}} per annum</li>
-              @else 
-              <li><i class="fas fa-pound-sign __right_10"></i> £{{$job->salary_min}} - £{{$job->salary_max}} per annum</li>
-              @endif
-              <li><i class="fas fa-map-marker-alt __right_10"></i> {{$job->city()->name}}</li>
-              <li><i class="fas fa-briefcase __right_10"></i>{{$job->type}}</li>
-            </ul>
-            <p class="__job_summary">{{$job->summary}}</p>
-
-            <div class="__gap_30"></div>
-          </div><!-- List Wrapper--> 
-          @endforeach
-
-          <div class="__pagination">
-            {!! $jobs->appends($_GET)->links() !!}
-          </div>
-
-          @else
-          <div class="__list_wrapper">
-            Looks like you haven't posted any jobs yet.
-          </div>
-          @endif
+        <div id="ajax-job-list">
+        </div>
 
         <div class="__gap_30"></div>
         <div class="__loading"></div>
@@ -119,4 +91,94 @@
   </div> <!-- CONTENT -->
 
 
+@endsection
+
+@section('custom-scripts')
+<script>
+var currentPage = "{{ request()->input('page', 1) }}";
+var nextPage = parseInt(currentPage) + 1;
+var totalPage = "0";
+function listJobs(page = 1){
+var csrf = $('meta[name="csrf-token"]').attr("content");
+var baseUrl = $('meta[name="base"]').attr("content");
+var jobListAPI = baseUrl + "/api/jobs";
+var conditions = null;
+var loadNextPage = false;
+
+$.ajaxSetup({
+    headers: {
+        "X-CSRF-TOKEN": csrf,
+    },
+});
+
+var data = {
+    conditions:conditions,
+    current_page: page,
+    paginate: 30
+};
+if(totalPage == "0" || parseInt(currentPage) <= parseInt(totalPage)){
+    $.ajax({
+        url: jobListAPI,
+        type: "POST",
+        data: data,
+        beforeSend: function () {
+            $(".__loading").fadeIn(200);
+        },
+        success: function (response) {
+            if(response.jobs == null)
+            {
+              $("#ajax-job-list").html("<div class='__list_wrapper'>Sorry! Currently, There are no job postings.</div>");
+              $(".__loading").fadeOut(200);
+            }else{
+            var jobs = response.jobs.data;
+            currentPage = response.jobs.current_page;
+            totalPage = response.jobs.total;
+            nextPage = parseInt(currentPage) + 1;
+            if(response.jobs.next_page_url != null)
+                loadNextPage = true;
+            var html = "";
+            $.each(jobs, function(index, value) {
+                html += "<div class='__list_wrapper __list_wrapper_jobs'>"+
+                            "<div class='__favorite_job'><i class='far fa-heart'></i></div>"+
+                            "<h2>"+value.title+"</h2>" +
+                            "<p class='__sub_title'>"+value.published_date+" by <strong><a href='"+baseUrl + "/company/"+ value.user_slug +"' target='_blank'>"+value.user_name+"</a></strong></p>" +
+                            "<ul class='__job_features'>";
+                if(parseInt(value.salary_max) < parseInt(value.salary_min))  
+                {
+                  html +=    "<li><i class='fas fa-pound-sign __right_10'></i> £"+value.salary_min_formatted+" per annum</li>";
+                } else {
+                  html +=    "<li><i class='fas fa-pound-sign __right_10'></i> £"+value.salary_min_formatted+" - £"+value.salary_max_formatted+" per annum</li>";
+                } 
+                html +=     "<li><i class='fas fa-map-marker-alt __right_10'></i> "+value.location_name+"</li>" +
+                            "<li><i class='fas fa-briefcase __right_10'></i>"+value.type+"</li>" +
+                            "</ul>" +
+                            "<p class='__job_summary'>"+value.summary+"</p>" +
+                        "</div>"+
+                        "";
+            });
+
+
+            $("#ajax-job-list").append(html);
+          }
+        },
+        error: function (xhr, status, error) {
+            $(".__loading").fadeOut(200);
+        },
+        complete: function () {
+            $(".__loading").fadeOut(200);
+        },
+    });
+}
+
+$(window).scroll(function() {
+    if($(window).scrollTop() + $(window).height() == $(document).height()) {
+        if(loadNextPage)
+        {
+            listJobs(nextPage);
+        }
+    }
+});
+
+}
+</script>
 @endsection

@@ -17,6 +17,8 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'slug',
+        'title',
         'email',
         'password',
         'verified',
@@ -121,6 +123,9 @@ class User extends Authenticatable
                 'p.name',
                 'p.address',
                 'p.contact',
+                'p.contact_person',
+                'p.categories',
+                'p.mobile',
                 'p.postal_code',
                 'p.city_id',
                 'p.summary',
@@ -128,7 +133,8 @@ class User extends Authenticatable
                 'p.linkedin',
                 'p.twitter',
                 'p.facebook',
-                'p.instagram'])
+                'p.instagram',
+                'p.map'])
             ->get()
             ->first();
     }
