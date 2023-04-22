@@ -35,8 +35,7 @@
           <div class="__profile_links">
             <ul>
               <li><a href="{{route('user.dashboard')}}"><i class="fas fa-columns"></i> Dashboard</a></li>
-              <li><a href="{{route('user.update.profile')}}"><i class="fas fa-user"></i> Update Profile</a></li>
-              <li><a href="{{route('user.view.profile')}}"><i class="fas fa-user"></i> View Profile</a></li>
+              <li><a href="{{route('user.profile')}}"><i class="fas fa-user"></i> Update Profile</a></li>
               <li><a href="{{route('logout')}}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
             </ul>
           </div>

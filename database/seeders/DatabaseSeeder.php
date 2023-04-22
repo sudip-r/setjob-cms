@@ -15,10 +15,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserTableSeeder::class);
         $this->call(PermissionTableSeeder::class);
-        // $this->call(PageTableSeeder::class);
-        $this->call(CategoryTableSeeder::class);
-        $this->call(PostTableSeeder::class);
-        $this->call(PostCategoryTableSeeder::class);
+        $this->call(PageTableSeeder::class);
+        // $this->call(CategoryTableSeeder::class);
+        // $this->call(PostTableSeeder::class);
+        // $this->call(PostCategoryTableSeeder::class);
         // $this->call(PartnerTypeTableSeeder::class);
         // $this->call(SettingsTableSeeder::class);
     }

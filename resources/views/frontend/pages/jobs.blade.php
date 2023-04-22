@@ -76,91 +76,39 @@
       </div>
       <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
         <div class="__job_list_title">
-          <h5>Showing 34 jobs for Scenic Artist</h5>
+          <h5>Lasted jobs</h5>
         </div>
-        <div class="__list_wrapper">
-          <div class="__favorite_job"><i class="far fa-heart"></i></div>
-          <h2>Scenic Artist</h2>
-          <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-          <ul class="__job_features">
-            <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-            <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-            <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-          </ul>
-          <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-            non viverra mollis...</p>
-        </div><!-- List Wrapper-->
 
-        <div  class="__list_wrapper">
-          <div class="__favorite_job"><i class="far fa-heart"></i></div>
-          <h2>Scenic Artist</h2>
-          <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-          <ul class="__job_features">
-            <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-            <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-            <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-          </ul>
-          <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-            non viverra mollis...</p>
-        </div><!-- List Wrapper-->
+        @if($jobs->count() > 0)
+          @foreach($jobs as $job)
+          <div class="__list_wrapper">
+            <div class="__favorite_job"><i class="far fa-heart"></i></div>
+            <h2>{{$job->title}}</h2>
+            <p class="__sub_title">{{date('M d, Y', strtotime($job->published_on))}} by <strong><a href="">{{$job->user()->name}}</a></strong></p>
+            <ul class="__job_features">
+              @if($job->salary_max == "")
+              <li><i class="fas fa-pound-sign __right_10"></i> £{{$job->salary_min}} per annum</li>
+              @else 
+              <li><i class="fas fa-pound-sign __right_10"></i> £{{$job->salary_min}} - £{{$job->salary_max}} per annum</li>
+              @endif
+              <li><i class="fas fa-map-marker-alt __right_10"></i> {{$job->city()->name}}</li>
+              <li><i class="fas fa-briefcase __right_10"></i>{{$job->type}}</li>
+            </ul>
+            <p class="__job_summary">{{$job->summary}}</p>
 
-        <div  class="__list_wrapper">
-          <div class="__favorite_job"><i class="far fa-heart"></i></div>
-          <h2>Scenic Artist</h2>
-          <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-          <ul class="__job_features">
-            <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-            <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-            <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-          </ul>
-          <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-            non viverra mollis...</p>
-        </div><!-- List Wrapper-->
+            <div class="__gap_30"></div>
+          </div><!-- List Wrapper--> 
+          @endforeach
 
-        <div  class="__list_wrapper">
-          <div class="__favorite_job"><i class="far fa-heart"></i></div>
-          <h2>Scenic Artist</h2>
-          <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-          <ul class="__job_features">
-            <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-            <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-            <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-          </ul>
-          <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-            non viverra mollis...</p>
-        </div><!-- List Wrapper-->
+          <div class="__pagination">
+            {!! $jobs->appends($_GET)->links() !!}
+          </div>
 
-        <div  class="__list_wrapper">
-          <div class="__favorite_job"><i class="far fa-heart"></i></div>
-          <h2>Scenic Artist</h2>
-          <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-          <ul class="__job_features">
-            <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-            <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-            <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-          </ul>
-          <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-            non viverra mollis...</p>
-        </div><!-- List Wrapper-->
-
-        <div  class="__list_wrapper">
-          <div class="__favorite_job"><i class="far fa-heart"></i></div>
-          <h2>Scenic Artist</h2>
-          <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-          <ul class="__job_features">
-            <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-            <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-            <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-          </ul>
-          <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-            incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-            non viverra mollis...</p>
-        </div><!-- List Wrapper-->
+          @else
+          <div class="__list_wrapper">
+            Looks like you haven't posted any jobs yet.
+          </div>
+          @endif
 
         <div class="__gap_30"></div>
         <div class="__loading"></div>

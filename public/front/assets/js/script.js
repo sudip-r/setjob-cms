@@ -5,10 +5,7 @@ function pageRedirect(id) {
 }
 $(document).ready(function () {
 
-    $('html, body').animate({
-        scrollTop: 0
-    }, 200);
-
+    $('html, body').scrollTop(0);
     csrf = $('meta[name="csrf-token"]').attr("content");
     baseUrl = $('meta[name="base"]').attr("content");
 
@@ -166,6 +163,37 @@ $(document).ready(function () {
         width: "100%",
         height: "32px",
     });
+
+    $('.__select_ajax').select2({
+        width: "100%",
+        height: "32px",
+        minimumInputLength: 3, // Only load data after typing at least one character
+        ajax: {
+          url: baseUrl + '/api/cities',
+          dataType: 'json',
+          delay: 250, // Wait 250 milliseconds before sending the request (to reduce server load)
+          data: function (params) {
+            return {
+              q: params.term, // The search term entered by the user
+              page: params.page // The current page number
+            };
+          },
+          processResults: function (data, params) {
+            // Map the server response to the format expected by Select2
+            var mappedData = $.map(data.cities.data, function (item) {
+              return {
+                id: item.id,
+                text: item.name
+              };
+            });
+      
+            return {
+              results: mappedData
+            };
+          },
+          cache: true // Cache the results to reduce server load
+        }
+      });
 
     $(".__favorite_job").click(function () {
         if ($(this).find("i").hasClass("fas")) {
@@ -514,6 +542,190 @@ $(document).ready(function () {
     $("#search-btn").click(function(){
         window.location.href = baseUrl + "/jobs";
     });
+
+    $("#profile-save-btn").on("click", function(e){
+        e.preventDefault();
+        var valid = true;
+
+        var email = $("#email").val();
+        var name = $("#name").val();
+        var address = $("#address").val();
+        var city = $("#city").val();
+        var postcode = $("#postcode").val();
+        var contact = $("#contact").val();
+
+        if(email == "")
+        {
+            valid = false;
+            $("#email-err").html("Email cannot be removed");
+            scrollToDiv("#email-err");
+        }else{
+            if(!validateEmail(email))
+            {
+                valid = false;
+                $("#email-err").html("Must be valid email address");
+                scrollToDiv("#email-err");
+            }else{
+                $("#email-err").html("");
+            }
+        }
+
+        if(name == "")
+        {
+            valid = false;
+            $("#name-err").html("Company name cannot be removed");
+            scrollToDiv("#name-err");
+        }else{
+            $("#name-err").html("");
+        }
+
+        if(address == "")
+        {
+            valid = false;
+            $("#address-err").html("Address cannot be removed");
+            scrollToDiv("#address-err");
+        }else{
+            $("#address-err").html("");
+        }
+
+        if(city == 0)
+        {
+            valid = false;
+            $("#city-err").html("Select city from dropdown list");
+            scrollToDiv("#city-err");
+        }else{
+            $("#city-err").html("");
+        }
+
+        if(contact == "")
+        {
+            valid = false;
+            $("#contact-err").html("Contact information cannot be removed");
+            scrollToDiv("#contact-err");
+        }else{
+            $("#contact-err").html("");
+        }
+
+        if(valid)
+        {
+           $("#employer-profile-update").submit();
+        }
+
+        
+    });
+
+    $("#profile-upload").change(function(){
+        var file = $("#profile-upload").prop('files')[0];
+
+        if (file.size <= 2097152 && file.type.includes('image/')) {
+            readURL(this);
+            $("#logo-err").html("");
+          } else {
+            // File is not valid, show error message
+            $("#logo-err").html("File must be under 2MB and of image type");
+            scrollToDiv("#logo-err");
+            $("#profile-upload").val('');
+            return false;
+          }
+        
+    });
+    $("#profile-image-box").click(function(){
+        $("#profile-upload").trigger("click");
+    });
+
+    $("#create-job-btn").click(function(e){
+        e.preventDefault();
+        var valid = true;
+
+        var title = $("#title").val();
+        var salary_min = $("#salary-min").val();
+        var summary = $("#summary").val();
+
+        if(title == "")
+        {
+            valid = false;
+            $("#title-err").html("Job title is required");
+            scrollToDiv("#title-err");
+        }else{
+            $("#title-err").html("");
+        }
+
+        
+        if(salary_min == "")
+        {
+            valid = false;
+            $("#salary-min-err").html("Mention the salary");
+            scrollToDiv("#salary-min-err");
+        }else{
+            $("#salary-min-err").html("");
+        }
+
+        if(summary.trim() == "")
+        {
+            valid = false;
+            $("#summary-err").html("Summary is required");
+            scrollToDiv("#summary-err");
+        }else{
+            $("#summary-err").html("");
+        }
+
+        if(valid)
+        {
+            $("#employer-create-job").submit();
+        }
+        
+    });
+
+    $(".__toggle_btn").click(function(){
+        var id = $(this).attr('alt');
+        var jobStatusToggle = baseUrl + "/api/jobStatusToggle";
+        var data = {
+            id:id
+        };
+        $.ajaxSetup({
+            headers: {
+                "X-CSRF-TOKEN": csrf,
+            },
+        });
+        $.ajax({
+            url: jobStatusToggle,
+            type: "POST",
+            data: data,
+            beforeSend: function () {
+                $(".__loading_box").fadeIn(200);
+            },
+            success: function (response) {
+                $(".__loading_box").fadeOut(200);
+
+                if (parseInt(response.success) == 0) {
+                    $(".__loading_box").fadeOut(200);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: response.message
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Done',
+                        text: response.message,
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ok'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        }
+                      });
+                }
+            },
+            error: function (xhr, status, error) {
+                $(".__loading_box").fadeOut(200);
+            },
+        });
+
+    });
 });
 function convertToCurrency(currency) {
     currency = parseInt(currency);
@@ -552,3 +764,21 @@ function validatePassword(password) {
     }
     return true;
 }
+
+function scrollToDiv(id)
+{
+    $('html, body').animate({
+        scrollTop: $(id).offset().top - 30
+    }, 200);
+}
+
+function readURL(input, divId = "profile-image-box") {
+    if (input.files && input.files[0]) {
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+        $('#' + divId).attr('src', e.target.result);
+      }
+      reader.readAsDataURL(input.files[0]);
+    }
+  }

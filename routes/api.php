@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\API\CityController;
+use App\Http\Controllers\API\JobController;
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\RegisterController;
 use Illuminate\Http\Request;
@@ -20,12 +22,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get("/test", function(){
-    return response(["message" => "Hello World!"]);
-});
-
 Route::post("/login", [LoginController::class, "alterLogin"])->name("api.login");
 
 Route::post("/register", [RegisterController::class, "registerFrontend"])->name("api.register");
 
 Route::post("/check-email", [RegisterController::class, "checkEmail"])->name("api.check.email");
+
+Route::post("/jobStatusToggle", [JobController::class, "toggleJobStatus"])->name("api.jobs.toggle");
+
+Route::get("/cities", [CityController::class, "cities"])->name("api.list.cities");
+
+

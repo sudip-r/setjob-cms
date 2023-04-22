@@ -23,6 +23,9 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer(
             'frontend.layouts.partials._header','App\Http\ViewComposers\AuthCheckComposer'
         );
+        View::composer(
+            'frontend.pages.employer.profile','App\Http\ViewComposers\CitiesListComposer'
+        );
     }
 
     /**
