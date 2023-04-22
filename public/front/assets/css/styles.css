@@ -110,6 +110,23 @@ a:hover {
     text-decoration: none;
     overflow: hidden;
 }
+.__unpublish_btn{
+    width:200px;
+    height: 50px;
+}
+.__unpublish_btn:hover{
+    background-color: #831515;
+    color:var(--primary);
+}
+.__publish_btn{
+    width:200px;
+    height: 50px;
+}
+.__publish_btn:hover{
+    background-color: #0ea134;
+    color:var(--primary);
+}
+
 .__btn:hover::before {
     width: 150px;
 }
@@ -144,6 +161,22 @@ a:hover {
 .__err {
     color: #850d0d;
     font-size: 11px;
+}
+.__err_abs {
+    color: #850d0d;
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    top: 19px;
+    font-weight: bold;
+    font-family: var(--font-primary);
+}
+.__err_abs_left{
+    top: 35px;
+    left: 0;
+}
+.__relative{
+    position: relative;
 }
 /*----------NAVIGATION---------*/
 .__navigation_bar {
@@ -351,7 +384,7 @@ header {
 
 .__profile_links ul {
   list-style-type: none;
-  margin-left: 50px;
+  margin-left: 30px;
 }
 
 .__profile_links ul li{
@@ -770,6 +803,20 @@ footer {
     float: left;
 }
 
+.__profile_form_half {
+    width: 48%;
+    height: auto;
+    padding: 0;
+    float: left;
+}
+
+label em{
+    font-size: 14px;
+    font-style: normal;
+    color: #c18853;
+    font-weight: normal;
+}
+
 .__ml_2per {
     margin-left: 4%;
 }
@@ -865,6 +912,10 @@ footer {
     font-weight: bold;
 }
 
+.__textarea{
+    height:280px;
+    overflow: auto;
+}
 /**-------JOB LIST ---------**/
 .__job_lists {
     margin-top: 40px;
@@ -953,7 +1004,6 @@ footer {
     font-family: var(--font-primary);
     font-size: 35px;
     font-weight: 700;
-    font-size: bold;
     color: var(--black);
 }
 .__job_list_title h5 {
@@ -975,7 +1025,7 @@ footer {
     font-size: 30px;
     font-weight: 700;
     color: var(--black);
-    line-height: 25px;
+    line-height: 42px;
 }
 .__sub_title {
     font-family: var(--font-text);
@@ -994,6 +1044,19 @@ footer {
     font-size: 17px;
     color: var(--black);
     margin-bottom: 10px;
+}
+.__job_btns {
+    padding: 0px;
+    list-style: none;
+    margin-top: 20px;
+}
+.__job_btns li {
+    padding: 0px;
+    font-family: var(--font-text);
+    font-size: 17px;
+    color: var(--black);
+    margin-bottom: 10px;
+    display:inline-block;
 }
 .__bordered {
     border: 1px solid var(--black);
@@ -1014,6 +1077,11 @@ footer {
     margin-top: 20px;
 }
 .__favorite_job {
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+}
+.__job_publish_status{
     position: absolute;
     right: 30px;
     cursor: pointer;
@@ -1203,4 +1271,100 @@ footer {
 
 .__portfolio .owl-carousel .item {
     padding: 0px 20px;
+}
+/**----Employer Dashboard-------**/
+.__dashboard_links{
+    width: 100%;
+    background-color: var(--form-bg);
+}
+.__dashboard_links ul{
+    list-style: none;
+}
+.__dashboard_links ul li{
+    font-family: var(--font-primary);
+    font-size: 18px;
+    color:var(--black);
+    padding:20px 0px;
+}
+.__dashboard_links ul .active{
+    font-weight: bold;
+}
+.__dashboard_links ul li a{
+    padding:0px 10px 0px 0px;
+}
+.__post_job_wrapper {
+    position: absolute;
+    right: 0;
+    top: 0;
+    text-transform: uppercase;
+    font-family: var(--font-primary);
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+.__post_job{
+    width: 150px;
+    height: 50px;
+    font-family: var(--font-primary);
+    text-decoration: none;
+    font-size: 13px;
+    color: var(--black);
+    border: var(--black) solid 1px;
+    display: block;
+    text-align: center;
+    float: left;
+    text-transform: uppercase;
+    padding: 14px 0px;
+    letter-spacing: 2px;
+    -webkit-transition-duration: 0.4s;
+    transition-duration: 0.4s;
+    text-decoration: none;
+    overflow: hidden;
+    background-color: var(--white);
+}
+.__post_job:hover{
+    color:var(--white);
+    background-color: #000000;
+}
+
+.__profile_form, .__profile_form_half{
+    margin-bottom: 20px;
+}
+
+.__profile_form label, .__profile_form_half label{
+    padding: 10px 0px;
+    font-family: 'Chivo';
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.__profile_upload_img {
+    width: 250px;
+    /* float: right; */
+    padding: 30px;
+    display: block;
+    margin: 20px 0px;
+    border: #121212 solid 1px;
+    cursor: pointer;
+}
+
+.__pagination{
+    margin-top:60px;
+}
+
+.pagination{
+    display: inline-block;
+}
+
+.pagination li{
+    display: inline-block;
+    margin:0px;
+}
+.page-link{
+    border:none;
+    background-color: #EFEFEF;
+}
+.pagination .active .page-link {
+    background-color: var(--primary);
+    border: none;
+    color: var(--black);
 }

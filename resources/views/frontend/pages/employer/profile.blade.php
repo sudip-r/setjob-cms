@@ -1,149 +1,291 @@
 @extends("frontend.layouts.master")
 
 @section("content")
-
 <div class="__inner_search">
-    <h3>Scenic Artist</h3>
+  <h3>Profile</h3>
 
-    <div class="__breadcrumbs">
-        <ul>
-            <li><a href="#">Home</a> / </li>
-            <li><a href="#">Jobs</a> / </li>
-            <li>Scenic Artist</li>
-        </ul>
-    </div>
+  <div class="__breadcrumbs">
+      <ul>
+          <li><a href="#">Home</a> / </li>
+          <li>Profile</li>
+      </ul>
+  </div>
 </div>
 
 
 <div class="__main_content container">
-    <div class="row __job_lists">
-        <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
-            <div class="__company_wrapper">
-            <div class="__company_box">
-                <img class="__company_logo __profile_logo" src="{{mpath('front/assets/images/company.png')}}" />
+  <div class="row __job_lists">
+      <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+          <div class="__dashboard_links">
+              <ul>
+                  <li><a href="{{route('user.dashboard')}}">Dashboard</a></li>
+                  <li class="active">Profile</li>
+                  <li><a href="{{route('dashboard.jobs')}}">Jobs</a></li>
+                  <li><a href="{{route('logout')}}">Logout</a></li>
+              </ul>
+          </div>
+      </div>
+      <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+        <form method="post" action="{{route('employer.update.profile')}}" id="employer-profile-update" enctype="multipart/form-data">
+        <input type="hidden" name="_token" value="{{csrf_token()}}" />
+        <input type="hidden" name="id" value="{{$user->id}}" />
+        <div class="__job_list_title __relative">
+          <h3>Basic Details</h3>
+          <div class="__post_job_wrapper">
+          <a class="__post_job" href="#"><i class="fa fa-eye"></i> View As</a>
+          </div>
+        </div>
+        <div class="__about_wrapper">
+            <div class="__profile_form __relative">
+                <label for="profile-upload">Company Logo <em>[Recommended size: 250x250 px]</em></label>
+                <div class="__err_abs __err_abs_left" id="logo-err"></div>
+                <img class="__profile_upload_img" id="profile-image-box" src="{{upath('uploads/users/'.$user->profile_image)}}">
+                <input type="file" name="profile_image" id="profile-upload" class="__form_input">
             </div>
-            <div class="__company_name">
-                HBO
+            <div class="__profile_form __relative">
+                <label for="name">Company name</label>
+                <div class="__err_abs" id="name-err"></div>
+                <input type="text" name="name" id="name" class="__form_input" placeholder="Company name" value="{{$user->name}}">
             </div>
-            <div class="__company_joined_date">
-                Joined Sep 15, 2020
+            <div class="__profile_form __relative">
+                <label for="email">Email</label>
+                <div class="__err_abs" id="email-err"></div>
+                <input type="text" name="email" id="email" class="__form_input" placeholder="Email" value="{{$user->email}}">
             </div>
-            <div class="__company_contact">
-                <a href="javascript:void(0);" class="__btn __email_btn"><i class="far fa-envelope __right_10"></i>Email</a>
-                <a href="javascript:void(0);" class="__btn __email_btn"><i class="fas fa-phone-alt __right_10"></i>Contact</a>
+            <div class="__profile_form __relative">
+                <label for="address">Address</label>
+                <div class="__err_abs" id="address-err"></div>
+                <input type="text" name="address" id="address" class="__form_input" placeholder="Address" value="{{$user->profile()->address}}">
             </div>
-            <div class="__company_social __social">
-                <ul>
-                    <li><a href=""><img src="{{mpath('front/assets/images/linkedin_bk.png')}}" /></a></li>
-                    <li><a href=""><img src="{{mpath('front/assets/images/twitter_bk.png')}}" /></a></li>
-                    <li><a href=""><img src="{{mpath('front/assets/images/facebook_bk.png')}}" /></a></li>
-                    <li><a href=""><img src="{{mpath('front/assets/images/instagram_bk.png')}}" /></a></li>
-                </ul>
+            <div class="__profile_form __relative">
+                <label for="city">City</label>
+                <div class="__err_abs" id="city-err"></div>
+                <select id="city" class="__select_ajax" name="city_id">
+                  @if($user->city()->id != 0 || $user->city()->id != "")
+                    <option value="{{$user->city()->id}}">{{$user->city()->name}}</option>
+                  @else
+                    <option value="0">Choose City</option>
+                  @endif
+                </select>
             </div>
+            <div class="__profile_form __relative">
+                <label for="postcode">Post Code</label>
+                <div class="__err_abs" id="postcode-err"></div>
+                <input type="text" name="postal_code" id="postcode" class="__form_input" placeholder="Postcode" value="{{$user->profile()->postal_code}}">
+
+            </div>
+            <div class="__profile_form __relative">
+                <label for="contact">Contact</label>
+                <div class="__err_abs" id="contact-err"></div>
+                <input type="text" name="contact" id="contact" class="__form_input" placeholder="Contact" value="{{$user->profile()->contact}}">
+            </div>
+        </div>
+          <div class="__gap_30"></div>
+          <div class="__job_list_title __relative">
+            <h3>Socials</h3>
+          </div>
+          <div class="__about_wrapper">
+              <div class="__profile_form">
+                  <label for="linkedin">Linkedin</label>
+                  <input type="text" name="linkedin" id="linkedin" class="__form_input" placeholder="Linkedin link" value="{{$user->profile()->linkedin}}">
+              </div>
+              <div class="__profile_form">
+                <label for="twitter">Twitter</label>
+                <input type="text" name="twitter" id="twitter" class="__form_input" placeholder="Twitter link" value="{{$user->profile()->twitter}}">
+            </div>
+            <div class="__profile_form">
+                <label for="facebook">Facebook</label>
+                <input type="text" name="facebook" id="facebook" class="__form_input" placeholder="Facebook link" value="{{$user->profile()->facebook}}">
+            </div>
+            <div class="__profile_form">
+                <label for="instagram">Instagram</label>
+                <input type="text" name="instagram" id="instagram" class="__form_input" placeholder="Instagram link" value="{{$user->profile()->instagram}}">
+            </div>
+              
+              
+          </div>
+          <div class="__gap_30"></div>
+          <div class="__job_list_title __relative">
+            <h3>About</h3>
+          </div>
+          <div class="__about_wrapper">
+              <div class="__profile_form">
+                  <label for="about">About Us</label>
+                  <textarea name="summary" id="about" class="__form_input __textarea" placeholder="Write about your company">{{$user->profile()->summary}}</textarea>
+              </div>
+             
+              <div class="__profile_form">
+                <label for="projects">Projects</label>
+                <textarea name="description" id="projects" class="__form_input __textarea" placeholder="Write about your recent project you've handled">{{$user->profile()->description}}</textarea>
+            </div>
+              
+            <div class="__profile_form">
+                <div class="__save_btn_wrapper">
+                    <input type="submit" id="profile-save-btn" value="Save" class="__post_job" />
+                </div>
+                <div class="__gap_30"></div>
             </div>
             
-        </div>
-        <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
-            <div class="__job_list_title">
-                <h5>About us</h5>
-            </div>
-            <div class="__about_wrapper">
-                <div class="__editor_box">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac gravida nulla, quis
-                        luctus purus. Praesent nec sodales dolor. Praesent ut sodales lacus. Aliquam venenatis magna
-                        interdum, pellentesque lectus tincidunt, mattis ante. Cras eget pellentesque leo. Donec nec
-                        est laoreet, porta nibh in, pulvinar eros. Donec maximus est ut ex ullamcorper pretium.
-                        Nullam dolor nisl, pharetra sollicitudin eros in, tempus facilisis ex. Pellentesque sit amet
-                        metus sapien.
-                        Praesent ac ipsum euismod, eleifend ipsum a, vehicula leo. Mauris vulputate purus nec enim
-                        condimentum, at lobortis tortor imperdiet. Mauris iaculis leo ornare lacinia posuere.</p>
-                    <ul>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                    </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac gravida nulla, quis
-                        luctus purus. <strong>Praesent nec sodales dolor</strong>. Praesent ut sodales lacus. Aliquam venenatis magna
-                        interdum, pellentesque lectus tincidunt, mattis ante.</p>
-                    <ol>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                    </ol>
-                </div>
-            </div>
-            <div class="__gap_30"></div>
-            <div class="__job_list_title">
-                <h5>Projects we've worked on</h5>
-            </div>
-            <div class="__job_requirements">
-                <div class="__editor_box">
-                    <p><strong>Project Manager</strong></p>
-                    <ul>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                        <li>Donec maximus est ut ex ullamcorper pretium</li>
-                    </ul>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum ac gravida nulla, quis
-                        luctus purus. <strong>Praesent nec sodales dolor</strong>. Praesent ut sodales lacus. Aliquam venenatis magna
-                        interdum, pellentesque lectus tincidunt, mattis ante.</p>
-                    
-                </div>
-            </div>
-            <div class="__gap_30"></div>
-            <div class="__job_list_title">
-                <h3>Open jobs</h3>
-              </div>
-              <div class="__list_wrapper">
-                <div class="__favorite_job"><i class="far fa-heart"></i></div>
-                <h2>Scenic Artist</h2>
-                <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-                <ul class="__job_features">
-                  <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-                  <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-                  <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-                </ul>
-                <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-                  non viverra mollis...</p>
-              </div><!-- List Wrapper-->
-              <div class="__list_wrapper">
-                <div class="__favorite_job"><i class="far fa-heart"></i></div>
-                <h2>Scenic Artist</h2>
-                <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-                <ul class="__job_features">
-                  <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-                  <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-                  <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-                </ul>
-                <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-                  non viverra mollis...</p>
-              </div><!-- List Wrapper-->
-              <div class="__list_wrapper">
-                <div class="__favorite_job"><i class="far fa-heart"></i></div>
-                <h2>Scenic Artist</h2>
-                <p class="__sub_title">Jan 20 by <strong><a href="">HBO</a></strong></p>
-                <ul class="__job_features">
-                  <li><i class="fas fa-pound-sign __right_10"></i> £27,000 - £30,000 per annum</li>
-                  <li><i class="fas fa-map-marker-alt __right_10"></i> London</li>
-                  <li><i class="fas fa-briefcase __right_10"></i>Permanent, Full time</li>
-                </ul>
-                <p class="__job_summary">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                  incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Maecenas interdum mi
-                  non viverra mollis...</p>
-              </div><!-- List Wrapper-->
-            <div class="__gap_30"></div>
-
-        </div>
-    </div>
+          </div>
+          
+          <div class="__gap_30"></div>
+          <div class="__gap_30"></div>
+        </form>
+      </div><!--Col 9 -->
+  </div>
 </div> <!-- CONTENT -->
+@endsection
 
+@section('custom-scripts')
 
+<script src="{{asset('cms/plugins/ckeditor5/build/ckeditor.js')}}"></script>
+<script>
+ClassicEditor.create(document.querySelector('#about'), {
+
+toolbar: {
+  items: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    '|',
+    'outdent',
+    'indent',
+    '|',
+    'ImageResize',
+    'blockQuote',
+    'insertTable',
+    'mediaEmbed',
+    'undo',
+    'redo',
+    '-',
+    'alignment',
+    'findAndReplace',
+    'fontColor',
+    'fontSize',
+    'htmlEmbed',
+    'sourceEditing'
+  ],
+  shouldNotGroupWhenFull: true
+},
+language: 'en',
+image: {
+  toolbar: [
+    'toggleImageCaption',
+    'imageTextAlternative',
+    '|',
+    'imageStyle:inline',
+    'imageStyle:block',
+    '|',
+    'imageStyle:alignLeft',
+    'imageStyle:alignCenter',
+    'imageStyle:alignRight',
+    '|',
+    'resizeImage'
+  ],
+  styles: [
+    'full',
+    'alignLeft',
+    'alignRight'
+  ]
+},
+table: {
+  contentToolbar: [
+    'tableColumn',
+    'tableRow',
+    'mergeTableCells',
+    'tableCellProperties',
+    'tableProperties'
+  ]
+}
+})
+.then(editor => {
+window.editor = editor;
+})
+.catch(error => {
+console.error('Oops, something went wrong!');
+console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+console.warn('Build id: 1wenxz12z32c-nlfnsv4zz7h3');
+console.error(error);
+});
+
+ClassicEditor.create(document.querySelector('#projects'), {
+
+toolbar: {
+  items: [
+    'heading',
+    '|',
+    'bold',
+    'italic',
+    'link',
+    'bulletedList',
+    'numberedList',
+    '|',
+    'outdent',
+    'indent',
+    '|',
+    'ImageResize',
+    'blockQuote',
+    'insertTable',
+    'mediaEmbed',
+    'undo',
+    'redo',
+    '-',
+    'alignment',
+    'findAndReplace',
+    'fontColor',
+    'fontSize',
+    'htmlEmbed',
+    'sourceEditing'
+  ],
+  shouldNotGroupWhenFull: true
+},
+language: 'en',
+image: {
+  toolbar: [
+    'toggleImageCaption',
+    'imageTextAlternative',
+    '|',
+    'imageStyle:inline',
+    'imageStyle:block',
+    '|',
+    'imageStyle:alignLeft',
+    'imageStyle:alignCenter',
+    'imageStyle:alignRight',
+    '|',
+    'resizeImage'
+  ],
+  styles: [
+    'full',
+    'alignLeft',
+    'alignRight'
+  ]
+},
+table: {
+  contentToolbar: [
+    'tableColumn',
+    'tableRow',
+    'mergeTableCells',
+    'tableCellProperties',
+    'tableProperties'
+  ]
+}
+})
+.then(editor => {
+window.editor = editor;
+})
+.catch(error => {
+console.error('Oops, something went wrong!');
+console.error('Please, report the following error on https://github.com/ckeditor/ckeditor5/issues with the build id and the error stack trace:');
+console.warn('Build id: 1wenxz12z32c-nlfnsv4zz7h3');
+console.error(error);
+});
+</script>
+@endsection
+
+@section('custom-styles')
+<link href="{{asset('cms/plugins/ckeditor5/build/style.css')}}" rel="stylesheet" />
 @endsection

@@ -28,6 +28,10 @@ class CreateUserProfileTable extends Migration
       $table->text('categories')->nullable();
       $table->text('map')->nullable();
       $table->string('postal_code')->nullable();
+      $table->string('linkedin')->nullable();
+      $table->string('twitter')->nullable();
+      $table->string('facebook')->nullable();
+      $table->string('instagram')->nullable();
       $table->timestamps();
 
       $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -41,9 +41,21 @@ Route::post('/login/user', [App\Http\Controllers\Auth\LoginController::class, 'a
 
 Route::get('/dashboard', [App\Http\Controllers\Front\DashboardController::class, 'dashboard'])->name('user.dashboard');
 
-Route::get('/update/profile', [App\Http\Controllers\Front\DashboardController::class, 'updateProfile'])->name('user.update.profile');
+Route::get('/profile', [App\Http\Controllers\Front\DashboardController::class, 'profile'])->name('user.profile');
 
-Route::get('/profile', [App\Http\Controllers\Front\DashboardController::class, 'profile'])->name('user.view.profile');
+Route::post('/employer/update/profile', [App\Http\Controllers\Front\DashboardController::class, 'employerUpdateProfile'])->name('employer.update.profile');
+
+
+Route::get('/dashboard/jobs', [App\Http\Controllers\Front\DashboardController::class, 'jobs'])->name('dashboard.jobs');
+
+Route::get('/dashboard/jobs/add', [App\Http\Controllers\Front\DashboardController::class, 'createJobs'])->name('dashboard.jobs.create');
+
+Route::post('/dashboard/jobs/store', [App\Http\Controllers\Front\DashboardController::class, 'storeJob'])->name('dashboard.jobs.store');
+
+Route::get('/dashboard/jobs/edit/{id}', [App\Http\Controllers\Front\DashboardController::class, 'editJobs'])->name('dashboard.jobs.edit');
+
+Route::post('/dashboard/jobs/update/{id}', [App\Http\Controllers\Front\DashboardController::class, 'updateJob'])->name('dashboard.jobs.update');
+
 
 Route::get('/jobs', [App\Http\Controllers\Front\HomeController::class, 'jobs'])->name('jobs.list');
 

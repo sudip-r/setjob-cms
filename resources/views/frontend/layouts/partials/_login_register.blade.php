@@ -79,9 +79,8 @@
       <div class="__form_half_group __top_20">
         <label for="register-town-city">Town / City</label>
         <div class="__err" id="register-town-err"></div>
-        <select id="register-town-city" class="__select_2">
+        <select id="register-town-city" class="__select_ajax">
           <option value="0">Any</option>
-          <option value="1">London</option>
         </select>
       </div>
 
@@ -120,12 +119,14 @@
       <div class="__clear"></div>
 
       <div class="__form_group __top_20">
+        <input type="submit" name="register_btn_final" id="register-btn-final" class="__form_btn" value="Register">
+      </div>
+
+      <div class="__form_group __top_20  __b_30">
         <input type="submit" name="register_btn_back" id="register-btn-back" class="__back_btn" value="Back">
       </div>
 
-      <div class="__form_group __top_20 __b_30">
-        <input type="submit" name="register_btn_final" id="register-btn-final" class="__form_btn" value="Register">
-      </div>
+      
 
     </div>
   </div>

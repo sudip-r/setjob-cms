@@ -8,5 +8,8 @@
 <link href="{{ asset('front/assets/vendors/owl/owl.carousel.css')}}" rel="stylesheet">
 <link href="{{ asset('front/assets/vendors/owl/owl.theme.css')}}" rel="stylesheet">
 <link href="{{asset('front/assets/vendors/select2/select2.min.css')}}" rel="stylesheet">
+
+@yield('custom-styles')
+
 <link href="{{ asset('front/assets/css/styles.css')}}" rel="stylesheet">
 <link href="{{ asset('front/assets/css/responsive.css')}}" rel="stylesheet">
