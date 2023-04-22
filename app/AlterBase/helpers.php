@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
-use App\alterBase\Models\User\User;
+use App\AlterBase\Models\User\User;
 
 /**
  * Get list of months

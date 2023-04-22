@@ -39,8 +39,7 @@ class DashboardController extends Controller
 
         if($user->guard == "client")
             return view('frontend.pages.employee.dashboard')->with('user', $user);
-
-        if($user->guard == "business")
+        else
             return view('frontend.pages.employer.dashboard')->with('user', $user);
     }
 
@@ -60,8 +59,7 @@ class DashboardController extends Controller
 
         if($user->guard == "client")
             return view('frontend.pages.employee.profile')->with('user', $user);
-
-        if($user->guard == "business")
+        else
             return view('frontend.pages.employer.profile')->with('user', $user);
     }
 
@@ -81,9 +79,9 @@ class DashboardController extends Controller
 
         if($user->guard == "client")
             return view('frontend.pages.employee.update-profile')->with('user', $user);
-
-        if($user->guard == "business")
+        else
             return view('frontend.pages.employer.update-profile')->with('user', $user);
+            
     }
 
     

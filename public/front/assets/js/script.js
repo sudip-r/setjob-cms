@@ -4,6 +4,11 @@ function pageRedirect(id) {
     if (id !== "0") window.location.href = "/" + id;
 }
 $(document).ready(function () {
+
+    $('html, body').animate({
+        scrollTop: 0
+    }, 200);
+
     csrf = $('meta[name="csrf-token"]').attr("content");
     baseUrl = $('meta[name="base"]').attr("content");
 
@@ -401,16 +406,7 @@ $(document).ready(function () {
         if (password == "") {
             $("#login-password-err").html("Password is requried!");
             localReg = false;
-        } else {
-            if (validatePassword(password)) {
-                $("#login-password-err").html("");
-            } else {
-                $("#login-password-err").html(
-                    "Password should be at least 6 characters and include at least one capital letter and symbol!"
-                );
-                localReg = false;
-            }
-        }
+        } 
         if (email == "") {
             $("#login-email-err").html("Email is requried!");
             localReg = false;
@@ -441,10 +437,12 @@ $(document).ready(function () {
                 data: data,
                 beforeSend: function () {
                     $(".__loading_box").fadeIn(200);
+                    $("#login-email-err").html("");
                 },
                 success: function (response) {
                     if (parseInt(response.success) == 0) {
-                        register = false;
+                        $(".__loading_box").fadeOut(200);
+                        $("#login-email-err").html(response.message);
                     } else {
                         var dashboard = baseUrl + "/dashboard";
 
@@ -453,6 +451,8 @@ $(document).ready(function () {
                 },
                 error: function (xhr, status, error) {
                     $(".__loading_box").fadeOut(200);
+                    $("#login-email-err").html("The provided credentials do not match our records.");
+
                 },
             });
         }
@@ -509,6 +509,10 @@ $(document).ready(function () {
         if (e.which == 13) {
             $("#register-btn-one").trigger("click");
         }
+    });
+
+    $("#search-btn").click(function(){
+        window.location.href = baseUrl + "/jobs";
     });
 });
 function convertToCurrency(currency) {
