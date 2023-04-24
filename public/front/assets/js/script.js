@@ -151,16 +151,7 @@ $(document).ready(function () {
     $(".__register_link").click(function () {
         $(".__register_title").trigger("click");
     });
-    $("#salary-range")
-        .on("input", function () {
-            // Handle the input event
-            $("#salary-range-label").html(convertToCurrency($(this).val()));
-        })
-        .on("mouseup touchend", function () {
-            $(".__loading").show();
-            $(".__list_wrapper").fadeOut(200);
-            hideLoading();
-        });
+    
 
     $(".__select_2").select2({
         width: "100%",
@@ -198,6 +189,37 @@ $(document).ready(function () {
         },
     });
 
+    $(".__select_ajax_employers").select2({
+        width: "100%",
+        height: "32px",
+        minimumInputLength: 3, // Only load data after typing at least one character
+        ajax: {
+            url: baseUrl + "/api/users",
+            dataType: "json",
+            delay: 250, // Wait 250 milliseconds before sending the request (to reduce server load)
+            data: function (params) {
+                return {
+                    q: params.term, // The search term entered by the user
+                    page: params.page, // The current page number
+                };
+            },
+            processResults: function (data, params) {
+                // Map the server response to the format expected by Select2
+                var mappedData = $.map(data.users.data, function (item) {
+                    return {
+                        id: item.id,
+                        text: item.name,
+                    };
+                });
+
+                return {
+                    results: mappedData,
+                };
+            },
+            cache: true, // Cache the results to reduce server load
+        },
+    });
+
     $(".__favorite_job").click(function () {
         if ($(this).find("i").hasClass("fas")) {
             $(this).html('<i class="far fa-heart"></i>');
@@ -205,21 +227,71 @@ $(document).ready(function () {
             $(this).html('<i class="fas fa-heart"></i>');
         }
     });
-    $(".__filter_type input").on("change", function () {
-        $(".__loading").show();
-        $(".__list_wrapper").fadeOut(200);
-        hideLoading();
+
+    $("#filter-full-time").change(function(){
+        if(filters.type.full_time == true)
+            filters.type.full_time = false;
+        else
+            filters.type.full_time = true;
+            
+        listFilters();
     });
+    $("#filter-part-time").change(function(){
+        if(filters.type.part_time == true)
+            filters.type.part_time = false;
+        else
+            filters.type.part_time = true;
+            
+        listFilters();
+    });
+    $("#filter-freelance").change(function(){
+        if(filters.type.freelance == true)
+            filters.type.freelance = false;
+        else
+            filters.type.freelance = true;
+            
+        listFilters();
+    });
+    $("#filter-contract").change(function(){
+        if(filters.type.contract == true)
+            filters.type.contract = false;
+        else
+            filters.type.contract = true;
+            
+        listFilters();
+    });
+    
     $("#filter-location").on("change", function () {
-        $(".__loading").show();
-        $(".__list_wrapper").fadeOut(200);
-        hideLoading();
+        var id = $('#filter-location').val();
+        var name = $('#filter-location option:selected').text();
+
+        filters.location.id = id;
+        filters.location.name = name;
+
+        listFilters();
     });
     $("#filter-company").on("change", function () {
-        $(".__loading").show();
-        $(".__list_wrapper").fadeOut(200);
-        hideLoading();
+        var id = $('#filter-company').val();
+        var name = $('#filter-company option:selected').text();
+
+        filters.company.id = id;
+        filters.company.name = name;
+
+        listFilters();
     });
+
+    $("#salary-range")
+        .on("input", function () {
+            // Handle the input event
+            $("#salary-selected").fadeIn(200);
+            $("#salary-selected").html(convertToCurrency($(this).val()));
+        })
+        .on("mouseup touchend", function () {
+           filters.salary.max = $(this).val();
+           listFilters();
+        });
+
+
     var register = true;
     $("#register-btn-one").click(function (e) {
         e.preventDefault();
@@ -544,8 +616,13 @@ $(document).ready(function () {
     });
 
     $("#search-btn").click(function () {
-        window.location.href = baseUrl + "/jobs";
+        window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
     });
+    $('#search-text').on('keypress', function(e) {
+        if (e.which === 13) { // check if Enter key pressed
+            window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
+        }
+      });
 
     $("#profile-save-btn").on("click", function (e) {
         e.preventDefault();
@@ -781,8 +858,7 @@ $(document).ready(function () {
 function convertToCurrency(currency) {
     currency = parseInt(currency);
     return (
-        "£10,000 - " +
-        currency.toLocaleString("en-GB", {
+        "Selected - "+currency.toLocaleString("en-GB", {
             style: "currency",
             currency: "GBP",
             maximumFractionDigits: 0,

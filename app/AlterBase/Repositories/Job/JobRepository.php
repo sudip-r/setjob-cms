@@ -46,4 +46,100 @@ class JobRepository extends Repository
         return $q->orderBy($orderBy, $orderType)->paginate($limit, $columns);
     }
 
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
+    public function paginateWithFilters(
+        $filters,
+        $condition,
+        $searchCondition,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $limit = 40,
+        $column = ['*'],
+        $page = 1
+    ) {
+        $q = $this->model
+            ->where($condition);
+
+        if ($searchCondition != "") {
+            $q = $q->where('title', 'like', '%' . $searchCondition . '%');
+        }
+        if (count($filters) > 0) {
+            $q = $q->where(function ($query) use ($filters) {
+                if ($filters["type"]["full_time"] == "true") {
+                    $query->orWhere('type', 'like', "Full time");
+                }
+                if ($filters["type"]["part_time"] == "true") {
+                    $query->orWhere('type', 'like', "Part time");
+                }
+                if ($filters["type"]["contract"] == "true") {
+                    $query->orWhere('type', 'like', "Contract");
+                }
+                if ($filters["type"]["freelance"] == "true") {
+                    $query->orWhere('type', 'like', "Freelance");
+                }
+            });
+
+            if ($filters["location"]["id"] != "") {
+                $q = $q->where(function ($query) use ($filters) {
+                    $query = $query->where('location', '=', $filters["location"]["id"]);
+                });
+            }
+
+            if ($filters["company"]["id"] != "") {
+                $q = $q->where(function ($query) use ($filters) {
+                    $query = $query->where('user_id', '=', $filters["company"]["id"]);
+                });
+            }
+
+            if ($filters["salary"]["max"] != 0) {
+                $q = $q->where(function ($query) use ($filters) {
+                    $query = $query->where('salary_min', '<=', $filters["salary"]["max"])
+                        ->where('salary_max', '>=', $filters["salary"]["max"]);
+                });
+            }
+
+        }
+
+        $q = $q->orderBy($orderBy, $orderType)
+            ->select($column);
+
+        return $q;
+    }
+
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
+    public function paginateWithSearch(
+        $condition,
+        $searchCondition,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $limit = 40,
+        $column = ['*'],
+        $page = 1
+    ) {
+        $q = $this->model
+            ->where($condition);
+
+        if ($searchCondition != "") {
+            $q = $q->where('title', 'like', '%' . $searchCondition . '%');
+        }
+        
+        $q = $q->orderBy($orderBy, $orderType)
+            ->select($column)
+            ->paginate($limit, null, 'page', $page);
+
+        return $q;
+    }
+
 }
