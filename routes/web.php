@@ -41,10 +41,10 @@ Route::post('/login/user', [App\Http\Controllers\Auth\LoginController::class, 'a
 
 Route::get('/dashboard', [App\Http\Controllers\Front\DashboardController::class, 'dashboard'])->name('user.dashboard');
 
-Route::get('/profile', [App\Http\Controllers\Front\DashboardController::class, 'profile'])->name('user.profile');
+Route::get('/dashboard/profile', [App\Http\Controllers\Front\DashboardController::class, 'profile'])->name('user.profile');
 
+/** Employer Routes **/
 Route::post('/employer/update/profile', [App\Http\Controllers\Front\DashboardController::class, 'employerUpdateProfile'])->name('employer.update.profile');
-
 
 Route::get('/dashboard/jobs', [App\Http\Controllers\Front\DashboardController::class, 'jobs'])->name('dashboard.jobs');
 
@@ -56,7 +56,11 @@ Route::get('/dashboard/jobs/edit/{id}', [App\Http\Controllers\Front\DashboardCon
 
 Route::post('/dashboard/jobs/update/{id}', [App\Http\Controllers\Front\DashboardController::class, 'updateJob'])->name('dashboard.jobs.update');
 
+/** Employee Routes */
+Route::post('/employee/update/profile', [App\Http\Controllers\Front\DashboardController::class, 'employeeUpdateProfile'])->name('employee.update.profile');
 
+
+/** Front Routes */
 Route::get('/jobs', [App\Http\Controllers\Front\HomeController::class, 'jobs'])->name('jobs.list');
 
 Route::get('/jobs-detail', [App\Http\Controllers\Front\HomeController::class, 'jobDetail'])->name('jobs.detail');
@@ -67,5 +71,7 @@ Route::get('/terms-and-conditions', [App\Http\Controllers\Front\HomeController::
 
 Route::get('/privacy-policies', [App\Http\Controllers\Front\HomeController::class, 'privacy'])->name('privacy');
 
+Route::get('/company/{slug}', [App\Http\Controllers\Front\HomeController::class, 'employerDetail'])->name('employer.detail');
 
+Route::get('/profile/{slug}', [App\Http\Controllers\Front\HomeController::class, 'employeeDetail'])->name('employee.detail');
 

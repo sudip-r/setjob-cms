@@ -3,9 +3,24 @@
 namespace App\AlterBase\Models\Job;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Database\Factories\JobFactory;
 
 class Job extends Model
 {
+     /**
+     * Has Factory
+     */
+    use HasFactory;
+
+    /**
+     * @return JobFactory
+     *
+     */
+    protected static function jobFactory()
+    {
+        return JobFactory::new ();
+    }
     /**
      * The attributes that are mass assignable.
      *
@@ -31,6 +46,18 @@ class Job extends Model
         'publish',
         'published_on',
     ];
+
+   /**
+   * 
+   */
+  protected $appends = [
+    'user_name',
+    'user_slug',
+    'published_date',
+    'location_name',
+    'salary_min_formatted',
+    'salary_max_formatted'
+  ];
 
     /**
      * Jobs have users
@@ -81,4 +108,63 @@ class Job extends Model
             ->first();
     }
 
+    /**
+     * Get user name
+     * 
+     * @return String
+     */
+    public function getUserNameAttribute()
+    {
+        return getUserName($this->user_id);
+    }
+
+    /**
+     * Get user slug
+     * 
+     * @return String
+     */
+    public function getUserSlugAttribute()
+    {
+        return getUserSlug($this->user_id);
+    }
+
+    /**
+     * Get formatted published date
+     * 
+     * @return String
+     */
+    public function getPublishedDateAttribute()
+    {
+        return date("M d, Y", strtotime($this->published_on));
+    }
+
+     /**
+     * Get formatted published date
+     * 
+     * @return String
+     */
+    public function getLocationNameAttribute()
+    {
+        return $this->city()->name;
+    }
+
+    /**
+     * Get formatted salary
+     * 
+     * @return String
+     */
+    public function getSalaryMinFormattedAttribute()
+    {
+        return number_format($this->salary_min, 0);;
+    }
+
+    /**
+     * Get formatted salary
+     * 
+     * @return String
+     */
+    public function getSalaryMaxFormattedAttribute()
+    {
+        return number_format($this->salary_max, 0);;
+    }
 }

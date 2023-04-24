@@ -1,11 +1,10 @@
 <?php
 
-use Intervention\Image\Facades\Image;
+use App\AlterBase\Models\User\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redis;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Str;
-use App\AlterBase\Models\User\User;
+use Intervention\Image\Facades\Image;
 
 /**
  * Get list of months
@@ -105,11 +104,13 @@ function redirectToGuard($guard)
  */
 function mpath($str)
 {
-    if(isUrl($str))
-      return $str;
+    if (isUrl($str)) {
+        return $str;
+    }
 
-    if(!file_exists(public_path($str)))
+    if (!file_exists(public_path($str))) {
         return asset("cms/dist/img/default.png");
+    }
 
     if (env('APP_ENV') == 'local') {
         return asset($str);
@@ -126,11 +127,36 @@ function mpath($str)
  */
 function upath($str)
 {
-    if(isUrl($str))
-      return $str;
+    if (isUrl($str)) {
+        return $str;
+    }
 
-    if(!file_exists(public_path($str)))
+    if (!file_exists(public_path($str))) {
         return asset("front/assets/images/user.png");
+    }
+
+    if (env('APP_ENV') == 'local') {
+        return asset($str);
+    }
+
+    return env('IMG_URL', asset('')) . '/' . $str;
+}
+
+/**
+ * Image path filter for custom file uploads
+ *
+ * @param $str
+ * @return String
+ */
+function fpath($str)
+{
+    if (isUrl($str)) {
+        return $str;
+    }
+
+    if (!file_exists(public_path($str))) {
+        return "javascript:void(0);";
+    }
 
     if (env('APP_ENV') == 'local') {
         return asset($str);
@@ -141,16 +167,16 @@ function upath($str)
 
 /**
  * Check if string is a url
- * 
+ *
  * @param $str
  * @return Boolean
  */
 function isUrl($str)
 {
-  if (filter_var($str, FILTER_VALIDATE_URL)) {
-    return true;
-  } 
-  return false;
+    if (filter_var($str, FILTER_VALIDATE_URL)) {
+        return true;
+    }
+    return false;
 }
 
 /**
@@ -170,7 +196,6 @@ function saveImageWithWatermark($destinationPath, $filename, $image)
     $waterMark = public_path('uploads/watermark/small-logo.png');
 
     $myImage->insert($waterMark, 'bottom-right');
-
 
     $myImage->save($path);
 }
@@ -193,7 +218,7 @@ function saveImageWithOutWatermark($destinationPath, $filename, $image)
 
 /**
  * Set redis cache
- * 
+ *
  * @param $key
  * @param $ttl
  * @param Clousure $callback
@@ -220,7 +245,7 @@ function cacheRemember($key, $ttl, Closure $callback)
 
 /**
  * Clear cache if cache driver is redis
- * 
+ *
  * @param $message
  * @return null
  */
@@ -238,7 +263,7 @@ function clearCache($message = '')
                 logger('Cache Cleared! ' . $message);
             }
         } catch (\Exception $e) {
-            logger((string)$e);
+            logger((string) $e);
         }
     } else {
         logger('Driver not set to Redis. Log message - ' . $message);
@@ -248,7 +273,7 @@ function clearCache($message = '')
 
 /**
  * Trim words for output
- * 
+ *
  * @param $string
  * @param $words
  * @return String
@@ -260,7 +285,7 @@ function trimWords($string, $words = 150)
 
 /**
  * Get current username
- * 
+ *
  * @return String
  */
 function currentUserName()
@@ -270,27 +295,38 @@ function currentUserName()
 
 /**
  * Get Username By Id
- * 
+ *
  * @param $id
  * @return String
  */
 function getUserName($id)
 {
-  return (User::find($id) != null) ? User::find($id)->name : "NA";
+    return (User::find($id) != null) ? User::find($id)->name : "";
+}
+
+/**
+ * Get User slug By Id
+ *
+ * @param $id
+ * @return String
+ */
+function getUserSlug($id)
+{
+    return (User::find($id) != null) ? User::find($id)->slug : "";
 }
 
 /**
  * Get Embed url
- * 
+ *
  * @param $url
  * @return String
  */
 function getYoutubeEmbedUrl($url)
 {
-     $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
-     $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
+    $shortUrlRegex = '/youtu.be\/([a-zA-Z0-9_-]+)\??/i';
+    $longUrlRegex = '/youtube.com\/((?:embed)|(?:watch))((?:\?v\=)|(?:\/))([a-zA-Z0-9_-]+)/i';
 
-     $youtube_id = "";
+    $youtube_id = "";
 
     if (preg_match($longUrlRegex, $url, $matches)) {
         $youtube_id = $matches[count($matches) - 1];
@@ -299,9 +335,51 @@ function getYoutubeEmbedUrl($url)
     if (preg_match($shortUrlRegex, $url, $matches)) {
         $youtube_id = $matches[count($matches) - 1];
     }
-    if($youtube_id == "")
+    if ($youtube_id == "") {
         return $url;
-    $embed = 'https://www.youtube.com/embed/' . $youtube_id ;
+    }
 
-    return '<iframe src="'.$embed.'" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+    $embed = 'https://www.youtube.com/embed/' . $youtube_id;
+
+    return '<iframe src="' . $embed . '" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>';
+}
+
+/**
+ * Clean string for slug
+ *
+ * @param $string
+ * @return $string
+ */
+function cleanSlug($str)
+{
+    return strtolower(str_replace(" ", "-", str_replace(".", "-", $str)));
+}
+
+/**
+ * Convert to international number if local provided
+ *
+ * @param $number
+ * @return String
+ */
+function convertNumber($number)
+{
+    $countryCode = '+44'; // Country code for UK
+
+    if (substr($number, 0, 1) === '+') {
+        return $number;
+    }
+
+    if (substr($number, 0, 1) === '4') {
+        return '+' . $number;
+    }
+
+    // Check if the phone number starts with '0'
+    if (substr($number, 0, 1) === '0') {
+        // Add the country code prefix
+        $phoneNumberWithCode = $countryCode . substr($number, 1);
+
+        return $phoneNumberWithCode;
+    } else {
+        return $countryCode . $number;
+    }
 }

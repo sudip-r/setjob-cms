@@ -2,12 +2,12 @@
 
 @section("content")
 <div class="__inner_search">
-  <h3>Dashboard</h3>
+  <h3>Jobs</h3>
 
   <div class="__breadcrumbs">
       <ul>
-          <li><a href="{{route('home')}}">Home</a> / </li>
-          <li>Dashboard</li>
+          <li><a href="#">Home</a> / </li>
+          <li>Jobs</li>
       </ul>
   </div>
 </div>
@@ -18,11 +18,11 @@
       <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
           <div class="__dashboard_links">
               <ul>
-                  <li class="active">Dashboard</li>
+                  <li ><a href="{{route('user.dashboard')}}">Dashboard</a></li>
                   <li><a href="{{route('user.profile')}}">Profile</a></li>
-                  <li><a href="{{route('dashboard.jobs')}}">Jobs</a></li>
+                  <li class="active"><a href="{{route('dashboard.jobs')}}">Jobs</a></li>
                   <li><a href="{{route('logout')}}">Logout</a></li>
-              </ul>
+                </ul>
           </div>
           
       </div>
@@ -30,16 +30,14 @@
         <div class="__job_list_title __relative">
           <h3>Welcome {{$user->name}}!</h3>
           <div class="__post_job_wrapper">
-          <a class="__post_job" href="{{route('dashboard.jobs.create')}}">Post a Job</a>
+          <a class="__post_job" href="{{route('jobs.list')}}">Find a Job</a>
           </div>
         </div>
         <div class="__about_wrapper">
           <div class="__editor_box">
             <br>
-            <p>Ready to find your next potential employee?</p>
-            <br>
-            <p>To get started, simply edit your profile. Provide as much relevant information as you can about the job 
-              i.e: Rate, how long the job will be, pay, contact info etc.</p>
+            <p>Here are all the jobs you've saved.</p>
+            
           </div>
         </div>
           <div class="__gap_30"></div>
@@ -49,7 +47,11 @@
           @if($jobs->count() > 0)
           @foreach($jobs as $job)
           <div class="__list_wrapper">
-            {{-- <div class="__favorite_job"><i class="far fa-heart"></i></div> --}}
+            @if($job->publish == "1")
+            <div class="__job_publish_status __btn __unpublish_btn __toggle_btn" alt="{{$job->id}}"  data-bs-toggle="tooltip" data-placement="top" title="This job is currently published and is visible to other users."><i class="far fa-eye-slash"></i> Unpublish Job</div>
+            @else 
+            <div class="__job_publish_status __btn __publish_btn __toggle_btn" alt="{{$job->id}}"  data-bs-toggle="tooltip" data-placement="top" title="This job is currently not published and is not visible to other users."><i class="far fa-eye"></i> Publish Job</div>
+            @endif
             <h2>{{$job->title}}</h2>
             <p class="__sub_title">{{date('M d, Y', strtotime($job->published_on))}} by <strong><a href="">{{$job->user()->name}}</a></strong></p>
             <ul class="__job_features">
@@ -62,6 +64,12 @@
               <li><i class="fas fa-briefcase __right_10"></i>{{$job->type}}</li>
             </ul>
             <p class="__job_summary">{{$job->summary}}</p>
+
+            <div class="__gap_30"></div>
+            <ul class="__job_btns">
+              <li><a href="{{route('dashboard.jobs.edit', ['id' => $job->id])}}" class="__btn __publish_btn">Edit Job</a></li>
+              <li><a href="" class="__btn __publish_btn">View Job</a></li>
+            </ul>
           </div><!-- List Wrapper--> 
           @endforeach
 
@@ -71,10 +79,9 @@
 
           @else
           <div class="__list_wrapper">
-            Looks like you haven't posted any jobs yet.
+            Looks like you haven't saved any jobs.
           </div>
           @endif
-
           <div class="__gap_30"></div>
           <div class="__gap_30"></div>
           <div class="__gap_30"></div>
@@ -84,4 +91,11 @@
       </div>
   </div>
 </div> <!-- CONTENT -->
+@endsection
+
+@section('custom-scripts')
+<script>
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+</script>
 @endsection

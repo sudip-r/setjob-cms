@@ -214,6 +214,10 @@
 }
 .__list_wrapper h2 {
   line-height: 42px;
+  max-width: unset;
+}
+.__list_wrapper_jobs h2 {
+  max-width: unset;
 }
 .__job_btns {
   padding: 0px;
@@ -235,7 +239,25 @@
   margin: 45px 0px;
   width: 100%;
 }
-
+.__portfolio_display {
+  width: 100%;
+  height: auto;
+}
+.__portfolio_display ul {
+  list-style: none;
+  margin: 0 auto;
+  padding: 0;
+}
+.__portfolio_display ul li {
+  display: block;
+  width: 100%;
+  float: none;
+  margin: 20px 0px;
+}
+.__portfolio_display ul li img {
+  width: 100%;
+  height: auto;
+}
 }
 
 /* Target tablets */

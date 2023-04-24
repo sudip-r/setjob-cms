@@ -17,13 +17,13 @@ class Profile extends Model
     'name',
     'address',
     'contact',
-    'contact_person',
-    'mobile',
-    'cover_image',
+    'contact_person', // Used for CV for employee
+    'mobile', //Used for website in this application
+    'cover_image', 
     'description',
     'summary',
-    'categories',
-    'map',
+    'categories', //Portfolio for employee
+    'map', //Used for employee qualification
     'city_id',
     'postal_code',
     'linkedin',

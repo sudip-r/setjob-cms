@@ -1026,7 +1026,14 @@ label em{
     font-weight: 700;
     color: var(--black);
     line-height: 42px;
+    max-width: 60%;
+    text-align: left;
+    margin: 0px 0px 20px 0px;
 }
+.__list_wrapper_jobs h2 {
+    max-width: 95%;
+}
+
 .__sub_title {
     font-family: var(--font-text);
     font-size: 14px;
@@ -1367,4 +1374,37 @@ label em{
     background-color: var(--primary);
     border: none;
     color: var(--black);
+}
+
+.__editor_box table {
+    width: 100%;
+    border: #666 solid 1px;
+}
+.__editor_box table td {
+    padding: 20px;
+    font-family: 'Inter';
+    font-size: 14px;
+}
+.__cv_img {
+    display: block;
+    margin: 20px;
+}
+.__portfolio_display{
+    width:100%;
+    height: auto;
+}
+.__portfolio_display ul{
+    list-style: none;
+}
+.__portfolio_display ul li{
+    display:block;
+    margin:10px 10px;
+    width:200px;
+    float:left;
+}
+
+.__portfolio_display ul li img {
+    width: 200px;
+    height: 130px;
+    object-fit: cover;
 }

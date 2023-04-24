@@ -133,7 +133,7 @@ class RegisterController extends Controller
                 'name' => ucwords($request->name),
                 'password' => $request->password,
                 'address' => $request->address2 . " " . $request->address1,
-                'contact' => $request->contact,
+                'contact' => convertNumber($request->contact),
                 'city_id' => $request->town,
                 'postal_code' => $request->postalCode
             ]);
@@ -205,6 +205,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
+            'slug' => cleanSlug($data['name'])."-".rand(111,999999999).date("is"),
             'guard' => 'business',
             'active' => 1
         ]);
@@ -222,6 +223,7 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => $data['password'],
+            'slug' => cleanSlug($data['name'])."-".rand(111,999999999).date("is"),
             'guard' => 'client',
             'active' => 1
         ]);

@@ -32,4 +32,6 @@ Route::post("/jobStatusToggle", [JobController::class, "toggleJobStatus"])->name
 
 Route::get("/cities", [CityController::class, "cities"])->name("api.list.cities");
 
+Route::post("/jobs", [JobController::class, "jobs"])->name("api.jobs");
+
 

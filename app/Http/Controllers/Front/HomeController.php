@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Front;
 use App\Http\Controllers\Controller;
 use App\AlterBase\Repositories\Page\PageRepository;
 use App\AlterBase\Repositories\Job\JobRepository;
+use App\AlterBase\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -20,16 +21,26 @@ class HomeController extends Controller
     private $page;
 
     /**
+     * UserRepository $user
+     */
+    private $user;
+
+    /**
      * Create a new controller instance.
      *
      * @param PageRepository $page
      * @param JobRepository $job
+     * @param UserRepository $user
      * @return void
      */
-    public function __construct(PageRepository $page, JobRepository $job)
+    public function __construct(
+        PageRepository $page, 
+        JobRepository $job,
+        UserRepository $user)
     {
         $this->page = $page;
         $this->job = $job;
+        $this->user = $user;
     }
 
     /**
@@ -47,11 +58,7 @@ class HomeController extends Controller
      */
     public function jobs()
     {
-        $jobs = $this->job->paginateWithMultipleCondition(['trash' => 0, 'publish' => 1], 'published_on', 'desc', 100, 
-                ['id', 'title', 'summary', 'salary_min', 'salary_max', 'deadline', 'location', 'type', 'slug', 'published_on', 'publish']
-        );
-
-        return view('frontend.pages.jobs')->with('jobs', $jobs);
+        return view('frontend.pages.jobs');
     }
 
     /**
@@ -90,5 +97,53 @@ class HomeController extends Controller
         $page = $this->page->find(3);
 
         return view('frontend.pages.policy')->with('page', $page);
+    }
+
+    /**
+     * Employer detail
+     * 
+     * @param $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function employerDetail($slug)
+    {
+        $user = $this->user->findBy('slug', $slug);
+
+        if($user == null)
+            abort(404);
+
+        $profile = $user->profile();
+
+        if($profile == null)
+            abort(500);
+
+        return view('frontend.pages.employer')
+            ->with('user', $user)
+            ->with('profile', $profile);
+
+    }
+
+    /**
+     * Employee detail
+     * 
+     * @param $id
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function employeeDetail($slug)
+    {
+        $user = $this->user->findBy('slug', $slug);
+
+        if($user == null)
+            abort(404);
+
+        $profile = $user->profile();
+
+        if($profile == null)
+            abort(500);
+
+        return view('frontend.pages.employee')
+            ->with('user', $user)
+            ->with('profile', $profile);
+
     }
 }
