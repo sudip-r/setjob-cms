@@ -6,7 +6,7 @@
 
   <div class="__breadcrumbs">
       <ul>
-          <li><a href="#">Home</a> / </li>
+          <li><a href="{{route('home')}}">Home</a> / </li>
           <li>Jobs</li>
       </ul>
   </div>
@@ -42,7 +42,7 @@
         </div>
           <div class="__gap_30"></div>
           <div class="__job_list_title">
-            <h3>Posted Jobs</h3>
+            <h3>Saved Jobs</h3>
           </div>
           @if($jobs->count() > 0)
           @foreach($jobs as $job)
