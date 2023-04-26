@@ -38,7 +38,11 @@
           <p>Fusce quis quam et enim porta elementum a eu augue. Nullam sit amet quam id justo congue vulputate at ut metus. Vestibulum 
             lacinia tempor turpis, eget accumsan sem interdum id.</p>
           <div class="__btn_bg_white_wrapper">
-            <a href="javascript:void(0);" class="__btn_bg_white __btn">Post a Job</a>
+            @if(auth()->user() && auth()->user()->guard == "business")
+            <a href="{{route('dashboard.jobs.create')}}" class="__btn_bg_white __btn">Post a Job</a>
+            @else
+            <a href="javascript:void(0);" class="__btn_bg_white __btn" @if(!auth()->user())id="go-to-post"@endif>Post a Job</a>
+            @endif
           </div>
         </div>
         <div class="col-md-6 __content_dark">
@@ -46,7 +50,7 @@
           <p>Fusce quis quam et enim porta elementum a eu augue. Nullam sit amet quam id justo congue vulputate at ut metus. Vestibulum 
             lacinia tempor turpis, eget accumsan sem interdum id.</p>
           <div class="__btn_bg_black_wrapper">
-            <a href="javascript:void(0);" class="__btn_bg_black">Register Now</a>
+            <a href="javascript:void(0);" class="__btn_bg_black" @if(!auth()->user())id="register-popup"@endif>Register Now</a>
           </div>
         </div>
       </div>
