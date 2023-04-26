@@ -95,6 +95,15 @@ class DashboardController extends Controller
 
         $user = $this->user->find($userId);
 
+        if($user->slug = "" || $user->slug == NULL)
+        {
+            $data = [
+                'slug' => cleanSlug($user->name)."-".rand(111,999999999).date("is"),
+            ];
+
+            $this->user->update($user->id, $data);
+        }
+
         if ($user->guard == "client") {
             return view('frontend.pages.employee.profile')->with('user', $user);
         } else {
