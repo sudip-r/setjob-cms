@@ -192,4 +192,13 @@ class User extends Authenticatable
         return mpath('uploads/users/' . $this->profile_image);
     }
 
+    /**
+     * Get slug from Users
+     * 
+     * @return String
+     */
+    public function getRouteKeyName() {
+        return 'slug';  // table column name.
+    }
+
 }

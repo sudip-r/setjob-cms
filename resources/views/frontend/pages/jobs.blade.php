@@ -10,8 +10,8 @@
         <img src="{{asset("front/assets/images/search_icon.png")}}" />
       </div>
       <div class="__search_field">
-        <input type="text" name="search_text" id="search-text" class="__search_text"
-          placeholder="Scenic Artist in London" />
+        <input type="text" name="search_text" id="search-text" class="__search_text" value="{{$search}}"
+          placeholder="Scenic Artist in London" autocomplete="off" />
       </div>
       <div class="__search_btn_wrap">
         <input type="submit" name="search_btn" id="search-btn" class="__search_btn" value="Search" />
@@ -41,42 +41,41 @@
           <div class="__filter_type">
             <h4>Salary Range <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
             <p>
-              <label for="salary-range" class="form-label" id="salary-range-label">£10,000 - £10,000</label>
-              <input type="range" class="form-range" min="10000" max="100000" step="1000" id="salary-range"
+            <label for="salary-range" class="form-label" id="salary-range-label">£{{number_format($min, 0)}} - £{{number_format($max, 0)}}</label>
+            </p>
+            
+            <p>
+             <label for="salary-range" class="form-label __hidden" id="salary-selected"></label>
+              <input type="range" class="form-range" min="{{$min}}" max="{{$max}}" step="1000" id="salary-range"
                 value="10000">
             </p>
           </div>
           <div class="__filter_type">
             <h4>Location <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
             <p>
-              <select id="filter-location" class="__select_2">
+              <select id="filter-location" class="__select_ajax">
                 <option value="0">Any</option>
-                <option value="1">London</option>
               </select>
             </p>
             <h4>Company <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
             <p>
-              <select id="filter-company" class="__select_2">
+              <select id="filter-company" class="__select_ajax_employers">
                 <option value="0">Any</option>
-                <option value="1">HBO</option>
               </select>
             </p>
           </div>
           <div class="__filter_type">
             <h5>Applied filters</h5>
             <div class="__clear_filter">Clear All</div>
-            <span class="__filter_tags">Full Time <span class="__remove_tag">X</span></span>
-            <span class="__filter_tags">Contract <span class="__remove_tag">X</span></span>
-            <span class="__filter_tags">£10,000 - £100,000<span class="__remove_tag">X</span></span>
-            <span class="__filter_tags">London <span class="__remove_tag">X</span></span>
-            <span class="__filter_tags">HBO <span class="__remove_tag">X</span></span>
+            <div class="__filters">
+            </div>
             <div class="__clear"></div>
           </div>
         </div>
       </div>
       <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
         <div class="__job_list_title">
-          <h5>Lasted jobs</h5>
+          <h5>Latest jobs</h5>
         </div>
 
         <div id="ajax-job-list">
@@ -98,12 +97,140 @@
 var currentPage = "{{ request()->input('page', 1) }}";
 var nextPage = parseInt(currentPage) + 1;
 var totalPage = "0";
-function listJobs(page = 1){
+var firstPage = true;
+var firstFilter = true;
+var _global_filters = false;
+var loadNextPage = true;
+var finished = false;
+var finishedMessage = 0;
+var readyForNextBatch = true;
+var search = "{{$search}}";
+var filters = {
+  type: {
+    full_time:false,
+    part_time:false,
+    freelance:false,
+    contract:false
+  },
+  salary:{
+    min:{{$min}},
+    max:0
+  },
+  location:{
+    id: "",
+    name: ""
+  },
+  company:{
+    id:"",
+    name:""
+  }
+};
+
+function listFilters(){
+ 
+  loadNextPage = true;
+  finished = false;
+  nextPage = currentPage = 1;
+  finishedMessage = 0;
+  
+  $("#ajax-job-list").html("");
+  $(".__loading").fadeIn(200);
+  firstPage = true;
+  
+  $(".__filters").html("");
+  if(filters.type.full_time)
+  {
+    $(".__filters").append("<span class='__filter_tags'>Full time <span class='__remove_tag' alt='full_time'>X</span></span>");
+  }
+  if(filters.type.part_time)
+  {
+    $(".__filters").append("<span class='__filter_tags'>Part time <span class='__remove_tag' alt='part_time'>X</span></span>");
+  }
+  if(filters.type.freelance)
+  {
+    $(".__filters").append("<span class='__filter_tags'>Freelance <span class='__remove_tag' alt='freelance'>X</span></span>");
+  }
+  if(filters.type.contract)
+  {
+    $(".__filters").append("<span class='__filter_tags'>Contract <span class='__remove_tag' alt='contract'>X</span></span>");
+  }
+
+  if(filters.salary.max != 0)
+  {
+    $(".__filters").append("<span class='__filter_tags' id='salary'>Salary - £"+filters.salary.max+" <span class='__remove_tag' alt='salary'>X</span></span>");
+  }
+
+  if(filters.location.id != "")
+  {
+    $(".__filters").append("<span class='__filter_tags' id='location'>Location - "+filters.location.name+"<span class='__remove_tag' alt='location'>X</span></span>");
+  }
+
+  if(filters.company.id != "")
+  {
+    $(".__filters").append("<span class='__filter_tags' id='company'>"+filters.company.name+"<span class='__remove_tag' alt='company'>X</span></span>");
+  }
+  //Remove tags
+  $(".__remove_tag").click(function(){
+        var tag = $(this).attr("alt");
+        console.log(tag);
+        switch(tag)
+        {
+            case "full_time":
+                filters.type.full_time = false;
+                $("#filter-full-time").prop('checked', false);
+            break;
+            case "part_time":
+                filters.type.part_time = false;
+                $("#filter-part-time").prop('checked', false);
+            break;
+            case "contract":
+                filters.type.contract = false;
+                $("#filter-contract").prop('checked', false);
+            break;
+            case "freelance":
+                filters.type.freelance = false;
+                $("#filter-freelance").prop('checked', false);
+            break;
+            case "salary": 
+              filters.salary.max = 0;
+              $("#salary-range").val({{$min}});
+              $("#salary-selected").html("");
+              $("#salary-selected").fadeOut(200);
+            break;
+            case "location":
+              filters.location.id = "";
+              filters.location.name = "";
+              $("#filter-location").val(0).trigger('change.select2');
+              break;
+            case "company":
+              filters.company.id = "";
+              filters.company.name = "";
+              $("#filter-company").val(0).trigger('change.select2');
+              break;
+
+        }
+        listFilters();
+    });
+  _global_filters = true;
+  listJobs(true, nextPage);
+
+}
+
+$("#search-text").change(function(){
+  search = $(this).val();
+  window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
+});
+
+function listJobs(_filters, page = 1){
 var csrf = $('meta[name="csrf-token"]').attr("content");
 var baseUrl = $('meta[name="base"]').attr("content");
 var jobListAPI = baseUrl + "/api/jobs";
 var conditions = null;
-var loadNextPage = false;
+
+if(_filters)
+{
+  conditions = filters;
+}
 
 $.ajaxSetup({
     headers: {
@@ -111,25 +238,39 @@ $.ajaxSetup({
     },
 });
 
+
 var data = {
     conditions:conditions,
     current_page: page,
-    paginate: 30
+    paginate: 10,
+    search: search
 };
-if(totalPage == "0" || parseInt(currentPage) <= parseInt(totalPage)){
+if(readyForNextBatch && !finished && (totalPage == "0" || parseInt(currentPage) <= parseInt(totalPage))){
     $.ajax({
         url: jobListAPI,
         type: "POST",
         data: data,
         beforeSend: function () {
             $(".__loading").fadeIn(200);
+            readyForNextBatch = false;
         },
         success: function (response) {
             if(response.jobs == null)
             {
-              $("#ajax-job-list").html("<div class='__list_wrapper'>Sorry! Currently, There are no job postings.</div>");
+              if(firstPage)
+                $("#ajax-job-list").html("<div class='__list_wrapper'>Sorry! Currently, There are no job postings.</div>");
+
+              if(!firstPage && finished){
+                $("#ajax-job-list").append("<div class='__list_wrapper'>No more jobs.</div>");
+                finishedMessage++;
+              }
               $(".__loading").fadeOut(200);
-            }else{
+              loadNextPage = false;
+              finished = true;
+            }
+            else{
+            firstPage = false;
+            
             var jobs = response.jobs.data;
             currentPage = response.jobs.current_page;
             totalPage = response.jobs.total;
@@ -156,8 +297,6 @@ if(totalPage == "0" || parseInt(currentPage) <= parseInt(totalPage)){
                         "</div>"+
                         "";
             });
-
-
             $("#ajax-job-list").append(html);
           }
         },
@@ -166,17 +305,27 @@ if(totalPage == "0" || parseInt(currentPage) <= parseInt(totalPage)){
         },
         complete: function () {
             $(".__loading").fadeOut(200);
+            readyForNextBatch = true;
         },
     });
 }
 
 $(window).scroll(function() {
+  setTimeout(function () {
     if($(window).scrollTop() + $(window).height() == $(document).height()) {
         if(loadNextPage)
         {
-            listJobs(nextPage);
+              console.log(_global_filters);
+              listJobs(_global_filters, nextPage);
+        }else{
+          if(finished && finishedMessage == 0){
+            $("#ajax-job-list").append("<div class='__list_wrapper'>No more jobs.</div>");
+            finished = true;
+            finishedMessage++;
+          }
         }
     }
+    }, 500);
 });
 
 }

@@ -4,7 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\AlterBase\Repositories\Job\JobRepository;
+use App\AlterBase\Repositories\User\UserRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class JobController extends Controller
 {
@@ -14,13 +16,20 @@ class JobController extends Controller
     private $job;
 
     /**
+     * UserRepository $user
+     */
+    private $user;
+
+    /**
      * JobController Constructor
      * 
      * @param JobRepository $job
+     * @param UserRepository $user
      */
-    public function __construct(JobRepository $job)
+    public function __construct(JobRepository $job, UserRepository $user)
     {
         $this->job = $job;
+        $this->user = $user;
     }
 
     /**
@@ -47,12 +56,15 @@ class JobController extends Controller
         return response(['jobs' => $jobs]);
       }
 
-      $condition = $request->condition;
+      $search = $request->search ?? "";
+
+      $condition = $request->conditions;
 
       if($condition == null)
       {
-        $jobs = $this->job->paginateWithMultipleCondition(
+        $jobs = $this->job->paginateWithSearch(
           ['publish' => 1, 'trash' => 0],
+          $search,
           'published_on',
           'desc',
           $limit,
@@ -63,12 +75,33 @@ class JobController extends Controller
         if($jobs->count() == 0)
           return response(['jobs' => null]);
   
-        return response(['jobs' => $jobs]);
+        return response(['jobs' => $jobs, 'conditions' => $condition]);
       }  
 
+      // DB::enableQueryLog();
+        $jobs = $this->job->paginateWithFilters(
+          $condition,
+          ['publish' => 1, 'trash' => 0],
+          $search,
+          'published_on',
+          'desc',
+          $limit,
+          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location'],
+          $currentPage
+        );
 
+        // $query = $jobs->toSql();
+                
+        // $bindings =$jobs->getBindings();
+                
+        // // Combine the SQL query and bindings into a single string
+        // $sql = vsprintf(str_replace('?', '%s', $query), $bindings);
 
-      
+        if($jobs->paginate($limit, null, 'page', $currentPage)->count() == 0)
+          return response(['jobs' => null]);
+  
+        return response(['jobs' => $jobs->paginate($limit, null, 'page', $currentPage)]);
+
     }
 
     /**
@@ -95,6 +128,20 @@ class JobController extends Controller
        }catch(\Exception $e){
          return response(['success' => '0', 'message' => 'Something went wrong']);
        }
-       
+    }
+
+    /**
+     * Get users by conditions
+     * 
+     * @param Request $request
+     * @return \Illuminate\Http\Response|\Illuminate\Contracts\Routing\ResponseFactory
+     */
+    public function userList(Request $request)
+    {
+      $str = $request->q;
+
+      $employers = $this->user->searchUsers(['guard' => 'business'], $str, 'name', 'asc', ['id', 'name']);
+
+      return response(['users' => $employers->toArray()]);
     }
 }

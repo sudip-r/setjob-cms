@@ -9,6 +9,7 @@ use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
@@ -93,12 +94,25 @@ class DashboardController extends Controller
 
         $userId = auth()->user()->id;
 
-        $user = $this->user->find($userId);
+        $user = $this->user->findWithCondition(['id' => $userId],["*"]);
+
+        if(!$user->slug || $user->slug = "" || $user->slug == NULL)
+        {
+            $data = [
+                'slug' => cleanSlug($user->name)."-".rand(111,999999999).date("is"),
+            ];
+
+            $this->user->update($user->id, $data);
+        }
+
+        $users = DB::select('SELECT * FROM users WHERE id = ?', [$userId]);
+
+        $slug = $users[0]->slug;
 
         if ($user->guard == "client") {
-            return view('frontend.pages.employee.profile')->with('user', $user);
+            return view('frontend.pages.employee.profile')->with('user', $user)->with('slug', $slug);
         } else {
-            return view('frontend.pages.employer.profile')->with('user', $user);
+            return view('frontend.pages.employer.profile')->with('user', $user)->with('slug', $slug);
         }
 
     }

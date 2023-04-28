@@ -130,6 +130,9 @@ a:hover {
 .__btn:hover::before {
     width: 150px;
 }
+.__hidden{
+    display: none;
+}
 .__hidden_large_desktop {
     display: none;
 }

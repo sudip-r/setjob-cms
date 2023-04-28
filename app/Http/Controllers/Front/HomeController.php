@@ -56,9 +56,20 @@ class HomeController extends Controller
     /**
      * 
      */
-    public function jobs()
+    public function jobs(Request $request)
     {
-        return view('frontend.pages.jobs');
+        $min = $this->job->getWithCondition(['publish' => 1, 'trash' => 0], 'salary_min', 'asc', ["salary_min"] )->first();
+        $max = $this->job->getWithCondition(['publish' => 1, 'trash' => 0], 'salary_max', 'desc', ["salary_max"] )->first();
+
+        $search = "";
+
+        if(isset($request->search))
+            $search = $request->search;
+
+        return view('frontend.pages.jobs')
+            ->with('min', $min->salary_min)
+            ->with('max', $max->salary_max)
+            ->with('search', $search);
     }
 
     /**
