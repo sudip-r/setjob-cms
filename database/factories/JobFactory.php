@@ -26,7 +26,7 @@ class JobFactory extends Factory
         $description = $this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400));
         $description .= $this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400));
 
-        $type = ['Full time', 'Part time', 'Freelance', 'Contract'];
+        $type = ['Workshop', 'On Site', 'Abroad', 'Various'];
         return [
             'title' => $title,
             'user_id' => rand(2,3),
@@ -40,6 +40,7 @@ class JobFactory extends Factory
             'required_skills' =>  $this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400)),
             'publish' => 1,
             'trash' => 0,
+            'category_id' => rand(1,7),
             'type' => $type[array_rand($type)],
             'published_on' => "202".rand(2,3)."-".rand(10,12)."-".rand(10,29)." 10:00:00"
         ];

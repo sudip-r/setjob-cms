@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\AlterBase\Repositories\Page\PageRepository;
 use App\AlterBase\Repositories\Job\JobRepository;
 use App\AlterBase\Repositories\User\UserRepository;
+use App\AlterBase\Repositories\Category\CategoryRepository;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -26,21 +27,29 @@ class HomeController extends Controller
     private $user;
 
     /**
+     * CategoryRepository $category
+     */
+    private $category;
+
+    /**
      * Create a new controller instance.
      *
      * @param PageRepository $page
      * @param JobRepository $job
      * @param UserRepository $user
+     * @param CategoryRepository $category
      * @return void
      */
     public function __construct(
         PageRepository $page, 
         JobRepository $job,
-        UserRepository $user)
+        UserRepository $user,
+        CategoryRepository $category)
     {
         $this->page = $page;
         $this->job = $job;
         $this->user = $user;
+        $this->category = $category;
     }
 
     /**
@@ -66,10 +75,13 @@ class HomeController extends Controller
         if(isset($request->search))
             $search = $request->search;
 
+        $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Jobs'], 'category', 'asc');
+
         return view('frontend.pages.jobs')
             ->with('min', $min->salary_min)
             ->with('max', $max->salary_max)
-            ->with('search', $search);
+            ->with('search', $search)
+            ->with('categories', $categories);
     }
 
     /**

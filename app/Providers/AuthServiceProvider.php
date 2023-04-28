@@ -8,12 +8,14 @@ use App\AlterBase\Models\Post\Post;
 use App\AlterBase\Models\User\Role;
 use App\AlterBase\Models\User\User;
 use App\AlterBase\Models\Setting\Message;
+use App\AlterBase\Models\Job\Job;
 use App\Policies\CategoryPolicy;
 use App\Policies\MediaPolicy;
 use App\Policies\PostPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\SettingPolicy;
+use App\Policies\JobPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 
@@ -31,7 +33,8 @@ class AuthServiceProvider extends ServiceProvider
       Message::class => SettingPolicy::class,
       Category::class => CategoryPolicy::class, 
       Media::class => MediaPolicy::class,
-      Post::class => PostPolicy::class
+      Post::class => PostPolicy::class,
+      Job::class => JobPolicy::class
     ];
 
     /**

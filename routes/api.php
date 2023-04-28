@@ -34,7 +34,7 @@ Route::get("/cities", [CityController::class, "cities"])->name("api.list.cities"
 
 Route::post("/jobs", [JobController::class, "jobs"])->name("api.jobs");
 
-Route::get("/users", [JobController::class, "userList"])->name("api.jobs");
+Route::get("/users", [JobController::class, "userList"])->name("api.list.users");
 
 
 

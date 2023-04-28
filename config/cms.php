@@ -15,6 +15,6 @@ return [
     'cms_title' => 'Set Jobs :: Find the perfect job for you'
   ],
   'locked_page' => 2,
-  'locked_category' => 8,
+  'locked_category' => 7,
   'countries' => ['232'] //Primary ID of United Kingdom
 ];

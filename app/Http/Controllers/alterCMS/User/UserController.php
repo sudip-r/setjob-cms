@@ -74,7 +74,7 @@ class UserController extends Controller
     {
         $this->authorize('view', User::class);
 
-        $users = $this->user->paginate(50);
+        $users = $this->user->paginateWithCondition('guard', 'web', 'id', 'desc', 50);
 
         return view('cms.users.index')
             ->with('users', $users);
@@ -116,6 +116,8 @@ class UserController extends Controller
             if ($request->active) {
                 $input['active'] = true;
             }
+
+            $input['slug'] = cleanSlug($request->name)."-".time();
 
             if ($request->hasFile('profile_image')) {
                 $input['profile_image'] = $this->uploadImage($request);
@@ -161,6 +163,13 @@ class UserController extends Controller
 
         $roles = $this->role->all();
         $assignedRoles = $user->roles->pluck('id')->toArray();
+
+        if($user->guard != "web")
+        {
+            return redirect()->route('cms::users.index')
+                ->with('error', 'Only admin users can be updated from here!')
+                ->withInput();
+        }
 
         return view('cms.users.edit')->with('user', $user)
             ->with('roles', $roles)

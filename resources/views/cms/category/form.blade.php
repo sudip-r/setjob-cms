@@ -25,7 +25,7 @@
         @endif
       </div>
 
-      <input type="hidden" name="type" value="Category" />
+      <input type="hidden" name="type" value="Jobs" />
       @if(isset($category))
       <input type="hidden" name="id" value="{{$category->id}}" />
       @endif

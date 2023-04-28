@@ -10,8 +10,8 @@
         <img src="{{asset("front/assets/images/search_icon.png")}}" />
       </div>
       <div class="__search_field">
-        <input type="text" name="search_text" id="search-text" class="__search_text" value="{{$search}}"
-          placeholder="Scenic Artist in London" autocomplete="off" />
+        <input type="text" name="search_text" id="search-text" class="__search_text" value="{{$search == ""?" ":$search}}"
+          placeholder="Scenic Artist in London" autocomplete="{{$search == ""?" ":$search}}" />
       </div>
       <div class="__search_btn_wrap">
         <input type="submit" name="search_btn" id="search-btn" class="__search_btn" value="Search" />
@@ -29,14 +29,14 @@
           </div>
           <div class="__filter_type">
             <h4>Job type <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
-            <p><input type="checkbox" id="filter-full-time" class="__form_checkbox" /> <label
-                for="filter-full-time">Full time</label></p>
-            <p><input type="checkbox" id="filter-part-time" class="__form_checkbox" /> <label
-                for="filter-part-time">Part time</label></p>
-            <p><input type="checkbox" id="filter-freelance" class="__form_checkbox" /> <label
-                for="filter-freelance">Freelance</label></p>
-            <p><input type="checkbox" id="filter-contract" class="__form_checkbox" /> <label
-                for="filter-contract">Contract</label></p>
+            <p><input type="checkbox" id="filter-workshop" class="__form_checkbox" /> <label
+                for="filter-workshop">Workshop</label></p>
+            <p><input type="checkbox" id="filter-on-site" class="__form_checkbox" /> <label
+                for="filter-on-site">On site</label></p>
+            <p><input type="checkbox" id="filter-abroad" class="__form_checkbox" /> <label
+                for="filter-abroad">Abroad</label></p>
+            <p><input type="checkbox" id="filter-various" class="__form_checkbox" /> <label
+                for="filter-various">Various</label></p>
           </div>
           <div class="__filter_type">
             <h4>Salary Range <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
@@ -61,6 +61,16 @@
             <p>
               <select id="filter-company" class="__select_ajax_employers">
                 <option value="0">Any</option>
+              </select>
+            </p>
+
+            <h4>Category <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
+            <p>
+              <select id="filter-category" class="__select_category __select_2">
+                <option value="0">Job Category</option>
+                @foreach($categories as $category)
+                  <option value="{{$category->id}}">{{$category->category}}</option>
+                @endforeach
               </select>
             </p>
           </div>
@@ -107,10 +117,10 @@ var readyForNextBatch = true;
 var search = "{{$search}}";
 var filters = {
   type: {
-    full_time:false,
-    part_time:false,
-    freelance:false,
-    contract:false
+    workshop:false,
+    on_site:false,
+    abroad:false,
+    various:false
   },
   salary:{
     min:{{$min}},
@@ -121,6 +131,10 @@ var filters = {
     name: ""
   },
   company:{
+    id:"",
+    name:""
+  },
+  category:{
     id:"",
     name:""
   }
@@ -138,21 +152,21 @@ function listFilters(){
   firstPage = true;
   
   $(".__filters").html("");
-  if(filters.type.full_time)
+  if(filters.type.workshop)
   {
-    $(".__filters").append("<span class='__filter_tags'>Full time <span class='__remove_tag' alt='full_time'>X</span></span>");
+    $(".__filters").append("<span class='__filter_tags'>Workshop <span class='__remove_tag' alt='workshop'>X</span></span>");
   }
-  if(filters.type.part_time)
+  if(filters.type.on_site)
   {
-    $(".__filters").append("<span class='__filter_tags'>Part time <span class='__remove_tag' alt='part_time'>X</span></span>");
+    $(".__filters").append("<span class='__filter_tags'>On site <span class='__remove_tag' alt='on_site'>X</span></span>");
   }
-  if(filters.type.freelance)
+  if(filters.type.abroad)
   {
-    $(".__filters").append("<span class='__filter_tags'>Freelance <span class='__remove_tag' alt='freelance'>X</span></span>");
+    $(".__filters").append("<span class='__filter_tags'>Abroad <span class='__remove_tag' alt='abroad'>X</span></span>");
   }
-  if(filters.type.contract)
+  if(filters.type.various)
   {
-    $(".__filters").append("<span class='__filter_tags'>Contract <span class='__remove_tag' alt='contract'>X</span></span>");
+    $(".__filters").append("<span class='__filter_tags'>Various <span class='__remove_tag' alt='various'>X</span></span>");
   }
 
   if(filters.salary.max != 0)
@@ -169,27 +183,31 @@ function listFilters(){
   {
     $(".__filters").append("<span class='__filter_tags' id='company'>"+filters.company.name+"<span class='__remove_tag' alt='company'>X</span></span>");
   }
+
+  if(filters.category.id != "")
+  {
+    $(".__filters").append("<span class='__filter_tags' id='category'>"+filters.category.name+"<span class='__remove_tag' alt='category'>X</span></span>");
+  }
   //Remove tags
   $(".__remove_tag").click(function(){
         var tag = $(this).attr("alt");
-        console.log(tag);
         switch(tag)
         {
-            case "full_time":
-                filters.type.full_time = false;
-                $("#filter-full-time").prop('checked', false);
+            case "workshop":
+                filters.type.workshop = false;
+                $("#filter-workshop").prop('checked', false);
             break;
-            case "part_time":
-                filters.type.part_time = false;
-                $("#filter-part-time").prop('checked', false);
+            case "on_site":
+                filters.type.on_site = false;
+                $("#filter-on-site").prop('checked', false);
             break;
-            case "contract":
-                filters.type.contract = false;
-                $("#filter-contract").prop('checked', false);
+            case "various":
+                filters.type.various = false;
+                $("#filter-various").prop('checked', false);
             break;
-            case "freelance":
-                filters.type.freelance = false;
-                $("#filter-freelance").prop('checked', false);
+            case "abroad":
+                filters.type.abroad = false;
+                $("#filter-abroad").prop('checked', false);
             break;
             case "salary": 
               filters.salary.max = 0;
@@ -207,6 +225,11 @@ function listFilters(){
               filters.company.name = "";
               $("#filter-company").val(0).trigger('change.select2');
               break;
+            case "category": 
+              filters.category.id = "";
+              filters.category.name = "";
+              $("#filter-category").val(0).trigger('change.select2');
+              break;
 
         }
         listFilters();
@@ -215,11 +238,6 @@ function listFilters(){
   listJobs(true, nextPage);
 
 }
-
-$("#search-text").change(function(){
-  search = $(this).val();
-  window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
-});
 
 function listJobs(_filters, page = 1){
 var csrf = $('meta[name="csrf-token"]').attr("content");
@@ -237,7 +255,6 @@ $.ajaxSetup({
         "X-CSRF-TOKEN": csrf,
     },
 });
-
 
 var data = {
     conditions:conditions,
@@ -290,7 +307,8 @@ if(readyForNextBatch && !finished && (totalPage == "0" || parseInt(currentPage) 
                 } else {
                   html +=    "<li><i class='fas fa-pound-sign __right_10'></i> £"+value.salary_min_formatted+" - £"+value.salary_max_formatted+" per annum</li>";
                 } 
-                html +=     "<li><i class='fas fa-map-marker-alt __right_10'></i> "+value.location_name+"</li>" +
+                  html +=     "<li><i class='fas fa-map-marker-alt __right_10'></i> "+value.location_name+"</li>" +
+                  "<li><i class='fas fa-bars __right_10'></i> "+value.category_name+"</li>" +
                             "<li><i class='fas fa-briefcase __right_10'></i>"+value.type+"</li>" +
                             "</ul>" +
                             "<p class='__job_summary'>"+value.summary+"</p>" +

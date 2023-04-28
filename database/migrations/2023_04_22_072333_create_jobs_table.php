@@ -32,12 +32,14 @@ class CreateJobsTable extends Migration
             $table->text('required_skills')->nullable();
             $table->text('preferred_skills')->nullable();
             $table->string("type");
+            $table->unsignedBigInteger("category_id");
             $table->boolean("trash")->default(false);
             $table->boolean("publish")->default(false);
             $table->timestamp("published_on")->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
 
         });
     }

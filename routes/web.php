@@ -19,7 +19,7 @@ Route::get('/', [App\Http\Controllers\Front\HomeController::class, 'index'])->na
 
 Auth::routes();
 
-Route::get('/alter-cms/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::get('/set-jobs-cms/login', [LoginController::class, 'showLoginForm'])->name('login');
 
 Route::get('/login', function(){
   return redirect(route('home'));

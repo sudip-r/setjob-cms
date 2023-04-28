@@ -247,11 +247,13 @@ abstract class Repository implements RepositoryInterface
         $condition,
         $orderBy = 'id',
         $orderType = 'desc',
-        $limit = 40
+        $limit = 40,
+        $select = ['*']
     ) {
         return $this->model
             ->where($column, 'like', '%' . $condition . '%')
             ->orderBy($orderBy, $orderType)
+            ->select($select)
             ->paginate($limit);
     }
 
