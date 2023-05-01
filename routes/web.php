@@ -75,3 +75,4 @@ Route::get('/company/{slug}', [App\Http\Controllers\Front\HomeController::class,
 
 Route::get('/profile/{slug}', [App\Http\Controllers\Front\HomeController::class, 'employeeDetail'])->name('employee.detail');
 
+Route::get('/faqs', [App\Http\Controllers\Front\HomeController::class, 'faqs'])->name('faqs');

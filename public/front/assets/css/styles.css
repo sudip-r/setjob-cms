@@ -1405,9 +1405,36 @@ label em{
     width:200px;
     float:left;
 }
-
 .__portfolio_display ul li img {
     width: 200px;
     height: 130px;
     object-fit: cover;
+}
+.accordion-button:not(.collapsed){
+    background-color: var(--primary);
+    color: var(--black);
+}
+.accordion-button {
+    background-color: var(--white);
+    color: var(--black);
+    font-size: 18px;
+    font-weight: 700;
+}
+.accordion-button:focus {
+    border-color:unset;
+    outline: 0;
+    box-shadow: unset;
+}
+
+.__min_height {
+    min-height: 477px;
+}
+
+.accordion-header{
+    line-height: 26px;
+    font-family: var(--font-primary);
+}
+
+.accordion-body{
+    font-family: var(--font-text);
 }

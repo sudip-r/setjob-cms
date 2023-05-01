@@ -17,6 +17,7 @@
       <ul class="__general">
         <li><a href="{{route('home')}}">Home</a></li>
         <li><a href="{{route('about')}}">About</a></li>
+        <li><a href="{{route('faqs')}}">FAQs</a></li>
         <li><a href="{{route('terms')}}">Terms and Conditions</a></li>
         <li><a href="{{route('privacy')}}">Privacy Policy</a></li>
       </ul>
