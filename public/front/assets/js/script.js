@@ -170,6 +170,11 @@ $(document).ready(function () {
         height: "32px",
     });
 
+    $(".__select_2").select2({
+        width: "100%",
+        height: "32px",
+    });
+
     $(".__select_ajax").select2({
         width: "100%",
         height: "32px",
@@ -232,6 +237,8 @@ $(document).ready(function () {
         },
     });
 
+
+
     $(".__favorite_job").click(function () {
         if ($(this).find("i").hasClass("fas")) {
             $(this).html('<i class="far fa-heart"></i>');
@@ -240,35 +247,35 @@ $(document).ready(function () {
         }
     });
 
-    $("#filter-full-time").change(function(){
-        if(filters.type.full_time == true)
-            filters.type.full_time = false;
+    $("#filter-workshop").change(function(){
+        if(filters.type.workshop == true)
+            filters.type.workshop = false;
         else
-            filters.type.full_time = true;
+            filters.type.workshop = true;
             
         listFilters();
     });
-    $("#filter-part-time").change(function(){
-        if(filters.type.part_time == true)
-            filters.type.part_time = false;
+    $("#filter-on-site").change(function(){
+        if(filters.type.on_site == true)
+            filters.type.on_site = false;
         else
-            filters.type.part_time = true;
+            filters.type.on_site = true;
             
         listFilters();
     });
-    $("#filter-freelance").change(function(){
-        if(filters.type.freelance == true)
-            filters.type.freelance = false;
+    $("#filter-abroad").change(function(){
+        if(filters.type.abroad == true)
+            filters.type.abroad = false;
         else
-            filters.type.freelance = true;
+            filters.type.abroad = true;
             
         listFilters();
     });
-    $("#filter-contract").change(function(){
-        if(filters.type.contract == true)
-            filters.type.contract = false;
+    $("#filter-various").change(function(){
+        if(filters.type.various == true)
+            filters.type.various = false;
         else
-            filters.type.contract = true;
+            filters.type.various = true;
             
         listFilters();
     });
@@ -292,6 +299,16 @@ $(document).ready(function () {
         listFilters();
     });
 
+    $("#filter-category").on("change", function () {
+        var id = $('#filter-category').val();
+        var name = $('#filter-category option:selected').text();
+
+        filters.category.id = id;
+        filters.category.name = name;
+
+        listFilters();
+    });
+
     $("#salary-range")
         .on("input", function () {
             // Handle the input event
@@ -303,6 +320,9 @@ $(document).ready(function () {
            listFilters();
         });
 
+    $(".__clear_filter").click(function(){
+        window.location.reload();
+    });
 
     var register = true;
     $("#register-btn-one").click(function (e) {

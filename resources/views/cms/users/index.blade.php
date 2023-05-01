@@ -81,7 +81,7 @@
               @endif
             </td>
             <td>
-              <a href="{!! route('cms::users.edit',['user' => $user->id]) !!}" class="btn btn-default" title="Edit">Edit</a>
+              <a href="{!! route('cms::users.edit',['user' => $user->slug]) !!}" class="btn btn-default" title="Edit">Edit</a>
             </td>
 
           </tr>

@@ -11,7 +11,7 @@ class CategoryPermission
         'module' => [
             'name' => 'Category',
             'slug' => 'cms::categories',
-            'description' => 'Posts Management',
+            'description' => 'Jobs Management',
             'icon_class' => 'fa-bars'
         ],
         'actions' => [

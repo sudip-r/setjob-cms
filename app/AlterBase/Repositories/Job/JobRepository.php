@@ -24,7 +24,7 @@ class JobRepository extends Repository
      * @param array $columns
      * @return Collection
      */
-    public function searchPost(
+    public function searchJob(
         $conditions = [],
         $searchCondition,
         $orderBy = 'id',
@@ -71,17 +71,17 @@ class JobRepository extends Repository
         }
         if (count($filters) > 0) {
             $q = $q->where(function ($query) use ($filters) {
-                if ($filters["type"]["full_time"] == "true") {
-                    $query->orWhere('type', 'like', "Full time");
+                if (isset($filters["type"]["workshop"]) && $filters["type"]["workshop"] == "true") {
+                    $query->orWhere('type', 'like', "Workshop");
                 }
-                if ($filters["type"]["part_time"] == "true") {
-                    $query->orWhere('type', 'like', "Part time");
+                if (isset($filters["type"]["on_site"]) && $filters["type"]["on_site"] == "true") {
+                    $query->orWhere('type', 'like', "On Site");
                 }
-                if ($filters["type"]["contract"] == "true") {
-                    $query->orWhere('type', 'like', "Contract");
+                if (isset($filters["type"]["abroad"]) && $filters["type"]["abroad"] == "true") {
+                    $query->orWhere('type', 'like', "Abroad");
                 }
-                if ($filters["type"]["freelance"] == "true") {
-                    $query->orWhere('type', 'like', "Freelance");
+                if (isset($filters["type"]["various"]) && $filters["type"]["various"] == "true") {
+                    $query->orWhere('type', 'like', "Various");
                 }
             });
 
@@ -94,6 +94,12 @@ class JobRepository extends Repository
             if ($filters["company"]["id"] != "") {
                 $q = $q->where(function ($query) use ($filters) {
                     $query = $query->where('user_id', '=', $filters["company"]["id"]);
+                });
+            }
+
+            if ($filters["category"]["id"] != "") {
+                $q = $q->where(function ($query) use ($filters) {
+                    $query = $query->where('category_id', '=', $filters["category"]["id"]);
                 });
             }
 

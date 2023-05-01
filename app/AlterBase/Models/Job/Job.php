@@ -42,6 +42,7 @@ class Job extends Model
         'required_skills',
         'preferred_skills',
         'type',
+        'category_id',
         'trash',
         'publish',
         'published_on',
@@ -56,7 +57,8 @@ class Job extends Model
     'published_date',
     'location_name',
     'salary_min_formatted',
-    'salary_max_formatted'
+    'salary_max_formatted',
+    'category_name'
   ];
 
     /**
@@ -166,5 +168,36 @@ class Job extends Model
     public function getSalaryMaxFormattedAttribute()
     {
         return number_format($this->salary_max, 0);;
+    }
+
+    /**
+     * Get category
+     * 
+     * @return Collection
+     */
+    public function Cat()
+    {
+        return $this->from('jobs as j')
+            ->join('categories as c', 'c.id', 'j.category_id')
+            ->where('j.id', $this->id)
+            ->select(['c.id', 'c.category as name'])
+            ->get()
+            ->first();
+    }
+
+    /**
+     * Get category name
+     * 
+     * @return String
+     */
+    public function getCategoryNameAttribute()
+    {
+        return $this->from('jobs as j')
+            ->join('categories as c', 'c.id', 'j.category_id')
+            ->where('j.id', $this->id)
+            ->select(['c.id', 'c.category as name'])
+            ->get()
+            ->first()
+            ->name;
     }
 }

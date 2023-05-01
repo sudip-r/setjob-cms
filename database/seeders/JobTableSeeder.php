@@ -19,6 +19,6 @@ class JobTableSeeder extends Seeder
         app(Job::class)->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        Job::jobFactory()->count(900)->create();
+        Job::jobFactory()->count(130)->create();
     }
 }

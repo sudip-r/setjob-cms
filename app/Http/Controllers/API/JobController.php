@@ -49,7 +49,7 @@ class JobController extends Controller
           'published_on',
           'desc',
           $limit,
-          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location'],
+          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location', 'category_id'],
           $currentPage
         );
 
@@ -68,7 +68,7 @@ class JobController extends Controller
           'published_on',
           'desc',
           $limit,
-          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location'],
+          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location', 'category_id'],
           $currentPage
         );
 
@@ -86,7 +86,7 @@ class JobController extends Controller
           'published_on',
           'desc',
           $limit,
-          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location'],
+          ['id', 'title', 'slug', 'summary', 'user_id', 'salary_min', 'salary_max', 'published_on', 'type', 'location', 'category_id'],
           $currentPage
         );
 

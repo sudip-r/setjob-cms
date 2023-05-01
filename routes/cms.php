@@ -6,6 +6,7 @@ use App\Http\Controllers\alterCMS\HomeController;
 use App\Http\Controllers\alterCMS\Media\MediaController;
 use App\Http\Controllers\alterCMS\Post\PostController;
 use App\Http\Controllers\alterCMS\Page\PageController;
+use App\Http\Controllers\alterCMS\Job\JobController;
 use App\Http\Controllers\alterCMS\Setting\SettingController;
 use App\Http\Controllers\alterCMS\User\RoleController;
 use App\Http\Controllers\alterCMS\User\UserController;
@@ -169,3 +170,25 @@ $router->patch('pages/update/{page}', [PageController::class, 'update'])->name('
 $router->delete('pages/delete/{page}', [PageController::class, 'delete'])->name('pages.delete');
 
 $router->get('pages/search', [PageController::class, 'search'])->name('pages.search');
+
+/* ==================================================================================
+Job Module
+====================================================================================*/
+
+Route::get('jobs', [JobController::class, 'index'])->name('jobs.index');
+
+Route::get('jobs/create', [JobController::class, 'create'])->name('jobs.create');
+
+Route::post('jobs/store', [JobController::class, 'store'])->name('jobs.store');
+
+Route::get('jobs/edit/{job}', [JobController::class, 'edit'])->name('jobs.edit');
+
+Route::patch('jobs/update/{job}', [JobController::class, 'update'])->name('jobs.update');
+
+Route::delete('jobs/delete/{job}', [JobController::class, 'delete'])->name('jobs.delete');
+
+Route::get('jobs/search', [JobController::class, 'search'])->name('jobs.search');
+
+Route::get('jobs/status/{job}', [JobController::class, 'statusToggle'])->name('jobs.status');
+
+Route::post('jobs/quicksave/{id}', [JobController::class, 'quickSave'])->name('jobs.quick.save');
