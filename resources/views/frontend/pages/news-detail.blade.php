@@ -21,7 +21,7 @@
             <div class="__page_description">
 
                 <div class="__news_detail">
-                    <h3>News Title</h3>
+                    <h3>{{$news->title}}</h3>
 
                     <div class="__news_image">
                         <img src="{{$news->image}}" />
