@@ -75,3 +75,9 @@ Route::get('/company/{slug}', [App\Http\Controllers\Front\HomeController::class,
 
 Route::get('/profile/{slug}', [App\Http\Controllers\Front\HomeController::class, 'employeeDetail'])->name('employee.detail');
 
+Route::get('/faqs', [App\Http\Controllers\Front\HomeController::class, 'faqs'])->name('faqs');
+
+Route::get('/news', [App\Http\Controllers\Front\HomeController::class, 'newsList'])->name('news');
+
+Route::get('/news/{slug}', [App\Http\Controllers\Front\HomeController::class, 'newsDetail'])->name('news.detail');
+

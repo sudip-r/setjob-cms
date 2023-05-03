@@ -264,6 +264,29 @@ abstract class Repository implements RepositoryInterface
      * @param array $columns
      * @return Collection
      */
+    public function paginateWithConditionFront(
+        $column,
+        $condition,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $limit = 40,
+        $select = ['*']
+    ) {
+        return $this->model
+            ->where($column, 'like', '%' . $condition . '%')
+            ->whereBetween('published_on',[ '2000-01-01 00:00:00',date('Y-m-d H:i:s')])
+            ->orderBy($orderBy, $orderType)
+            ->select($select)
+            ->paginate($limit);
+    }
+
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
     public function paginateWithMultipleCondition(
         $condition,
         $orderBy = 'id',
@@ -274,6 +297,29 @@ abstract class Repository implements RepositoryInterface
     ) {
         return $this->model
             ->where($condition)
+            ->orderBy($orderBy, $orderType)
+            ->select($column)
+            ->paginate($limit, null, 'page', $page);
+    }
+
+    /**
+     * Get the resources with given condition(s)
+     *
+     * @param $conditions
+     * @param array $columns
+     * @return Collection
+     */
+    public function paginateWithMultipleConditionFront(
+        $condition,
+        $orderBy = 'id',
+        $orderType = 'desc',
+        $limit = 40,
+        $column = ['*'],
+        $page = 1
+    ) {
+        return $this->model
+            ->where($condition)
+            ->whereBetween('published_on',[ '2000-01-01 00:00:00',date('Y-m-d H:i:s')])
             ->orderBy($orderBy, $orderType)
             ->select($column)
             ->paginate($limit, null, 'page', $page);

@@ -5,13 +5,13 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Edit News</h1>
+        <h1>Edit Faq</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{!! route('cms::dashboard') !!}">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="{!! route('cms::posts.index') !!}">News</a></li>
-          <li class="breadcrumb-item active">Edit News</li>
+          <li class="breadcrumb-item"><a href="{!! route('cms::faqs.index') !!}">Faqs</a></li>
+          <li class="breadcrumb-item active">Edit Faq</li>
         </ol>
       </div>
     </div>
@@ -20,16 +20,16 @@
 
 <!-- Main content -->
 <section class="content">
-  {!! Form::model($post,['route' => ['cms::posts.update', $post->id], 'method' => 'patch','files'=>true, 'id' => 'post_form']) !!}
-  <div class="row">
-    @include('cms.post.form')
-  </div>
-  {!! Form::close() !!}
+  {!! Form::model($faq,['route' => ['cms::faqs.update', $faq->id], 'method' => 'patch','files'=>true, 'id' => 'post_form']) !!}
+    <div class="row">
+      {!! Form::hidden("id", $faq->id) !!}
+      @include('cms.faq.form')
+    </div>
+    {!! Form::close() !!}
   <!-- /.row -->
 </section>
 <!-- /.content -->
 @endsection
-
 @section('custom-scripts')
 <script src="{!! asset('cms/plugins/flatpicker/flatpicker.min.js') !!}"></script>
 

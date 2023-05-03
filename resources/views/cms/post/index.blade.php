@@ -22,10 +22,10 @@
   <!-- Default box -->
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Posts</h3>
+      <h3 class="card-title">News</h3>
 
       <div class="card-tools">
-        <a href="{!! route('cms::posts.create') !!}" title="Add News" class="btn top-btn btn-primary">Add Post</a>
+        <a href="{!! route('cms::posts.create') !!}" title="Add News" class="btn top-btn btn-primary">Add News</a>
       </div>
     </div>
     <div class="card-body p-0">
@@ -49,7 +49,7 @@
             <th>Author</th>
             <th>Last Modified</th>
             <th>Published On</th>
-            <th>Category</th>
+            {{-- <th>Category</th> --}}
             <th>Status</th>
             <th style="width: 15%;">Actions</th>
           </tr>
@@ -71,11 +71,11 @@
             <td id="col_published_on_{{$post->id}}">
               {!! $post->published_on !!}
             </td>
-            <td id="col_category_{{$post->id}}">
+            {{-- <td id="col_category_{{$post->id}}">
             @foreach($post->cats as $category)
               <div class="category__tag">{{$category->category}}</div>
             @endforeach
-            </td>
+            </td> --}}
             <td >
               @if($post->publish)
               <span class="label label-success">Published</span>

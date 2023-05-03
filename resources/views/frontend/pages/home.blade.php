@@ -56,18 +56,28 @@
       </div>
     </div>
 
+    @if($partners->count() > 0)
     <div class="__clients">
       <div class="__clients_header">
         <h2>Clients we work with</h2>
       </div>
       <div class="owl-carousel owl-theme __carousel">
-        <div class="item"> <img src="{{asset('front/assets/images/clients/1.png')}}" /> </div>
-        <div class="item"> <img src="{{asset('front/assets/images/clients/2.png')}}" /> </div>
-        <div class="item"> <img src="{{asset('front/assets/images/clients/3.png')}}" /> </div>
-        <div class="item"> <img src="{{asset('front/assets/images/clients/5.png')}}" /> </div>
-        <div class="item"> <img src="{{asset('front/assets/images/clients/6.png')}}" /> </div>
+        @foreach($partners as $partner)
+          @if(strpos($partner->image, "default.png") === false)
+            <div class="item">
+              @if($partner->partner_link != "")
+              <a href="{{$partner->partner_link}}" target="_blank">
+              <img src="{{$partner->image}}" alt="{{$partner->partner_name}}" title="{{$partner->partner_name}}" />
+              </a>
+              @else 
+              <img src="{{$partner->image}}" alt="{{$partner->partner_name}}" title="{{$partner->partner_name}}" />
+              @endif
+            </div>
+          @endif
+        @endforeach
       </div>
     </div>
+    @endif
     
   </div>
 @endsection

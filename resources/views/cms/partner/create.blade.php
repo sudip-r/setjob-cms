@@ -6,13 +6,13 @@
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
-        <h1>Add News</h1>
+        <h1>Add Partner</h1>
       </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="{!! route('cms::dashboard') !!}">Dashboard</a></li>
-          <li class="breadcrumb-item"><a href="{!! route('cms::posts.index') !!}">News</a></li>
-          <li class="breadcrumb-item active">Add News</li>
+          <li class="breadcrumb-item"><a href="{!! route('cms::partners.index') !!}">Partners</a></li>
+          <li class="breadcrumb-item active">Create Partner</li>
         </ol>
       </div>
     </div>
@@ -21,16 +21,16 @@
 
 <!-- Main content -->
 <section class="content">
-  {!! Form::open(['route' => 'cms::posts.store','files'=>true, 'id' => 'post_form']) !!}
-    <div class="row">
-      @include('cms.post.form')
-    </div>
-    {!! Form::close() !!}
+  {!! Form::open(['route' => 'cms::partners.store','files'=>true, 'id' => 'post_form']) !!}
+  <div class="row">
+    @include('cms.partner.form')
+  </div>
+  {!! Form::close() !!}
   <!-- /.row -->
 </section>
 <!-- /.content -->
-@endsection
 
+@endsection
 @section('custom-styles')
 <link href="{{asset('cms/plugins/ckeditor5/build/style.css')}}" rel="stylesheet" />
 
@@ -76,13 +76,6 @@
         }
     $("#datetimepicker").flatpickr(config);
 </script>
-<script>
-  $('#post-name').keyup(function() {
-    var title = $('#post-name').val();
-    slug = title.replace(/\ /g, '-').toLowerCase();
-    $('#slug').val(slug);
-  });
-</script>
 
 <script src="{{ asset('cms/dist/js/img.js') }}"></script>
 
@@ -98,6 +91,12 @@ $(document).ready(function(){
 
     $("#featured_image_field").val(img);
 
+    var cover = $("#cover_image>img").attr("src");
+    if(cover != "" && cover != undefined)
+      cover = cover.replace("320X320_", "");
+
+    $("#cover_image_field").val(cover);
+
     $("#post_form").submit();
   });
 $(".select2").select2({
@@ -106,6 +105,7 @@ $(".select2").select2({
 var video = $("#featured-video").val();
 var image = $("#featured_image_field").val();
 var featuredImageType = true;
+
 $(".featured_video").html(video);
 if(image !== "")
 $('#featured_image>img').attr("src", image);
@@ -167,6 +167,16 @@ featuredImageType = true;
 listMedia();
 return false;
 });
+
+
+$("#coverImage").click(function() {
+$("#imageLibrary").show();
+coverImageType = true;
+featuredImageType = false;
+listMediaCover();
+return false;
+});
+
 
 $(".close-library").click(function() {
 $("#imageLibrary").hide();
@@ -551,6 +561,7 @@ console.error('Please, report the following error on https://github.com/ckeditor
 console.warn('Build id: 1wenxz12z32c-nlfnsv4zz7h3');
 console.error(error);
 });
+
 
 </script>
 @endsection

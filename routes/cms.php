@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\alterCMS\API\APIController;
 use App\Http\Controllers\alterCMS\Category\CategoryController;
+use App\Http\Controllers\alterCMS\Faq\FaqController;
 use App\Http\Controllers\alterCMS\HomeController;
 use App\Http\Controllers\alterCMS\Media\MediaController;
 use App\Http\Controllers\alterCMS\Post\PostController;
 use App\Http\Controllers\alterCMS\Page\PageController;
 use App\Http\Controllers\alterCMS\Job\JobController;
+use App\Http\Controllers\alterCMS\Partner\PartnerController;
 use App\Http\Controllers\alterCMS\Setting\SettingController;
 use App\Http\Controllers\alterCMS\User\RoleController;
 use App\Http\Controllers\alterCMS\User\UserController;
@@ -192,3 +194,39 @@ Route::get('jobs/search', [JobController::class, 'search'])->name('jobs.search')
 Route::get('jobs/status/{job}', [JobController::class, 'statusToggle'])->name('jobs.status');
 
 Route::post('jobs/quicksave/{id}', [JobController::class, 'quickSave'])->name('jobs.quick.save');
+
+/* ==================================================================================
+Partner Module
+====================================================================================*/
+
+$router->get('partners', [PartnerController::class, 'index'])->name('partners.index');
+
+$router->get('partners/create', [PartnerController::class, 'create'])->name('partners.create');
+
+$router->post('partners/store', [PartnerController::class, 'store'])->name('partners.store');
+
+$router->get('partners/edit/{partner}', [PartnerController::class, 'edit'])->name('partners.edit');
+
+$router->patch('partners/update/{partner}', [PartnerController::class, 'update'])->name('partners.update');
+
+$router->delete('partners/delete/{partner}', [PartnerController::class, 'delete'])->name('partners.delete');
+
+$router->get('partners/search', [PartnerController::class, 'search'])->name('partners.search');
+
+/* ==================================================================================
+Faq Module
+====================================================================================*/
+
+$router->get('faqs', [FaqController::class, 'index'])->name('faqs.index');
+
+$router->get('faqs/create', [FaqController::class, 'create'])->name('faqs.create');
+
+$router->post('faqs/store', [FaqController::class, 'store'])->name('faqs.store');
+
+$router->get('faqs/edit/{faq}', [FaqController::class, 'edit'])->name('faqs.edit');
+
+$router->patch('faqs/update/{faq}', [FaqController::class, 'update'])->name('faqs.update');
+
+$router->delete('faqs/delete/{faq}', [FaqController::class, 'delete'])->name('faqs.delete');
+
+$router->get('faqs/search', [FaqController::class, 'search'])->name('faqs.search');

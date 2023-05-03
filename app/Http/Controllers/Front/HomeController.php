@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers\Front;
 
-use App\Http\Controllers\Controller;
-use App\AlterBase\Repositories\Page\PageRepository;
-use App\AlterBase\Repositories\Job\JobRepository;
-use App\AlterBase\Repositories\User\UserRepository;
 use App\AlterBase\Repositories\Category\CategoryRepository;
+use App\AlterBase\Repositories\Faq\FaqRepository;
+use App\AlterBase\Repositories\Job\JobRepository;
+use App\AlterBase\Repositories\Page\PageRepository;
+use App\AlterBase\Repositories\Partner\PartnerRepository;
+use App\AlterBase\Repositories\User\UserRepository;
+use App\AlterBase\Repositories\Post\PostRepository;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -32,24 +35,47 @@ class HomeController extends Controller
     private $category;
 
     /**
+     * PartnerRepository $partner
+     */
+    private $partner;
+
+    /**
+     * FaqRepository $faq
+     */
+    private $faq;
+
+    /**
+     * PostRepository $post
+     */
+    private $post;
+
+    /**
      * Create a new controller instance.
      *
      * @param PageRepository $page
      * @param JobRepository $job
      * @param UserRepository $user
      * @param CategoryRepository $category
+     * @param PartnerRepository $partner
+     * @param FaqRepository $faq
+     * @param PostRepository $post
      * @return void
      */
     public function __construct(
-        PageRepository $page, 
+        PageRepository $page,
         JobRepository $job,
         UserRepository $user,
-        CategoryRepository $category)
-    {
+        CategoryRepository $category,
+        PartnerRepository $partner,
+        FaqRepository $faq,
+        PostRepository $post) {
         $this->page = $page;
         $this->job = $job;
         $this->user = $user;
         $this->category = $category;
+        $this->partner = $partner;
+        $this->faq = $faq;
+        $this->post = $post;
     }
 
     /**
@@ -59,21 +85,28 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('frontend.pages.home');
+        $partners = $this->partner->getWithCondition(
+            ['publish' => 1],
+            'sort_order',
+            'asc',
+            ['id', 'partner_link', 'image', 'partner_name']
+        );
+        return view('frontend.pages.home')->with('partners', $partners);
     }
 
     /**
-     * 
+     *
      */
     public function jobs(Request $request)
     {
-        $min = $this->job->getWithCondition(['publish' => 1, 'trash' => 0], 'salary_min', 'asc', ["salary_min"] )->first();
-        $max = $this->job->getWithCondition(['publish' => 1, 'trash' => 0], 'salary_max', 'desc', ["salary_max"] )->first();
+        $min = $this->job->getWithCondition(['publish' => 1, 'trash' => 0], 'salary_min', 'asc', ["salary_min"])->first();
+        $max = $this->job->getWithCondition(['publish' => 1, 'trash' => 0], 'salary_max', 'desc', ["salary_max"])->first();
 
         $search = "";
 
-        if(isset($request->search))
+        if (isset($request->search)) {
             $search = $request->search;
+        }
 
         $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Jobs'], 'category', 'asc');
 
@@ -85,7 +118,7 @@ class HomeController extends Controller
     }
 
     /**
-     * 
+     *
      */
     public function jobDetail()
     {
@@ -93,9 +126,10 @@ class HomeController extends Controller
     }
 
     /**
-     * 
+     *
      */
-    public function about(){
+    public function about()
+    {
 
         $page = $this->page->find(1);
 
@@ -103,9 +137,10 @@ class HomeController extends Controller
     }
 
     /**
-     * 
+     *
      */
-    public function terms(){
+    public function terms()
+    {
 
         $page = $this->page->find(2);
 
@@ -113,9 +148,10 @@ class HomeController extends Controller
     }
 
     /**
-     * 
+     *
      */
-    public function privacy(){
+    public function privacy()
+    {
 
         $page = $this->page->find(3);
 
@@ -124,7 +160,7 @@ class HomeController extends Controller
 
     /**
      * Employer detail
-     * 
+     *
      * @param $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -132,13 +168,15 @@ class HomeController extends Controller
     {
         $user = $this->user->findBy('slug', $slug);
 
-        if($user == null)
+        if ($user == null) {
             abort(404);
+        }
 
         $profile = $user->profile();
 
-        if($profile == null)
+        if ($profile == null) {
             abort(500);
+        }
 
         return view('frontend.pages.employer')
             ->with('user', $user)
@@ -148,7 +186,7 @@ class HomeController extends Controller
 
     /**
      * Employee detail
-     * 
+     *
      * @param $id
      * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
      */
@@ -156,17 +194,79 @@ class HomeController extends Controller
     {
         $user = $this->user->findBy('slug', $slug);
 
-        if($user == null)
+        if ($user == null) {
             abort(404);
+        }
 
         $profile = $user->profile();
 
-        if($profile == null)
+        if ($profile == null) {
             abort(500);
+        }
 
         return view('frontend.pages.employee')
             ->with('user', $user)
             ->with('profile', $profile);
 
+    }
+
+    /**
+     * Faq list page
+     *
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function faqs()
+    {
+        $faqs = $this->faq->getWithCondition(
+            ['publish' => 1],
+            'sort_order',
+            'asc',
+            ['id', 'question', 'answer']);
+
+        return view('frontend.pages.faq')
+            ->with('faqs', $faqs);
+    }
+
+    /**
+     * News list page
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function newsList(Request $request)
+    {
+        $page = $request->page ?? 1;
+
+        $posts = $this->post->paginateWithMultipleConditionFront(
+            ['publish' => true, 'trash' => false],
+            'published_on',
+            'desc',
+            30,
+            ['id', 'title', 'slug', 'summary', 'description', 'image', 'video', 'author', 'published_on'],
+            $page
+        );
+
+        return view('frontend.pages.news')
+                ->with('posts', $posts);
+    }
+
+    /**
+     * News list page
+     * 
+     * @param $slug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function newsDetail($slug)
+    {
+        $news = $this->post->findWithCondition(
+            ['publish' => true, 'trash' => false, 'slug' => $slug],
+            ['id', 'title', 'slug', 'summary', 'description', 'image', 'video', 'published_on']
+        );
+
+        if(!$news)
+            abort(404);
+
+        return view('frontend.pages.news-detail')
+                ->with('news', $news);
     }
 }

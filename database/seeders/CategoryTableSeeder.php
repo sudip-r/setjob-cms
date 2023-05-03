@@ -103,6 +103,17 @@ class CategoryTableSeeder extends Seeder
 
         Category::create($data);
 
-       
+        $data = [
+            'id' => 8,
+            'category' => "News",
+            'slug' => "news",
+            'parent' => "0",
+            'publish' => 1,
+            'summary' => "",
+            'type' => "Posts",
+        ];
+
+        Category::create($data);
+
     }
 }

@@ -2,60 +2,32 @@
   <div class="card">
     <div class="card-body">
       <div class="form-group">
-        {!! Form::label('title','News Title') !!}
-        {!! Form::text('title',null,['class' => 'form-control', 'id' => 'post-name', 'placeholder' => "Enter News title" ]) !!}
+          {!! Form::label('partner','Partner Name') !!}
+          {!! Form::text('partner_name',null,['class' => 'form-control', 'id' => 'partner', 'placeholder' => "Enter Partner Name" ]) !!}
       </div>
 
       <div class="form-group">
-        {!! Form::label('summary',"Summary") !!}
-        {!! Form::textarea('summary',null,['class'=>'textarea form-control summary__box','id'=>'summary','placeholder'=>'Enter Summary (Short description)']) !!}
-      </div>
-      
-
-      <input type="hidden" name="type" value="Post" />
+        {!! Form::label('partner-link','Partner Link (External Url)') !!}
+        {!! Form::text('partner_link',null,['class' => 'form-control', 'id' => 'partner-link', 'placeholder' => "Enter Partner website Url" ]) !!}
+    </div>
 
       <div class="form-group">
-        {!! Form::label('content',"Content") !!}
-        <br>
-        <a href="javascript:void(0);" class="btn btn-default" id="addMedia"><i class="fa fa-image"></i> Add Media</a>
-
-        {!! Form::textarea('description',null,['class'=>'textarea form-control','id'=>'content','placeholder'=>'Enter Description']) !!}
+          {!! Form::label('summary',"Summary [Optional]") !!}
+          {!! Form::textarea('summary',null,['class'=>'textarea form-control summary__box','id'=>'summary','placeholder'=>'Enter Summary (Excerpt)']) !!}
       </div>
-      
-      {{--<div class="form-group">
-        {!! Form::label('categories',"Categories") !!}
 
-        <select name="category[]" id="category" multiple="multiple" class="select2 form-control">
-          @foreach($categories as $cat)
-          @if($cat->subCategories()->count() > 0)
-          <optgroup label="{{ $cat->category }}" style="font-weight: bolder;">
-            @foreach($cat->subCategories() as $subCat)
-            <option value="{{$subCat->id}}" 
-            @if(isset($post) && (in_array($subCat->id,$assignedCat) || in_array($subCat->id,old('category',[]))))
-            selected="selected"
-            @endif  
-            >{{ $subCat->category }}</option>
-            @endforeach
-          </optgroup>
-          @else
-          @if($cat->parent == 0)
-          <option value="{{$cat->id}}"
-            @if(isset($post) && (in_array($cat->id,$assignedCat) || in_array($cat->id,old('category',[]))))
-            selected="selected"
-          @endif  
-          >{{ $cat->category }}</option>
-          @endif
-          @endif
-          @endforeach
-        </select>
-      </div> --}}
-      
+      <div class="form-group">
+          {!! Form::label('description',"Description [Optional]") !!}
+          <br>
+          <a href="javascript:void(0);" class="btn btn-default" id="addMedia"><i class="fa fa-image"></i> Add Media</a>
+          {!! Form::textarea('description',null,['class'=>'textarea form-control','id'=>'content','placeholder'=>'Enter Description']) !!}
+      </div>
+   
     </div>
 
     <div class="card-footer">
-      {!! Form::submit('Submit',['class' => 'btn btn-primary', 'id' => 'submit_btn']) !!}
-
-      <a href="{!! route('cms::posts.index') !!}" title="Cancel" class="btn btn-danger cancel-btn">Cancel</a>
+        {!! Form::submit('Submit',['class' => 'btn btn-primary', 'id' => 'submit_btn']) !!}
+        <a href="{!! route('cms::partners.index') !!}" title="Cancel" class="btn btn-danger cancel-btn">Cancel</a>
     </div>
 
   </div>
@@ -64,24 +36,19 @@
 
 <!--<right side bar>-->
 <div class="col-md-3 col-sm-4 col-xs-12 right-side-bar">
-
-  <!-- Posts -->
-  <div class="card card-default posts-box">
+  <div class="card card-default">
     <div class="card-header">
       <h3 class="card-title">Status</h3>
     </div>
     <div class="card-body">
       <!-- Minimal style -->
-
       <!-- radio -->
       <div class="form-group">
       <div class="switch-box">
-        <span class="switch-label">Active</span>
-
+        <span class="switch-label"><strong>Active</strong></span>
             <label class="switch">
                 {{ Form::hidden('publish', false) }}
-
-                @if(isset($post) && $post->publish == '1' || old('publish'))
+                @if(isset($partner) && $partner->publish == '1' || old('publish'))
                     <input type="checkbox" name="publish" checked>
                 @else
                     <input type="checkbox" name="publish">
@@ -92,27 +59,23 @@
       </div>
 
       <div class="form-group">
-          <div class="form-single">
-          {!! Form::label('published_on','Published Date', ['class'=>'form-label']) !!}
-          <input type="text" name="published_on" class="form-control" id="datetimepicker"
-                          autocomplete="off" value="{!! $post->published_on ?? date('Y-m-d H:i') !!}"/>
-          </div>
+        {!! Form::label('sort-order','Display Order') !!}
+        {!! Form::number('sort_order',null,['class' => 'form-control', 'id' => 'sort-order', 'placeholder' => "Lowest number placed first" ]) !!}
       </div>
-      
     </div>
     <!-- /.box-body -->
   </div>
 
   <div class="card posts-box mt-30">
     <div class="card-header">
-      <h3 class="card-title">Featured Image</h3>
+      <h3 class="card-title">Image</h3>
     </div>
       <!-- Minimal style -->
       <div id="featured_image">
-        @if(isset($post) && $post->image)
-        <img src="{!!$post->image !!}" alt="{!! $post->image !!}" style="width: 100%;height: auto;">
+        @if(isset($partner) && $partner->image)
+        <img src="{!! $partner->image !!}" alt="{!! $partner->image !!}" style="width: 100%;height: auto;">
         @else
-        <img src="{{mpath('uploads/default.png')}}" style="width: 100%;height: auto;">
+        <img src="{{mpath('uploads/default.jpg')}}" style="width: 100%;height: auto;">
         @endif
       </div>
       {!! Form::hidden('image', null,['id' => 'featured_image_field']) !!}
@@ -124,21 +87,6 @@
       </div>
   </div>
 
-  <div class="card posts-box mt-30">
-    <div class="card-header">
-      <h3 class="card-title">Featured Video</h3>
-    </div>
-    <div class="card-body">
-      <div class="form-group">
-        <div id="video-box">
-          @if(isset($post) && $post->video != "")
-          {!!$post->video!!}
-          @endif
-        </div>
-        {!! Form::textarea('video',null,['class' => 'form-control', 'id' => 'video', 'placeholder' => "Enter video embed code from <iframe> to </iframe>" ]) !!}
-      </div>
-    </div>
-  </div>
 </div>
 <!--</right side bar>-->
 
@@ -186,22 +134,16 @@
             <img src="{{asset('cms/dist/img/loading.gif')}}" />
           </div>
           <div class="form-box">
-  
             <div class="row list-box gray-scroll library-scroll" id="medialist">
-  
             </div>
-  
           </div>
         </div>
   
         <div class="col-md-4 media-detail">
           <div class="form-box">
-  
             <div id="detail-box-wrapper">
               <div class="row list-box detail-box gray-scroll" id="detail-box">
-  
               </div>
-              
             </div>
           </div>
         </div>

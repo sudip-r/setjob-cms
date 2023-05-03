@@ -697,6 +697,69 @@ input:checked + .slider:before {
   background-color: #236ba5;
 }
 
+.ck.ck-editor {
+  background-color: #333;
+  color: #fff;
+}
+
+.ck.ck-editor__editable, .ck-content {
+  background-color: #333;
+  color: #fff;
+}
+
+.dark-mode .ck.ck-editor__main>.ck-editor__editable{
+  color:#fff;
+  background-color: #333 !important;
+}
+
+.dark-mode .ck.ck-toolbar>.ck-toolbar__items {
+  background: #333 !important;
+}
+
+.dark-mode .ck.ck-reset_all {
+  background: #333 !important;
+  color: #FFF !important;
+}
+
+.dark-mode .ck.ck-button.ck-on:not(.ck-disabled):active, .dark-mode a.ck.ck-button.ck-on:not(.ck-disabled):active {
+  background: #000;
+  box-shadow: inset 0 2px 2px #000;
+}
+.dark-mode .ck.ck-button.ck-on,.dark-mode  a.ck.ck-button.ck-on {
+  background: #000 !important;
+}
+
+.dark-mode .ck.ck-reset_all * {
+  color: #FFF !important;
+}
+.dark-mode .ck.ck-list__item .ck-button {
+  background: #333 !important;
+}
+
+.dark-mode .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_ne, .dark-mode .ck.ck-dropdown .ck-dropdown__panel.ck-dropdown__panel_se {
+  background: #333 !important;
+}
+
+.dark-mode .ck-rounded-corners .ck.ck-editor__top .ck-sticky-panel .ck-toolbar,.dark-mode  .ck.ck-editor__top .ck-sticky-panel .ck-toolbar.ck-rounded-corners {
+  background-color: #333 !important;
+}
+
+.dark-mode #imageLibrary{
+  background: #00000090;
+}
+.dark-mode .modal-header {
+  background-color: #333333;
+  border: none;
+}
+
+.dark-mode .close, .dark-mode .mailbox-attachment-close {
+  color: #cdb5bd;
+  text-shadow: 0 1px 0 #495057;
+}
+.dark-mode #imageLibrary>.content {
+  border: #333 solid 1px;
+  background: #333;
+}
 @media only screen and (max-width: 768px) {
   .alter-table{
     display: block;

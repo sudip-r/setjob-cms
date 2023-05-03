@@ -47,8 +47,8 @@
   <!-- /.card -->
   <div class="__footer_box">
     <hr>
-    <p class="__credits">Photo Credit: <a href="https://unsplash.com/@lycansu" target="_blank">unsplash.com/@lycansu</a></p>
-    <p class="__credits">Powered by: <a href="https://alterbasestudios.com/" target="_blank">Alterbase Studios</a></p>
+    {{-- <p class="__credits">Photo Credit: <a href="https://unsplash.com/@lycansu" target="_blank">unsplash.com/@lycansu</a></p>
+    <p class="__credits">Powered by: <a href="https://alterbasestudios.com/" target="_blank">Alterbase Studios</a></p> --}}
   </div>
 </div>
 <!-- /.login-box -->
