@@ -26,9 +26,11 @@ class PostFactory extends Factory
         $description = $this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400));
         $description .= $this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400))."<br><br>".$this->faker->realText(rand(120,400));
 
+        $slug = strtolower(str_replace([" ", "  ", "   ", "_", "*", "'", '"', "@", "&"], "-",$title)."-".rand(11111,9999999));
+        $slug = str_replace([",", ".", "?", ")", "(", "--"], "",$slug);
         return [
             'title' => $title,
-            'slug' => strtolower(str_replace([" ", "_", "*", "'", '"', "@", "&"], "-",$title)."-".rand(11111,9999999)),
+            'slug' => $slug,
             'summary' => $this->faker->realText(200),
             'description' => $description,
             'image' => "https://picsum.photos/seed/".rand(1,10000)."/800/600",

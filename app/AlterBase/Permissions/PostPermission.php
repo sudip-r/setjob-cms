@@ -8,9 +8,9 @@ class PostPermission
 {
     protected $permissions = [
         'module' => [
-            'name' => 'Post',
+            'name' => 'News',
             'slug' => 'cms::posts',
-            'description' => 'Post management module',
+            'description' => 'News management module',
             'icon_class' => 'fa-regular fa-newspaper',
         ],
         'actions' => [
@@ -19,14 +19,14 @@ class PostPermission
                 'slug' => 'cms::posts.index',
                 'description' => 'Allow to view all posts.',
                 'view_on_sidebar' => true,
-                'menu_name' => "All Posts",
+                'menu_name' => "All News",
             ],
             [
                 'name' => 'Create post',
                 'slug' => 'cms::posts.create',
                 'description' => 'Allow to create new post.',
                 'view_on_sidebar' => true,
-                'menu_name' => "Add Post",
+                'menu_name' => "Add News",
             ],
             [
                 'name' => 'Update post',

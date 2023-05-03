@@ -67,19 +67,21 @@ class PostController extends Controller
   /**
    * Show all post
    *
+   * @param Request $request
    * @return View
    */
-  public function index()
+  public function index(Request $request)
   {
     $this->authorize('view', Post::class);
-    $posts = $this->post->paginateWithMultipleCondition(['trash' => false, 'post_type' => 'post'], 'published_on', 'desc');
+    $currentPage = $request->page ?? 1;
+    $posts = $this->post->paginateWithMultipleCondition(['trash' => false, 'post_type' => 'post'], 'published_on', 'desc',40, ['*'],$currentPage);
 
-    $categories = $this->category->getBy('publish', 1, ['id', 'category', 'parent', 'publish']);
+    // $categories = $this->category->getBy('publish', 1, ['id', 'category', 'parent', 'publish']);
 
     return view('cms.post.index')
       ->with('posts', $posts)
-      ->with('user', auth()->user())
-      ->with('categories', $categories);
+      ->with('user', auth()->user());
+      // ->with('categories', $categories);
   }
 
   /**
@@ -93,13 +95,13 @@ class PostController extends Controller
     $this->authorize('view', Post::class);
     $posts = $this->post->searchPost(['trash' => false, 'post_type' => 'post'], $request->search_txt, "id", "desc", ['*'], 40);
 
-    $categories = $this->category->getBy('publish', 1, ['id', 'category', 'parent', 'publish']);
+    // $categories = $this->category->getBy('publish', 1, ['id', 'category', 'parent', 'publish']);
 
     return view('cms.post.index')
       ->with('posts', $posts)
       ->with("searchTxt", $request->search_txt)
-      ->with('user', auth()->user())
-      ->with('categories', $categories);
+      ->with('user', auth()->user());
+      // ->with('categories', $categories);
   }
 
   /**
@@ -113,10 +115,10 @@ class PostController extends Controller
 
     $medias = $this->media->paginate(40, "created_at");
 
-    $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Category']);
+    // $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Category']);
 
     return view('cms.post.create')
-      ->with('categories', $categories)
+      // ->with('categories', $categories)
       ->with('lastPage', $medias->lastPage());
   }
 
@@ -150,14 +152,14 @@ class PostController extends Controller
 
       $post = $this->post->store($input);
 
-      $post->cats()->sync($request->input('category'));
+      // $post->cats()->sync($request->input('category'));
 
       $this->db->commit();
 
-      $categories = $request->input('category');
+      // $categories = $request->input('category');
 
       return redirect()->route('cms::posts.index')
-        ->with('categories', $categories)
+        // ->with('categories', $categories)
         ->with('success', "Post added successfully.");
     } catch (\Exception $e) {
       $this->db->rollback();
@@ -181,14 +183,14 @@ class PostController extends Controller
 
     $medias = $this->media->paginate(40, "created_at");
 
-    $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Category']);
+    // $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Category']);
 
-    $assignedCat = $post->cats()->pluck('categories.id')->toArray();
+    // $assignedCat = $post->cats()->pluck('categories.id')->toArray();
     
     return view('cms.post.edit')
       ->with('post', $post)
-      ->with('assignedCat', $assignedCat)
-      ->with('categories', $categories)
+      // ->with('assignedCat', $assignedCat)
+      // ->with('categories', $categories)
       ->with('lastPage', $medias->lastPage());
   }
 
@@ -222,15 +224,15 @@ class PostController extends Controller
 
       $this->post->update($id, $input);
       
-      $post->cats()->sync($request->input('category'));
+      // $post->cats()->sync($request->input('category'));
       
       $this->db->commit();
 
-      $categories = $request->input('category');
+      // $categories = $request->input('category');
 
       return redirect()->route('cms::posts.index')
-        ->with('success', 'Post updated successfully.')
-        ->with('categories', $categories);
+        ->with('success', 'Post updated successfully.');
+        // ->with('categories', $categories);
     } catch (\Exception $e) {
       $this->db->rollback();
       $this->log->error((string)$e);

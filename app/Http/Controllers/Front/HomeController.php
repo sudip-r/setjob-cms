@@ -8,6 +8,7 @@ use App\AlterBase\Repositories\Job\JobRepository;
 use App\AlterBase\Repositories\Page\PageRepository;
 use App\AlterBase\Repositories\Partner\PartnerRepository;
 use App\AlterBase\Repositories\User\UserRepository;
+use App\AlterBase\Repositories\Post\PostRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -44,6 +45,11 @@ class HomeController extends Controller
     private $faq;
 
     /**
+     * PostRepository $post
+     */
+    private $post;
+
+    /**
      * Create a new controller instance.
      *
      * @param PageRepository $page
@@ -52,6 +58,7 @@ class HomeController extends Controller
      * @param CategoryRepository $category
      * @param PartnerRepository $partner
      * @param FaqRepository $faq
+     * @param PostRepository $post
      * @return void
      */
     public function __construct(
@@ -60,13 +67,15 @@ class HomeController extends Controller
         UserRepository $user,
         CategoryRepository $category,
         PartnerRepository $partner,
-        FaqRepository $faq) {
+        FaqRepository $faq,
+        PostRepository $post) {
         $this->page = $page;
         $this->job = $job;
         $this->user = $user;
         $this->category = $category;
         $this->partner = $partner;
         $this->faq = $faq;
+        $this->post = $post;
     }
 
     /**
@@ -216,5 +225,48 @@ class HomeController extends Controller
 
         return view('frontend.pages.faq')
             ->with('faqs', $faqs);
+    }
+
+    /**
+     * News list page
+     * 
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function newsList(Request $request)
+    {
+        $page = $request->page ?? 1;
+
+        $posts = $this->post->paginateWithMultipleConditionFront(
+            ['publish' => true, 'trash' => false],
+            'published_on',
+            'desc',
+            30,
+            ['id', 'title', 'slug', 'summary', 'description', 'image', 'video', 'author', 'published_on'],
+            $page
+        );
+
+        return view('frontend.pages.news')
+                ->with('posts', $posts);
+    }
+
+    /**
+     * News list page
+     * 
+     * @param $slug
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function newsDetail($slug)
+    {
+        $news = $this->post->findWithCondition(
+            ['publish' => true, 'trash' => false, 'slug' => $slug],
+            ['id', 'title', 'slug', 'summary', 'description', 'image', 'video', 'published_on']
+        );
+
+        if(!$news)
+            abort(404);
+
+        return view('frontend.pages.news-detail')
+                ->with('news', $news);
     }
 }

@@ -15,6 +15,7 @@ class PermissionTableSeeder extends Seeder
       \App\AlterBase\Permissions\JobPermission::class,
       \App\AlterBase\Permissions\PagePermission::class,
       \App\AlterBase\Permissions\FaqPermission::class,
+      \App\AlterBase\Permissions\PostPermission::class,
       \App\AlterBase\Permissions\PartnerPermission::class,
       \App\AlterBase\Permissions\UserPermission::class,
       \App\AlterBase\Permissions\SettingPermission::class,

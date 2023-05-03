@@ -2,8 +2,8 @@
   <div class="card">
     <div class="card-body">
       <div class="form-group">
-        {!! Form::label('title','Post Title') !!}
-        {!! Form::text('title',null,['class' => 'form-control', 'id' => 'post-name', 'placeholder' => "Enter Post title" ]) !!}
+        {!! Form::label('title','News Title') !!}
+        {!! Form::text('title',null,['class' => 'form-control', 'id' => 'post-name', 'placeholder' => "Enter News title" ]) !!}
       </div>
 
       <div class="form-group">
@@ -22,7 +22,7 @@
         {!! Form::textarea('description',null,['class'=>'textarea form-control','id'=>'content','placeholder'=>'Enter Description']) !!}
       </div>
       
-      <div class="form-group">
+      {{--<div class="form-group">
         {!! Form::label('categories',"Categories") !!}
 
         <select name="category[]" id="category" multiple="multiple" class="select2 form-control">
@@ -48,7 +48,7 @@
           @endif
           @endforeach
         </select>
-      </div>
+      </div> --}}
       
     </div>
 
