@@ -8,6 +8,7 @@ use App\Http\Controllers\alterCMS\Media\MediaController;
 use App\Http\Controllers\alterCMS\Post\PostController;
 use App\Http\Controllers\alterCMS\Page\PageController;
 use App\Http\Controllers\alterCMS\Job\JobController;
+use App\Http\Controllers\alterCMS\Member\MemberController;
 use App\Http\Controllers\alterCMS\Partner\PartnerController;
 use App\Http\Controllers\alterCMS\Setting\SettingController;
 use App\Http\Controllers\alterCMS\User\RoleController;
@@ -159,19 +160,19 @@ Route::post('posts/quicksave/{id}', [PostController::class, 'quickSave'])->name(
 Page Module
 ====================================================================================*/
 
-$router->get('pages', [PageController::class, 'index'])->name('pages.index');
+Route::get('pages', [PageController::class, 'index'])->name('pages.index');
 
-$router->get('pages/create', [PageController::class, 'create'])->name('pages.create');
+Route::get('pages/create', [PageController::class, 'create'])->name('pages.create');
 
-$router->post('pages/store', [PageController::class, 'store'])->name('pages.store');
+Route::post('pages/store', [PageController::class, 'store'])->name('pages.store');
 
-$router->get('pages/edit/{page}', [PageController::class, 'edit'])->name('pages.edit');
+Route::get('pages/edit/{page}', [PageController::class, 'edit'])->name('pages.edit');
 
-$router->patch('pages/update/{page}', [PageController::class, 'update'])->name('pages.update');
+Route::patch('pages/update/{page}', [PageController::class, 'update'])->name('pages.update');
 
-$router->delete('pages/delete/{page}', [PageController::class, 'delete'])->name('pages.delete');
+Route::delete('pages/delete/{page}', [PageController::class, 'delete'])->name('pages.delete');
 
-$router->get('pages/search', [PageController::class, 'search'])->name('pages.search');
+Route::get('pages/search', [PageController::class, 'search'])->name('pages.search');
 
 /* ==================================================================================
 Job Module
@@ -199,34 +200,49 @@ Route::post('jobs/quicksave/{id}', [JobController::class, 'quickSave'])->name('j
 Partner Module
 ====================================================================================*/
 
-$router->get('partners', [PartnerController::class, 'index'])->name('partners.index');
+Route::get('partners', [PartnerController::class, 'index'])->name('partners.index');
 
-$router->get('partners/create', [PartnerController::class, 'create'])->name('partners.create');
+Route::get('partners/create', [PartnerController::class, 'create'])->name('partners.create');
 
-$router->post('partners/store', [PartnerController::class, 'store'])->name('partners.store');
+Route::post('partners/store', [PartnerController::class, 'store'])->name('partners.store');
 
-$router->get('partners/edit/{partner}', [PartnerController::class, 'edit'])->name('partners.edit');
+Route::get('partners/edit/{partner}', [PartnerController::class, 'edit'])->name('partners.edit');
 
-$router->patch('partners/update/{partner}', [PartnerController::class, 'update'])->name('partners.update');
+Route::patch('partners/update/{partner}', [PartnerController::class, 'update'])->name('partners.update');
 
-$router->delete('partners/delete/{partner}', [PartnerController::class, 'delete'])->name('partners.delete');
+Route::delete('partners/delete/{partner}', [PartnerController::class, 'delete'])->name('partners.delete');
 
-$router->get('partners/search', [PartnerController::class, 'search'])->name('partners.search');
+Route::get('partners/search', [PartnerController::class, 'search'])->name('partners.search');
 
 /* ==================================================================================
 Faq Module
 ====================================================================================*/
 
-$router->get('faqs', [FaqController::class, 'index'])->name('faqs.index');
+Route::get('faqs', [FaqController::class, 'index'])->name('faqs.index');
 
-$router->get('faqs/create', [FaqController::class, 'create'])->name('faqs.create');
+Route::get('faqs/create', [FaqController::class, 'create'])->name('faqs.create');
 
-$router->post('faqs/store', [FaqController::class, 'store'])->name('faqs.store');
+Route::post('faqs/store', [FaqController::class, 'store'])->name('faqs.store');
 
-$router->get('faqs/edit/{faq}', [FaqController::class, 'edit'])->name('faqs.edit');
+Route::get('faqs/edit/{faq}', [FaqController::class, 'edit'])->name('faqs.edit');
 
-$router->patch('faqs/update/{faq}', [FaqController::class, 'update'])->name('faqs.update');
+Route::patch('faqs/update/{faq}', [FaqController::class, 'update'])->name('faqs.update');
 
-$router->delete('faqs/delete/{faq}', [FaqController::class, 'delete'])->name('faqs.delete');
+Route::delete('faqs/delete/{faq}', [FaqController::class, 'delete'])->name('faqs.delete');
 
-$router->get('faqs/search', [FaqController::class, 'search'])->name('faqs.search');
+Route::get('faqs/search', [FaqController::class, 'search'])->name('faqs.search');
+
+/* ==================================================================================
+Members Module
+====================================================================================*/
+
+Route::get('members/employee', [MemberController::class, 'employee'])->name('members.employee');
+
+Route::get('members/employer', [MemberController::class, 'employer'])->name('members.employer');
+
+Route::get('members/status/{member}', [MemberController::class, 'toggleStatus'])->name('members.status');
+
+Route::get('members/employee/search', [MemberController::class, 'employeeSearch'])->name('members.employee.search');
+
+Route::get('members/employer/search', [MemberController::class, 'employerSearch'])->name('members.employer.search');
+

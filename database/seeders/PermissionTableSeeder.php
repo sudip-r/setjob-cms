@@ -13,6 +13,7 @@ class PermissionTableSeeder extends Seeder
     protected $modules = [
       \App\AlterBase\Permissions\CategoryPermission::class,
       \App\AlterBase\Permissions\JobPermission::class,
+      \App\AlterBase\Permissions\MemberPermission::class,
       \App\AlterBase\Permissions\PagePermission::class,
       \App\AlterBase\Permissions\FaqPermission::class,
       \App\AlterBase\Permissions\PostPermission::class,

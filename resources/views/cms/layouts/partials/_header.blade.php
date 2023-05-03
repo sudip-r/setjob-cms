@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light">
+<nav class="main-header navbar navbar-expand navbar-light @if($dark_mode == '1') navbar-dark @else navbar-white @endif">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">

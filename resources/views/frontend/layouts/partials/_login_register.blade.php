@@ -64,6 +64,26 @@
     </div>
     <div class="__register_step_2">
       <div class="__form_group">
+        <label for="register-contact-number">Are you an Employee or Employer?</label>
+        <div class="__err" id="register-employee-employer-err"></div>
+      </div>
+      <div class="__form_half_group __top_10">
+        <input type="radio" checked name="employee-check" id="employee-check" class="__form_checkbox __remember_me __agree_field" value="client">
+        <label for="employee-check" class="__form_label __remember_label __agree_label">
+          Employee
+        </label>
+      </div>
+
+      <div class="__form_half_group __top_10 __ml_2per" >
+        <input type="radio" name="employee-check" id="employer-check" class="__form_checkbox __remember_me __agree_field" value="business">
+        <label for="employer-check" class="__form_label __remember_label __agree_label">
+          Employer
+        </label>
+      </div>
+
+      <div class="__clear"></div>
+
+      <div class="__form_group __top_20">
         <label for="register-full-name">Full name (Company name in case of Employer)</label>
         <div class="__err" id="register-fullname-err"></div>
         <input type="text" name="register_full_name" id="register-full-name" class="__form_input" placeholder="Full name" />
@@ -97,26 +117,6 @@
         <div class="__err" id="register-contact-number-err"></div>
         <input type="text" name="register_contact_number" id="register-contact-number" class="__form_input" placeholder="Contact Number" />
       </div>
-
-      <div class="__form_group __top_20">
-        <label for="register-contact-number">Are you an Employee or Employer?</label>
-        <div class="__err" id="register-employee-employer-err"></div>
-      </div>
-      <div class="__form_half_group __top_10">
-        <input type="radio" checked name="employee-check" id="employee-check" class="__form_checkbox __remember_me __agree_field" value="client">
-        <label for="employee-check" class="__form_label __remember_label __agree_label">
-          Employee
-        </label>
-      </div>
-
-      <div class="__form_half_group __top_10 __ml_2per" >
-        <input type="radio" name="employee-check" id="employer-check" class="__form_checkbox __remember_me __agree_field" value="business">
-        <label for="employer-check" class="__form_label __remember_label __agree_label">
-          Employer
-        </label>
-      </div>
-
-      <div class="__clear"></div>
 
       <div class="__form_group __top_20">
         <input type="submit" name="register_btn_final" id="register-btn-final" class="__form_btn" value="Register">

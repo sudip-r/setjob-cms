@@ -21,6 +21,9 @@ class ComposerServiceProvider extends ServiceProvider
             'cms.layouts.partials._scripts','App\Http\ViewComposers\UserSettingComposer'
         );
         View::composer(
+            'cms.layouts.master','App\Http\ViewComposers\UserSettingComposer'
+        );
+        View::composer(
             'frontend.layouts.partials._header','App\Http\ViewComposers\AuthCheckComposer'
         );
         View::composer(
