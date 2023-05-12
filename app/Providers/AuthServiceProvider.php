@@ -10,6 +10,7 @@ use App\AlterBase\Models\User\Role;
 use App\AlterBase\Models\User\User;
 use App\AlterBase\Models\Setting\Message;
 use App\AlterBase\Models\Job\Job;
+use App\AlterBase\Models\Member\Member;
 use App\AlterBase\Models\Partner\Partner;
 use App\Policies\CategoryPolicy;
 use App\Policies\FaqPolicy;
@@ -19,6 +20,7 @@ use App\Policies\RolePolicy;
 use App\Policies\UserPolicy;
 use App\Policies\SettingPolicy;
 use App\Policies\JobPolicy;
+use App\Policies\MemberPolicy;
 use App\Policies\PartnerPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
@@ -40,7 +42,8 @@ class AuthServiceProvider extends ServiceProvider
       Post::class => PostPolicy::class,
       Job::class => JobPolicy::class,
       Partner::class => PartnerPolicy::class,
-      Faq::class => FaqPolicy::class
+      Faq::class => FaqPolicy::class,
+      Member::class => MemberPolicy::class
     ];
 
     /**

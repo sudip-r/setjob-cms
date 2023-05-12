@@ -32,16 +32,16 @@
         <div class="__job_list_title __relative">
           <h3>Basic Details</h3>
           <div class="__post_job_wrapper">
-          <a class="__post_job" href="{{route('employee.detail', ['slug' => $slug])}}" target="_blank"><i class="fa fa-eye"></i> View As</a>
+          <a class="__post_job" href="{{route('employee.detail', ['slug' => $slug])}}" target="_blank"><i class="fa fa-eye"></i> Profile</a>
           </div>
         </div>
         <div class="__about_wrapper">
-            <div class="__profile_form __relative">
+            {{-- <div class="__profile_form __relative">
                 <label for="profile-upload">Profile Image <em>[Recommended size: 250x250 px]</em></label>
                 <div class="__err_abs __err_abs_left" id="logo-err"></div>
                 <img class="__profile_upload_img" id="profile-image-box" src="{{upath('uploads/users/'.$user->profile_image)}}">
                 <input type="file" name="profile_image" id="profile-upload" class="__form_input">
-            </div>
+            </div> --}}
             <div class="__profile_form __relative">
                 <label for="name">Full name</label>
                 <div class="__err_abs" id="name-err"></div>
@@ -59,11 +59,11 @@
                 <div class="__err_abs" id="email-err"></div>
                 <input type="text" name="email" id="email" class="__form_input" placeholder="Email" value="{{$user->email}}">
             </div>
-            <div class="__profile_form __relative">
+            {{-- <div class="__profile_form __relative">
                 <label for="address">Address</label>
                 <div class="__err_abs" id="address-err"></div>
                 <input type="text" name="address" id="address" class="__form_input" placeholder="Address" value="{{$user->profile()->address}}">
-            </div>
+            </div> --}}
             <div class="__profile_form __relative">
                 <label for="city">City</label>
                 <div class="__err_abs" id="city-err"></div>
@@ -101,7 +101,7 @@
                   <img src="{{mpath('front/assets/images/pdf.png')}}" />
                 </a>
                 @endif
-                <input type="file" name="contact_person" id="cv" accept="application/pdf" class="__form_input">
+                <input type="file" name="contact_person" id="cv" class="__form_input">
             </div>
 
             <div class="__profile_form __relative">
@@ -157,10 +157,10 @@
                   <textarea name="summary" id="about" class="__form_input __textarea" placeholder="Write about yourself">{{$user->profile()->summary}}</textarea>
               </div>
              
-              <div class="__profile_form">
+              {{-- <div class="__profile_form">
                 <label for="projects">Experience</label>
                 <textarea name="description" id="projects" class="__form_input __textarea" placeholder="Write about your work experiences">{{$user->profile()->description}}</textarea>
-              </div>
+              </div> --}}
 
               <div class="__profile_form">
                 <label for="map">Qualifications and Skills</label>

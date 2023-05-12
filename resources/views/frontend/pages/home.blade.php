@@ -2,9 +2,9 @@
 
 @section("content")
 <div class="__home_search">
-    <h1>We are Set Jobs</h1>
+    <h1>{{$home->title}}</h1>
 
-    <h3>Find the perfect job for you</h3>
+    <h3>{{$home->sub_title}}</h3>
 
     <div class="__search_box">
       <div class="__search_icon">
@@ -34,23 +34,21 @@
     <div class="__home_info">
       <div class="row">
         <div class="col-md-6 __content_white">
-          <h2>Post jobs for your next potential hire</h2>
-          <p>Fusce quis quam et enim porta elementum a eu augue. Nullam sit amet quam id justo congue vulputate at ut metus. Vestibulum 
-            lacinia tempor turpis, eget accumsan sem interdum id.</p>
+          <h2>{{$home->left_col_title}}</h2>
+          <p>{!! $home->left_col_summary !!}</p>
           <div class="__btn_bg_white_wrapper">
             @if(auth()->user() && auth()->user()->guard == "business")
-            <a href="{{route('dashboard.jobs.create')}}" class="__btn_bg_white __btn">Post a Job</a>
+            <a href="{{route('dashboard.jobs.create')}}" class="__btn_bg_white __btn">{{$home->left_col_btn}}</a>
             @else
-            <a href="javascript:void(0);" class="__btn_bg_white __btn" @if(!auth()->user())id="go-to-post"@endif>Post a Job</a>
+            <a href="javascript:void(0);" class="__btn_bg_white __btn" @if(!auth()->user())id="go-to-post"@endif>{{$home->left_col_btn}}</a>
             @endif
           </div>
         </div>
         <div class="col-md-6 __content_dark">
-          <h2>Become a member for only £1 a month!</h2>
-          <p>Fusce quis quam et enim porta elementum a eu augue. Nullam sit amet quam id justo congue vulputate at ut metus. Vestibulum 
-            lacinia tempor turpis, eget accumsan sem interdum id.</p>
+          <h2>{{$home->right_col_title}}</h2>
+          <p>{!! $home->right_col_summary !!}</p>
           <div class="__btn_bg_black_wrapper">
-            <a href="javascript:void(0);" class="__btn_bg_black" @if(!auth()->user())id="register-popup"@endif>Register Now</a>
+            <a href="javascript:void(0);" class="__btn_bg_black" @if(!auth()->user())id="register-popup"@endif>{{$home->right_col_btn}}</a>
           </div>
         </div>
       </div>

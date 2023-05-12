@@ -4,16 +4,23 @@ namespace App\Http\Controllers\alterCMS\Setting;
 
 use App\AlterBase\Repositories\Setting\MessageRepository;
 use App\AlterBase\Repositories\Setting\NoticeRepository;
+use App\AlterBase\Repositories\Setting\SettingRepository;
+use App\AlterBase\Repositories\Setting\StripeRepository;
+use App\AlterBase\Repositories\Setting\HomeSettingRepository;
 use App\AlterBase\Repositories\User\UserRepository;
 use App\AlterBase\Repositories\User\UserSettingRepository;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HomeSettingRequest;
+use App\Http\Requests\SettingRequest;
+use App\Http\Requests\StripeRequest;
 use App\Http\Requests\UserSettingRequest;
 use Illuminate\Database\DatabaseManager;
 use Intervention\Image\Facades\Image;
 use Psr\Log\LoggerInterface;
+use Illuminate\Support\Facades\Storage;
 
 /**
- * Class UserController
+ * Class SettingController
  * @package App\Http\Controllers\CMS
  */
 class SettingController extends Controller
@@ -35,6 +42,18 @@ class SettingController extends Controller
      */
     private $notice;
     /**
+     * @var SettingRepository
+     */
+    private $setting;
+    /**
+     * @var StripeRepository
+     */
+    private $stripe;
+    /**
+     * @var HomeSettingRepository
+     */
+    private $home;
+    /**
      * @var LoggerInterface
      */
     private $log;
@@ -53,6 +72,9 @@ class SettingController extends Controller
      * @param UserRepository $user,
      * @param MessageRepository $message
      * @param NoticeRepository $notice
+     * @param SettingRepository $setting
+     * @param StripeRepository $stripe
+     * @param HomeSettingRepository $home
      * @param LoggerInterface $log
      * @param DatabaseManager $db
      */
@@ -61,14 +83,202 @@ class SettingController extends Controller
         UserRepository $user,
         MessageRepository $message,
         NoticeRepository $notice,
+        SettingRepository $setting,
+        StripeRepository $stripe,
+        HomeSettingRepository $home,
         LoggerInterface $log,
         DatabaseManager $db) {
         $this->userSetting = $userSetting;
         $this->user = $user;
         $this->message = $message;
         $this->notice = $notice;
+        $this->setting = $setting;
+        $this->stripe = $stripe;
+        $this->home = $home;
         $this->log = $log;
         $this->db = $db;
+    }
+
+    /**
+     * Main site setting
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function main()
+    {
+        $setting = $this->setting->findBy('id', 1);
+
+        return view('cms.setting.main')
+            ->with('setting', $setting);
+    }
+
+    /**
+     * Update main settings
+     * 
+     * @param SettingRequest $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function updateMainSetting(SettingRequest $request)
+    {
+        $setting = $this->setting->find(1);
+
+        try {
+            $this->db->beginTransaction();
+
+            $settings = $request->only([
+                'trial_period', 'facebook', 'twitter', 'linkedin'
+            ]);
+            
+            $this->setting->update($setting->id, $settings);
+
+            $setting = $this->setting->find($setting->id);
+
+            $filePath = storage_path('app/public/settings');
+
+            if(!file_exists($filePath))
+                mkdir($filePath, 0775);
+
+            Storage::put('public/settings/settings.json', json_encode($setting));
+
+            $this->db->commit();
+
+            return redirect()->route('cms::settings.index')
+                ->with('success', 'Settings updated successfully.');
+
+        } catch (\Exception $e) {
+            $this->db->rollback();
+            $this->log->error((string) $e);
+
+            return redirect()->route('cms::settings.index')
+                ->with('error', 'Filed to update setting.')
+                ->withInput();
+        }
+    }
+
+    /**
+     * Stripe setting
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function stripe()
+    {
+        $stripe = $this->stripe->findBy('id', 1);
+
+        return view('cms.setting.stripe')
+            ->with('stripe', $stripe);
+    }
+
+    /**
+     * Update stripe settings
+     * 
+     * @param SettingRequest $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function updateStripe(StripeRequest $request)
+    {
+        $stripe = $this->stripe->find(1);
+
+        try {
+            $this->db->beginTransaction();
+
+            $input = $request->only([
+                'test_publishable_key', 'test_secret_key', 'live_publishable_key', 'live_secret_key'
+            ]);
+
+            $input['live'] = 0;
+
+            if(isset($request->live))
+                $input['live'] = 1;
+
+            $this->stripe->update($stripe->id, $input);
+
+            $stripe = $this->setting->find($stripe->id);
+
+            $filePath = storage_path('app/public/settings');
+
+            if(!file_exists($filePath))
+                mkdir($filePath, 0775);
+
+            Storage::put('public/settings/stripe.json', json_encode($stripe));
+
+            $this->db->commit();
+
+            return redirect()->route('cms::settings.stripe')
+                ->with('success', 'Stripe settings updated successfully.');
+
+        } catch (\Exception $e) {
+            $this->db->rollback();
+            $this->log->error((string) $e);
+
+            return redirect()->route('cms::settings.stripe')
+                ->with('error', 'Filed to update stripe setting.')
+                ->withInput();
+        }
+    }
+
+    /**
+     * Stripe setting
+     * 
+     * @return \Illuminate\View\View
+     */
+    public function home()
+    {
+        $home = $this->home->findBy('id', 1);
+
+        return view('cms.setting.home')
+            ->with('home', $home);
+    }
+
+    /**
+     * Update stripe settings
+     * 
+     * @param SettingRequest $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     */
+    public function updateHome(HomeSettingRequest $request)
+    {
+        $home = $this->home->find(1);
+
+        try {
+            $this->db->beginTransaction();
+
+            $input = $request->only([
+                'title',
+                'sub_title',
+                'left_col_title',
+                'left_col_summary',
+                'left_col_btn',
+                'left_col_btn_link',
+                'right_col_title',
+                'right_col_summary',
+                'right_col_btn',
+                'right_col_btn_link'
+            ]);
+
+            $this->home->update($home->id, $input);
+
+            $home = $this->home->find($home->id);
+
+            $filePath = storage_path('app/public/settings');
+
+            if(!file_exists($filePath))
+                mkdir($filePath, 0775);
+
+            Storage::put('public/settings/home.json', json_encode($home));
+
+            $this->db->commit();
+
+            return redirect()->route('cms::settings.home')
+                ->with('success', 'Settings updated successfully.');
+
+        } catch (\Exception $e) {
+            $this->db->rollback();
+            $this->log->error((string) $e);
+
+            return redirect()->route('cms::settings.home')
+                ->with('error', 'Filed to update setting.')
+                ->withInput();
+        }
     }
 
     /**
@@ -124,18 +334,21 @@ class SettingController extends Controller
 
             $this->db->commit();
 
-            return redirect()->route('cms::profile.setting')
+            return redirect()->route('cms::settings.profile')
                 ->with('success', 'User settings updated successfully.');
 
         } catch (\Exception $e) {
             $this->db->rollback();
             $this->log->error((string) $e);
 
-            return redirect()->route('cms::profile.setting')
+            return redirect()->route('cms::settings.profile')
                 ->with('error', 'Filed to update user setting.')
                 ->withInput();
         }
     }
+
+
+
 
     /**
      * Get user messages

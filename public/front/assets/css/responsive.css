@@ -258,6 +258,12 @@
   width: 100%;
   height: auto;
 }
+.__err_abs {
+  top: 12px;
+}
+#cv-err{
+  position: unset;
+}
 }
 
 /* Target tablets */

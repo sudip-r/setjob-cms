@@ -683,7 +683,7 @@ $(document).ready(function () {
 
         if (name == "") {
             valid = false;
-            $("#name-err").html("Company name cannot be removed");
+            $("#name-err").html("Name cannot be removed");
             scrollToDiv("#name-err");
         } else {
             $("#name-err").html("");
@@ -760,13 +760,20 @@ $(document).ready(function () {
 
     $("#cv").change(function () {
         var file = this.files[0];
-
+        var fileInput = document.getElementById('cv');
+        var filePath = fileInput.value;
         // Check if file is a PDF
-        if (file.type !== "application/pdf") {
-            $("#cv-err").html("File must be of pdf type");
-            // Clear file input
-            $("#cv").val("");
-            return;
+        // if (file.type !== "application/pdf") {
+        //     $("#cv-err").html("File must be of pdf type");
+        //     // Clear file input
+        //     $("#cv").val("");
+        //     return;
+        // }
+        var allowedExtensions = /(\.pdf|\.doc|\.docx)$/i;
+        if (!allowedExtensions.exec(filePath)) {
+            $("#cv-err").html("Invalid file type. Only PDF or Word format files are allowed.");
+            fileInput.value = '';
+            return false;
         }
 
         // Check if file size is less than 4MB

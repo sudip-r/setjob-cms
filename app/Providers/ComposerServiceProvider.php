@@ -21,10 +21,16 @@ class ComposerServiceProvider extends ServiceProvider
             'cms.layouts.partials._scripts','App\Http\ViewComposers\UserSettingComposer'
         );
         View::composer(
+            'cms.layouts.master','App\Http\ViewComposers\UserSettingComposer'
+        );
+        View::composer(
             'frontend.layouts.partials._header','App\Http\ViewComposers\AuthCheckComposer'
         );
         View::composer(
             'frontend.pages.employer.profile','App\Http\ViewComposers\CitiesListComposer'
+        );
+        View::composer(
+            'frontend.layouts.partials._footer','App\Http\ViewComposers\FooterComposer'
         );
     }
 

@@ -1,4 +1,4 @@
-<aside class="main-sidebar sidebar-light-info elevation-4">
+<aside class="main-sidebar @if($dark_mode == '1') sidebar-dark-info @else sidebar-light-info @endif elevation-4">
   <!-- Brand Logo -->
   <a href="{{route('home')}}" class="brand-link">
     {{-- <img src="{!! asset('front/assets/images/logo.png') !!}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> --}}
