@@ -88,7 +88,7 @@
         <div class="__err" id="register-fullname-err"></div>
         <input type="text" name="register_full_name" id="register-full-name" class="__form_input" placeholder="Full name" />
       </div>
-      <div class="__form_group __top_20">
+      <div class="__form_group __top_20 __address_box" id="address-box">
         <label for="register-address-err">Street Address</label>
         <div class="__err" id="register-address-err"></div>
         <input type="text" name="register_street_address_1" id="register-street-address-1" class="__form_input" placeholder="House number and street name" />

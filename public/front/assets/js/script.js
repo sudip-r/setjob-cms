@@ -431,7 +431,7 @@ $(document).ready(function () {
             $("#register-fullname-err").html("");
         }
 
-        if (address1 == "") {
+        if (address1 == "" && type == "business") {
             localReg = false;
             $("#register-address-err").html("Address is required!");
         } else {
@@ -893,6 +893,18 @@ $(document).ready(function () {
             },
         });
     });
+
+    $('input[type="radio"][name="employee-check"]').change(function() {
+        var selectedValue = $(this).val();
+        if(selectedValue == "business")
+        {
+            $("#address-box").fadeIn(200);
+        }
+        if(selectedValue == "client")
+        {
+            $("#address-box").fadeOut(200);
+        }
+      });
 });
 function convertToCurrency(currency) {
     currency = parseInt(currency);

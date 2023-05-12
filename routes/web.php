@@ -71,9 +71,9 @@ Route::get('/terms-and-conditions', [App\Http\Controllers\Front\HomeController::
 
 Route::get('/privacy-policies', [App\Http\Controllers\Front\HomeController::class, 'privacy'])->name('privacy');
 
-Route::get('/company/{slug}', [App\Http\Controllers\Front\HomeController::class, 'employerDetail'])->name('employer.detail');
+Route::get('/company/{user}', [App\Http\Controllers\Front\HomeController::class, 'employerDetail'])->name('employer.detail');
 
-Route::get('/profile/{slug}', [App\Http\Controllers\Front\HomeController::class, 'employeeDetail'])->name('employee.detail');
+Route::get('/profile/{user}', [App\Http\Controllers\Front\HomeController::class, 'employeeDetail'])->name('employee.detail');
 
 Route::get('/faqs', [App\Http\Controllers\Front\HomeController::class, 'faqs'])->name('faqs');
 

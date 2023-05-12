@@ -32,7 +32,7 @@
         <div class="__job_list_title __relative">
           <h3>Basic Details</h3>
           <div class="__post_job_wrapper">
-          <a class="__post_job" href="{{route('employer.detail', ['slug' => $user->slug])}}" target="_blank"><i class="fa fa-eye"></i> View As</a>
+          <a class="__post_job" href="{{route('employer.detail', ['user' => $user->slug])}}" target="_blank"><i class="fa fa-eye"></i> Profile</a>
           </div>
         </div>
         <div class="__about_wrapper">
