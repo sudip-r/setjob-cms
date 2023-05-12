@@ -81,3 +81,6 @@ Route::get('/news', [App\Http\Controllers\Front\HomeController::class, 'newsList
 
 Route::get('/news/{slug}', [App\Http\Controllers\Front\HomeController::class, 'newsDetail'])->name('news.detail');
 
+Route::get('/forgot-password', [App\Http\Controllers\Front\HomeController::class, 'forgotPassword'])->name('forgot-password');
+
+

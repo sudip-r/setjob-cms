@@ -5,9 +5,9 @@
     <div class="row __job_lists">
         <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
             <div class="__company_wrapper">
-            <div class="__profile_box">
+            {{-- <div class="__profile_box">
                 <img class="__company_logo __profile_img" src="{{upath("uploads/users/".$user->profile_image)}}" />
-            </div>
+            </div> --}}
             <div class="__company_name">
                 {{$user->name}}
             </div>
@@ -51,7 +51,7 @@
                     {!! $profile->summary !!}
                 </div>
             </div>
-            <div class="__gap_30"></div>
+            {{-- <div class="__gap_30"></div>
             <div class="__job_list_title">
                 <h5>Experience</h5>
             </div>
@@ -63,7 +63,7 @@
                 <div class="__editor_box __job_wrapper">
                     
                 </div>
-            </div>
+            </div> --}}
             <div class="__gap_30"></div>
             <div class="__job_list_title">
                 <h5>Qualifications</h5>

@@ -19,13 +19,11 @@ class PostCategoryTableSeeder extends Seeder
         app(PostCategory::class)->truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1');
 
-        $category = [2,3,4,5,7,8];
-
-        for($i = 1; $i <= 1000; $i++)
+        for($i = 1; $i <= 100; $i++)
         {
             $data = [
                 'post_id' => $i,
-                'category_id' => $category[rand(0,5)]
+                'category_id' => 8
                 ];
       
             PostCategory::create($data); 

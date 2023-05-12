@@ -29,6 +29,9 @@ class ComposerServiceProvider extends ServiceProvider
         View::composer(
             'frontend.pages.employer.profile','App\Http\ViewComposers\CitiesListComposer'
         );
+        View::composer(
+            'frontend.layouts.partials._footer','App\Http\ViewComposers\FooterComposer'
+        );
     }
 
     /**

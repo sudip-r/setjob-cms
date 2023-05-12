@@ -110,7 +110,7 @@ class CategoryTableSeeder extends Seeder
             'parent' => "0",
             'publish' => 1,
             'summary' => "",
-            'type' => "Posts",
+            'type' => "Category",
         ];
 
         Category::create($data);

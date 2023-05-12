@@ -84,9 +84,21 @@ Route::get('user/verification/check/{token}', [UserController::class, 'verify'])
 /* ==================================================================================
 Setting Module
 ====================================================================================*/
-Route::get('profile/user-setting', [SettingController::class, 'setting'])->name('profile.setting');
+Route::get('settings/main', [SettingController::class, 'main'])->name('settings.index');
 
-Route::patch('profile/user-setting/{setting}', [SettingController::class, 'updateSetting'])->name('profile.setting.update');
+Route::patch('settings/main/update', [SettingController::class, 'updateMainSetting'])->name('settings.main.update');
+
+Route::get('settings/stripe', [SettingController::class, 'stripe'])->name('settings.stripe');
+
+Route::patch('settings/stripe/update', [SettingController::class, 'updateStripe'])->name('settings.stripe.update');
+
+Route::get('settings/home', [SettingController::class, 'home'])->name('settings.home');
+
+Route::patch('settings/home/update', [SettingController::class, 'updateHome'])->name('settings.home.update');
+
+Route::get('settings/profile', [SettingController::class, 'setting'])->name('settings.profile');
+
+Route::patch('profile/user-setting/{setting}', [SettingController::class, 'updateSetting'])->name('settings.profile.update');
 
 Route::get('messages', [SettingController::class, 'messages'])->name('messages.message');
 

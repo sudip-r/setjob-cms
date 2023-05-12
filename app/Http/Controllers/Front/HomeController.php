@@ -9,8 +9,12 @@ use App\AlterBase\Repositories\Page\PageRepository;
 use App\AlterBase\Repositories\Partner\PartnerRepository;
 use App\AlterBase\Repositories\User\UserRepository;
 use App\AlterBase\Repositories\Post\PostRepository;
+use App\AlterBase\Repositories\Setting\SettingRepository;
+use App\AlterBase\Repositories\Setting\HomeSettingRepository;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Psr\Log\LoggerInterface;
 
 class HomeController extends Controller
 {
@@ -50,6 +54,21 @@ class HomeController extends Controller
     private $post;
 
     /**
+     * SettingRepository $setting
+     */
+    private $setting; 
+
+    /**
+     * HomeSettingRepository $home
+     */
+    private $home;
+
+    /**
+     * LoggerInterface $log
+     */
+    private $log;
+
+    /**
      * Create a new controller instance.
      *
      * @param PageRepository $page
@@ -59,6 +78,9 @@ class HomeController extends Controller
      * @param PartnerRepository $partner
      * @param FaqRepository $faq
      * @param PostRepository $post
+     * @param SettingRepository $setting
+     * @param HomeSettingRepository $home
+     * @param LoggerInterface $log
      * @return void
      */
     public function __construct(
@@ -68,7 +90,11 @@ class HomeController extends Controller
         CategoryRepository $category,
         PartnerRepository $partner,
         FaqRepository $faq,
-        PostRepository $post) {
+        PostRepository $post,
+        SettingRepository $setting,
+        HomeSettingRepository $home,
+        LoggerInterface $log
+        ) {
         $this->page = $page;
         $this->job = $job;
         $this->user = $user;
@@ -76,6 +102,9 @@ class HomeController extends Controller
         $this->partner = $partner;
         $this->faq = $faq;
         $this->post = $post;
+        $this->setting = $setting;
+        $this->home = $home;
+        $this->log = $log;
     }
 
     /**
@@ -91,7 +120,10 @@ class HomeController extends Controller
             'asc',
             ['id', 'partner_link', 'image', 'partner_name']
         );
-        return view('frontend.pages.home')->with('partners', $partners);
+
+        $home = $this->loadHome();
+
+        return view('frontend.pages.home')->with('partners', $partners)->with('home', $home);
     }
 
     /**
@@ -268,5 +300,49 @@ class HomeController extends Controller
 
         return view('frontend.pages.news-detail')
                 ->with('news', $news);
+    }
+
+    /**
+     * Forgot password
+     * 
+     * @return \Illuminate\Contracts\View\View|\Illuminate\Contracts\View\Factory
+     */
+    public function forgotPassword()
+    {
+        return view('frontend.pages.forgot-password');
+    }
+
+    /**
+     * Load settings from file or db
+     *
+     * @return Array|Illuminate\Database\Eloquent\Collection
+     */
+    private function loadSettings()
+    {
+        try {
+            return json_decode(Storage::get('public/settings/settings.json'), false);
+        } catch (\Exception $e) {
+            //If data could not be read from the settings.json file
+            $this->log->error((string) $e);
+
+            return $this->setting->find(1);
+        }
+    }
+
+    /**
+     * Load settings from file or db
+     *
+     * @return Array|Illuminate\Database\Eloquent\Collection
+     */
+    private function loadHome()
+    {
+        try {
+            return json_decode(Storage::get('public/settings/home.json'), false);
+        } catch (\Exception $e) {
+            //If data could not be read from the home.json file
+            $this->log->error((string) $e);
+
+            return $this->home->find(1);
+        }
     }
 }

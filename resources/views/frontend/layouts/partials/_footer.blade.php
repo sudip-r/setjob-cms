@@ -6,9 +6,9 @@
         </div>
         <div class="col-md-4 col-sm-4 col-xs-4 __social">
           <ul>
-            <li><a href=""><img src="{{asset("front/assets/images/linkedin.png")}}" /></a></li>
-            <li><a href=""><img src="{{asset("front/assets/images/twitter.png")}}" /></a></li>
-            <li><a href=""><img src="{{asset("front/assets/images/facebook.png")}}" /></a></li>
+            <li><a href="{{$setting->linkedin}}" target="_blank"><img src="{{asset("front/assets/images/linkedin.png")}}" /></a></li>
+            <li><a href="{{$setting->twitter}}" target="_blank"><img src="{{asset("front/assets/images/twitter.png")}}" /></a></li>
+            <li><a href="{{$setting->facebook}}" target="_blank"><img src="{{asset("front/assets/images/facebook.png")}}" /></a></li>
           </ul>
         </div>
       </div>
