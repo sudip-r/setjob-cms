@@ -34,7 +34,8 @@ class SettingsTableSeeder extends Seeder
 
       $data = [
         'id' => 1,
-        'live' => 0
+        'live' => 0,
+        'subscription_fee' => 1
       ];
       Stripe::create($data);  
 

@@ -35,11 +35,74 @@
         </div>
         <div class="__about_wrapper">
           <div class="__editor_box">
+            @if($payment == false && $expired == false)
+            <div id="payment-method">
+            <p>You are running on trial period with {{30 - $days}} days remaining. Please add your card to verify your account. The membership fee of £ 1.00 will be deducted every month from this card. </p>
+            <br>
+
+            
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div id="card-element" class="__border">
+                  <!-- A Stripe Element will be inserted here. -->
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div class="__add_card __hidden">
+                  <a id="add-card" href="javascript:void(0);" class="__post_job">Add Card</a>
+                </div>
+              </div>
+            </div>
+            <br />
+              <p>or pay from your wallet</p>
+            <div class="row">
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <div id="payment-request-button">
+                  <!-- A Stripe Element will be inserted here if the browser supports this type of payment method. -->
+                </div>
+              </div>
+              <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                
+              </div>
+            </div>
+            </div>
+            @elseif($expired == true)
+            <div id="payment-method">
+              <p>Your trial period has expired. Please add your card to verify your account and subscribe to our website. The membership fee of £ 1.00 will be deducted every month from this card. </p>
+              <br>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div id="card-element" class="__border">
+                    <!-- A Stripe Element will be inserted here. -->
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div class="__add_card __hidden">
+                    <a id="add-card" href="javascript:void(0);" class="__post_job">Add Card</a>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <p>or pay from your wallet</p>
+              <div class="row">
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                  <div id="payment-request-button">
+                    <!-- A Stripe Element will be inserted here if the browser supports this type of payment method. -->
+                  </div>
+                </div>
+                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                 
+                </div>
+              </div>
+              </div>
+            @else
             <br>
             <p>Ready to find your next potential employee?</p>
             <br>
             <p>To get started, simply edit your profile. Provide as much relevant information as you can about the job 
               i.e: Rate, how long the job will be, pay, contact info etc.</p>
+            @endif
+            
           </div>
         </div>
           <div class="__gap_30"></div>

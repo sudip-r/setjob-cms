@@ -22,6 +22,17 @@
     <div class="row">
       <div class="col-md-9 col-sm-8 col-xs-12">
         <div class="card card-primary">
+          <div class="card-body">
+
+              <div class="form-group">
+                {!! Form::label('subscription_fee','Subscription fee (£ per month)') !!}
+                {!! Form::number('subscription_fee', null, ['class' => 'form-control', 'id' => 'subscription_fee', 'placeholder' => "Subscription fee (£ per month)"]) !!}
+              </div>
+
+          </div>
+      </div>
+
+        <div class="card card-primary">
             <div class="card-body">
 
                 <div class="form-group">

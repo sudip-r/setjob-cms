@@ -17,7 +17,10 @@ class Stripe extends Model
         'currency',
         'currency_symbol',
         'dashboard',
-        'test_dashboard'
+        'test_dashboard',
+        'subscription_fee',
+        'product_id',
+        'price_id'
     ];
 
 }

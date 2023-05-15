@@ -25,6 +25,10 @@ class CreateStripeTable extends Migration
             $table->string('currency_symbol',3)->nullable();
             $table->string('dashboard')->nullable();
             $table->string('test_dashboard')->nullable();
+            $table->integer('subscription_fee')->nullable();
+            $table->string('product_id')->nullable();
+            $table->string('price_id')->nullable();
+
             $table->timestamps();
         });
     }

@@ -4,6 +4,7 @@ use App\Http\Controllers\API\CityController;
 use App\Http\Controllers\API\JobController;
 use App\Http\Controllers\API\LoginController;
 use App\Http\Controllers\API\RegisterController;
+use App\Http\Controllers\API\StripeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -35,6 +36,8 @@ Route::get("/cities", [CityController::class, "cities"])->name("api.list.cities"
 Route::post("/jobs", [JobController::class, "jobs"])->name("api.jobs");
 
 Route::get("/users", [JobController::class, "userList"])->name("api.list.users");
+
+Route::post("/add-card", [StripeController::class, "addCard"])->name('stripe.add.card');
 
 
 

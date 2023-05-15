@@ -1493,3 +1493,19 @@ label em{
 .__address_box{
     display:none;
 }
+.__border{
+    border:solid 1px #AAA;
+    padding:15px;
+}
+.__loading_wrapper{
+    z-index: 999999999999999;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+}
+.__float_mid {
+    display: block;
+    z-index: 99999999999999;
+    margin-top: calc(50vh - 50px);
+}

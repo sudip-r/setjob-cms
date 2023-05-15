@@ -29,6 +29,12 @@ class User extends Authenticatable
         'online',
         'profile_image',
         'verification_token',
+        'stripe_id',
+        'subscription_id',
+        'pm_type',
+        'stripe_id',
+        'pm_last_four',
+        'trial_ends_at',
     ];
 
     /**
