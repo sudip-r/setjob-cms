@@ -460,9 +460,11 @@ class SettingController extends Controller
     private function createStripeProduct($stripe)
     {
         $key = $stripe->live_secret_key;
+        $description = "Membership subscription";
         if($stripe->live == 0)
         {
             //test
+            $description = "Test membership subscription v".date("YmdHis");
             $key = $stripe->test_secret_key;
         }
 
@@ -472,7 +474,7 @@ class SettingController extends Controller
         $client = new \Stripe\StripeClient($key);
 
         $productObj = $client->products->create([
-            'name' => "Membership subscription",
+            'name' => $description,
         ]);
     
         return $productObj->id;
