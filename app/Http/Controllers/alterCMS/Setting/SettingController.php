@@ -198,12 +198,12 @@ class SettingController extends Controller
             if($input['subscription_fee'] != NULL )
             {
                 $productId = "";
-                if($stripe->product_id == NULL || $stripe->product_id == "")
+                if($stripe->product_id == NULL || $stripe->product_id == "" || $stripe->product_id == 0)
                 {
                     $productId = $input['product_id'] = $this->createStripeProduct($stripe);
                 }
 
-                if($stripe->price_id == NULL || $stripe->price_id == "")
+                if($stripe->price_id == NULL || $stripe->price_id == "" || $stripe->price_id == 0)
                 {
                     $input['price_id'] = $this->createStripePrice($stripe, $productId);
                 }

@@ -148,3 +148,8 @@
   </div>
 </div> <!-- CONTENT -->
 @endsection
+
+@section('custom-scripts')
+<script src="https://js.stripe.com/v3/"></script>
+<script src="{{asset('front/assets/js/client.js')}}"></script>
+@endsection
