@@ -54,7 +54,7 @@ class MemberController extends Controller
         $this->authorize('employee', Member::class);
 
         $members = $this->member->paginateWithCondition('guard', 'client', 'id', 'desc', 50);
-
+        
         return view('cms.members.employee')
             ->with('members', $members);
     }

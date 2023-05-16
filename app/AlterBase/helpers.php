@@ -383,3 +383,22 @@ function convertNumber($number)
         return $countryCode . $number;
     }
 }
+
+/**
+ * Difference in days from specific date to current date
+ * 
+ * @param $targetDate
+ * @return Integer
+ */
+function dateDifference($targetDate)
+{
+    $currentDate = date("Y-m-d H:i:s");
+
+    $targetDateTime = new DateTime($targetDate);
+    $currentDateTime = new DateTime($currentDate);
+
+    $interval = $currentDateTime->diff($targetDateTime);
+    $daysDifference = $interval->days;
+
+    return $daysDifference;
+}

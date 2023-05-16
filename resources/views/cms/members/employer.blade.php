@@ -87,7 +87,7 @@
                 <a href="{!! route('cms::members.status',['member' => $user]) !!}" class="btn btn-success" data-bs-toggle="tooltip" data-placement="top" title="You can activate user account from here."><span class="fa fa-check"></span></a>
                 @endif
 
-                <a href="{!! route('employer.detail',['slug' => $user->slug]) !!}" class="btn btn-warning" data-bs-toggle="tooltip" data-placement="top" title="View user profile" target="_blank"><span class="fa fa-eye"></span></a>
+                <a href="{!! route('employer.detail',['user' => $user->slug]) !!}" class="btn btn-warning" data-bs-toggle="tooltip" data-placement="top" title="View user profile" target="_blank"><span class="fa fa-eye"></span></a>
 
             </td>
 

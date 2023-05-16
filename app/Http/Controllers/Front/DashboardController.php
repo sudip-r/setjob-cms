@@ -5,12 +5,15 @@ namespace App\Http\Controllers\Front;
 use App\AlterBase\Repositories\User\ProfileRepository;
 use App\AlterBase\Repositories\User\UserRepository;
 use App\AlterBase\Repositories\Job\JobRepository;
+use App\AlterBase\Repositories\Setting\SettingRepository;
+use App\AlterBase\Repositories\Setting\StripeRepository;
 use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Stripe\StripeClient;
 
 class DashboardController extends Controller
 {
@@ -31,6 +34,16 @@ class DashboardController extends Controller
     private $job;
 
     /**
+     * SettingRepository $setting
+     */
+    private $setting;
+
+    /**
+     * StripeRepository $stripe
+     */
+    private $stripe;
+
+    /**
      * LoggerInterface $log
      */
     private $log;
@@ -44,10 +57,14 @@ class DashboardController extends Controller
         UserRepository $user,
         ProfileRepository $profile,
         JobRepository $job,
+        SettingRepository $setting,
+        StripeRepository $stripe,
         LoggerInterface $log) {
         $this->user = $user;
         $this->profile = $profile;
         $this->job = $job;
+        $this->setting = $setting;
+        $this->stripe = $stripe;
         $this->log = $log;
     }
 
@@ -62,9 +79,29 @@ class DashboardController extends Controller
             return redirect()->route('home');
         }
 
-        $userId = auth()->user()->id;
+        $setting = $this->loadSettings();
+
+        $user = auth()->user();
+
+        $userId = $user->id;
 
         $user = $this->user->find($userId);
+
+        if($user->stripe_id == "")
+        {
+            $this->createStripeCustomer($user);
+        }
+
+        $days = dateDifference($user->created_at);
+
+        $expired = false;
+        $payment = false;
+
+        if($days > 30)
+            $expired = true;
+
+        if($user->verified == 1)
+            $payment = true;
 
         $jobs = $this->job->paginateWithMultipleCondition(
             ['user_id' => $userId],
@@ -75,9 +112,19 @@ class DashboardController extends Controller
         );
 
         if ($user->guard == "client") {
-            return view('frontend.pages.employee.dashboard')->with('user', $user)->with('jobs', $jobs);
+            return view('frontend.pages.employee.dashboard')
+                ->with('user', $user)
+                ->with('jobs', $jobs)
+                ->with('expired', $expired)
+                ->with('payment', $payment)
+                ->with('days', $days);
         }
-        return view('frontend.pages.employer.dashboard')->with('user', $user)->with('jobs', $jobs);
+        return view('frontend.pages.employer.dashboard')
+                ->with('user', $user)
+                ->with('jobs', $jobs)
+                ->with('expired', $expired)
+                ->with('payment', $payment)
+                ->with('days', $days);
         
     }
 
@@ -524,5 +571,66 @@ class DashboardController extends Controller
         }
         return true;
     }
+
+    /**
+     * Load settings from file or db
+     *
+     * @return Array|Illuminate\Database\Eloquent\Collection
+     */
+    private function loadSettings()
+    {
+        try {
+            return json_decode(Storage::get('public/settings/settings.json'), false);
+        } catch (\Exception $e) {
+            //If data could not be read from the settings.json file
+            $this->log->error((string) $e);
+
+            return $this->setting->find(1);
+        }
+    }
+
+    /**
+     * Create stripe customer
+     * 
+     * @param $user
+     * @return Boolean
+     */
+    private function createStripeCustomer($user)
+    {
+        $stripe = $this->stripe->find(1);
+
+        $key = $stripe->live_secret_key;
+        if($stripe->live == 0)
+        {
+            //test
+            $key = $stripe->test_secret_key;
+        }
+
+        if($key == "")
+            return false;
+
+        $client = new \Stripe\StripeClient($key);
+
+        $description = "";
+
+        if($user->guard == "client")
+            $description = "Employee account";
+        
+        if($user->guard == "business")
+            $description = "Employer account";
+        
+        if($description == "")
+            return false;
+        
+        $customer = $client->customers->create([
+            'name' => $user->name,
+            'email' => $user->email,
+            'description' => $description
+        ]);
+
+        $this->user->update($user->id, ['stripe_id' => $customer->id]);
+
+        return true;
+    }   
 
 }

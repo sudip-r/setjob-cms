@@ -186,6 +186,12 @@
 .__job_list_title{
   margin-top: 40px;
 }
+.__job_list_title h3 {
+  text-align: center;
+}
+.__add_card{
+  margin-top:30px;
+}
 
 .__post_job_wrapper {
   position: relative;
@@ -195,10 +201,9 @@
   height: 50px;
 }
 .__post_job {
-  width: 80%;
+  width: 100%;
   margin: 0 auto;
   text-align: center;
-  margin-left: 10%;
 }
 .__profile_form_half {
   width: 100%;

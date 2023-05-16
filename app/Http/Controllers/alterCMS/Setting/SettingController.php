@@ -18,6 +18,7 @@ use Illuminate\Database\DatabaseManager;
 use Intervention\Image\Facades\Image;
 use Psr\Log\LoggerInterface;
 use Illuminate\Support\Facades\Storage;
+use Stripe\StripeClient;
 
 /**
  * Class SettingController
@@ -182,13 +183,31 @@ class SettingController extends Controller
             $this->db->beginTransaction();
 
             $input = $request->only([
-                'test_publishable_key', 'test_secret_key', 'live_publishable_key', 'live_secret_key'
+                'test_publishable_key', 
+                'test_secret_key', 
+                'live_publishable_key', 
+                'live_secret_key',
+                'subscription_fee'
             ]);
 
             $input['live'] = 0;
 
             if(isset($request->live))
                 $input['live'] = 1;
+
+            if($input['subscription_fee'] != NULL )
+            {
+                $productId = "";
+                if($stripe->product_id == NULL || $stripe->product_id == "" || $stripe->product_id == 0)
+                {
+                    $productId = $input['product_id'] = $this->createStripeProduct($stripe);
+                }
+
+                if($stripe->price_id == NULL || $stripe->price_id == "" || $stripe->price_id == 0)
+                {
+                    $input['price_id'] = $this->createStripePrice($stripe, $productId);
+                }
+            }
 
             $this->stripe->update($stripe->id, $input);
 
@@ -430,6 +449,65 @@ class SettingController extends Controller
             return false;
         }
         return true;
+    }
+
+    /**
+     * Create stripe product
+     * 
+     * @param $stripe
+     * @return Boolean|String
+     */
+    private function createStripeProduct($stripe)
+    {
+        $key = $stripe->live_secret_key;
+        $description = "Membership subscription";
+        if($stripe->live == 0)
+        {
+            //test
+            $description = "Test membership subscription v".date("YmdHis");
+            $key = $stripe->test_secret_key;
+        }
+
+        if($key == "")
+            return false;
+
+        $client = new \Stripe\StripeClient($key);
+
+        $productObj = $client->products->create([
+            'name' => $description,
+        ]);
+    
+        return $productObj->id;
+    }
+
+    /**
+     * Create stripe product
+     * 
+     * @param $stripe
+     * @return Boolean|String
+     */
+    private function createStripePrice($stripe, $productId)
+    {
+        $key = $stripe->live_secret_key;
+        if($stripe->live == 0)
+        {
+            //test
+            $key = $stripe->test_secret_key;
+        }
+
+        if($key == "")
+            return false;
+
+        $client = new \Stripe\StripeClient($key);
+
+        $priceObj = $client->prices->create([
+            'unit_amount' => 100 * $stripe->subscription_fee,
+            'currency' => "gbp",
+            'recurring' => ['interval' => 'month'],
+            'product' => $productId,
+        ]);
+    
+        return $priceObj->id;
     }
 
 }
