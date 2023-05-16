@@ -77,7 +77,7 @@
       <div class="__form_half_group __top_10 __ml_2per" >
         <input type="radio" name="employee-check" id="employer-check" class="__form_checkbox __remember_me __agree_field" value="business">
         <label for="employer-check" class="__form_label __remember_label __agree_label">
-          Employer
+          Employer / Company
         </label>
       </div>
 

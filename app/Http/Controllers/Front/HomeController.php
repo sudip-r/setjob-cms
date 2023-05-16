@@ -136,6 +136,19 @@ class HomeController extends Controller
 
         $search = "";
 
+        $subscription = checkSubscription();
+
+        $member = true;
+
+        if ($subscription['user'] == null) {
+            $member = false;
+        }
+
+        if($subscription['on_trial'] == false && $subscription['active_subscription'] == false)
+        {
+           $member = false;
+        }
+
         if (isset($request->search)) {
             $search = $request->search;
         }
@@ -146,15 +159,8 @@ class HomeController extends Controller
             ->with('min', $min->salary_min)
             ->with('max', $max->salary_max)
             ->with('search', $search)
-            ->with('categories', $categories);
-    }
-
-    /**
-     *
-     */
-    public function jobDetail()
-    {
-        return view('frontend.pages.job-detail');
+            ->with('categories', $categories)
+            ->with('member', $member);
     }
 
     /**
@@ -162,7 +168,6 @@ class HomeController extends Controller
      */
     public function about()
     {
-
         $page = $this->page->find(1);
 
         return view('frontend.pages.about')->with('page', $page);
@@ -210,9 +215,23 @@ class HomeController extends Controller
             abort(500);
         }
 
+        $subscription = checkSubscription();
+
+        $member = true;
+
+        if ($subscription['user'] == null) {
+            $member = false;
+        }
+
+        if($subscription['on_trial'] == false && $subscription['active_subscription'] == false)
+        {
+           $member = false;
+        }
+
         return view('frontend.pages.employer')
             ->with('user', $user)
-            ->with('profile', $profile);
+            ->with('profile', $profile)
+            ->with('member', $member);
 
     }
 
@@ -236,9 +255,23 @@ class HomeController extends Controller
             abort(500);
         }
 
+        $subscription = checkSubscription();
+
+        $member = true;
+
+        if ($subscription['user'] == null) {
+            $member = false;
+        }
+
+        if($subscription['on_trial'] == false && $subscription['active_subscription'] == false)
+        {
+           $member = false;
+        }
+
         return view('frontend.pages.employee')
             ->with('user', $user)
-            ->with('profile', $profile);
+            ->with('profile', $profile)
+            ->with('member', $member);
 
     }
 

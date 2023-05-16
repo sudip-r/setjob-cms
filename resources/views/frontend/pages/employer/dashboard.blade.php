@@ -36,7 +36,7 @@
         <div class="__about_wrapper">
           <div class="__editor_box">
             @if($payment == false && $expired == false)
-            <div id="payment-method">
+            <div id="payment-method" class="__top_30">
             <p>You are running on trial period with {{30 - $days}} days remaining. Please add your card to verify your account. The membership fee of £ 1.00 will be deducted every month from this card. </p>
             <br>
 
@@ -67,7 +67,7 @@
             </div>
             </div>
             @elseif($expired == true)
-            <div id="payment-method">
+            <div id="payment-method" class="__top_30">
               <p>Your trial period has expired. Please add your card to verify your account and subscribe to our website. The membership fee of £ 1.00 will be deducted every month from this card. </p>
               <br>
               <div class="row">
@@ -83,7 +83,7 @@
                 </div>
               </div>
               <br />
-              <p>or pay from your wallet</p>
+              <p class="__wallet">or pay from your wallet</p>
               <div class="row">
                 <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                   <div id="payment-request-button">

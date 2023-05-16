@@ -1509,3 +1509,6 @@ label em{
     z-index: 99999999999999;
     margin-top: calc(50vh - 50px);
 }
+.__blur{
+    filter: blur(8px);
+}

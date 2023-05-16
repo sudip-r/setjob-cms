@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Front;
 
+use App\AlterBase\Models\Meta\City;
 use App\AlterBase\Repositories\User\ProfileRepository;
 use App\AlterBase\Repositories\User\UserRepository;
 use App\AlterBase\Repositories\Job\JobRepository;
 use App\AlterBase\Repositories\Setting\SettingRepository;
 use App\AlterBase\Repositories\Setting\StripeRepository;
+use App\AlterBase\Repositories\Category\CategoryRepository;
 use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Psr\Log\LoggerInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -49,6 +52,11 @@ class DashboardController extends Controller
     private $log;
 
     /**
+     * CategoryRepository $category
+     */
+    private $category;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -59,12 +67,14 @@ class DashboardController extends Controller
         JobRepository $job,
         SettingRepository $setting,
         StripeRepository $stripe,
+        CategoryRepository $category,
         LoggerInterface $log) {
         $this->user = $user;
         $this->profile = $profile;
         $this->job = $job;
         $this->setting = $setting;
         $this->stripe = $stripe;
+        $this->category = $category;
         $this->log = $log;
     }
 
@@ -143,6 +153,7 @@ class DashboardController extends Controller
 
         $user = $this->user->findWithCondition(['id' => $userId],["*"]);
 
+        $slug = $user->slug;
         if(!$user->slug || $user->slug = "" || $user->slug == NULL)
         {
             $data = [
@@ -150,11 +161,11 @@ class DashboardController extends Controller
             ];
 
             $this->user->update($user->id, $data);
+
+            $users = $this->user->findBy('id', $userId);
+
+            $slug = $users->slug;
         }
-
-        $users = DB::select('SELECT * FROM users WHERE id = ?', [$userId]);
-
-        $slug = $users[0]->slug;
 
         if ($user->guard == "client") {
             return view('frontend.pages.employee.profile')->with('user', $user)->with('slug', $slug);
@@ -320,18 +331,27 @@ class DashboardController extends Controller
      */
     public function createJobs()
     {
-        if (auth()->user() == null) {
+        $subscription = checkSubscription();
+
+        if ($subscription['user'] == null) {
             return redirect()->route('home');
         }
 
-        $userId = auth()->user()->id;
+        if($subscription['on_trial'] == false && $subscription['active_subscription'] == false)
+        {
+            return redirect()->route('user.dashboard');
+        }
+
+        $userId = $subscription['user']->id;
 
         $user = $this->user->find($userId);
+
+        $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Jobs'], 'category', 'asc')->pluck('category', 'id')->toArray();
 
         if ($user->guard == "client") {
             return view('frontend.pages.employee.jobs')->with('user', $user);
         } else {
-            return view('frontend.pages.employer.jobs.create')->with('user', $user);
+            return view('frontend.pages.employer.jobs.create')->with('user', $user)->with('categories', $categories);
         }
     }
 
@@ -349,7 +369,9 @@ class DashboardController extends Controller
                 'deadline',
                 'location',
                 'responsibilities',
-                'required_skills'
+                'required_skills',
+                'salary_type',
+                'category_id'
             ]);
 
             $input['salary_max'] = $request->salary_max ?? "0";
@@ -362,6 +384,9 @@ class DashboardController extends Controller
             {
                $input['location'] = $user->profile()->city_id;
             }
+
+            $input['location_text'] = $this->getCityById($input['location']);
+
             $input['publish'] = 1;
             $input['user_id'] = $request->id;
 
@@ -383,20 +408,29 @@ class DashboardController extends Controller
      */
     public function editJobs($id)
     {
-        if (auth()->user() == null) {
+        $subscription = checkSubscription();
+
+        if ($subscription['user'] == null) {
             return redirect()->route('home');
+        }
+
+        if($subscription['on_trial'] == false && $subscription['active_subscription'] == false)
+        {
+            return redirect()->route('user.dashboard');
         }
 
         $job = $this->job->find($id);
 
         $userId = auth()->user()->id;
 
+        $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Jobs'], 'category', 'asc')->pluck('category', 'id')->toArray();
+
         $user = $this->user->find($userId);
 
         if ($user->guard == "client") {
             return view('frontend.pages.employee.jobs')->with('user', $user);
         } else {
-            return view('frontend.pages.employer.jobs.edit')->with('user', $user)->with('job', $job);
+            return view('frontend.pages.employer.jobs.edit')->with('user', $user)->with('job', $job)->with('categories', $categories);
         }
     }
 
@@ -415,7 +449,9 @@ class DashboardController extends Controller
                 'deadline',
                 'location',
                 'responsibilities',
-                'required_skills'
+                'required_skills',
+                'category_id',
+                'salary_type'
             ]);
 
             $user = $this->user->find($request->id);
@@ -427,6 +463,8 @@ class DashboardController extends Controller
             {
                $input['location'] = $user->profile()->city_id;
             }
+            $input['location_text'] = $this->getCityById($input['location']);
+
             $input['publish'] = 1;
             $input['user_id'] = $request->id;
 
@@ -441,6 +479,39 @@ class DashboardController extends Controller
                 ->with('error', "Failed to update.")
                 ->withInput();
         }
+    }
+
+    /**
+     * Job detail page
+     * 
+     * @param $slug
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function jobDetail($slug)
+    {
+        $subscription = checkSubscription();
+
+        $member = true;
+
+        if ($subscription['user'] == null) {
+            $member = false;
+        }
+
+        if($subscription['on_trial'] == false && $subscription['active_subscription'] == false)
+        {
+            $member = false;
+        }
+        
+        $job = $this->job->findBy('slug', $slug);
+
+        if($job == null)
+            abort(404);
+
+        $user = $this->user->findBy('id', $job->user_id);
+
+        $profile = $user->profile();
+
+        return view('frontend.pages.job-detail')->with('job', $job)->with('user', $user)->with('profile', $profile)->with('member', $member);
     }
 
     /**
@@ -632,5 +703,18 @@ class DashboardController extends Controller
 
         return true;
     }   
+
+    /**
+     * Get City name by ID
+     * 
+     * @param $location
+     * @return String
+     */
+    private function getCityById($location)
+    {
+        $city = new City();
+
+        return $city->find($location)->name;
+    }
 
 }

@@ -63,7 +63,7 @@ Route::post('/employee/update/profile', [App\Http\Controllers\Front\DashboardCon
 /** Front Routes */
 Route::get('/jobs', [App\Http\Controllers\Front\HomeController::class, 'jobs'])->name('jobs.list');
 
-Route::get('/jobs-detail', [App\Http\Controllers\Front\HomeController::class, 'jobDetail'])->name('jobs.detail');
+Route::get('/job/{slug}', [App\Http\Controllers\Front\DashboardController::class, 'jobDetail'])->name('jobs.detail');
 
 Route::get('/about-us', [App\Http\Controllers\Front\HomeController::class, 'about'])->name('about');
 

@@ -1,6 +1,7 @@
 @extends("frontend.layouts.master")
 
 @section("content")
+@if($member)
 <div class="__inner_search">
     <h3>{{$user->name}}</h3>
 
@@ -51,6 +52,7 @@
             
         </div>
         <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+            @if($profile->summary != "")
             <div class="__job_list_title">
                 <h5>About us</h5>
             </div>
@@ -60,6 +62,8 @@
                 </div>
             </div>
             <div class="__gap_30"></div>
+            @endif 
+            @if($profile->description != "")
             <div class="__job_list_title">
                 <h5>Projects we've worked on</h5>
             </div>
@@ -69,6 +73,7 @@
                 </div>
             </div>
             <div class="__gap_30"></div>
+            @endif
             <div class="__job_list_title">
                 <h3>Open jobs</h3>
               </div>
@@ -81,7 +86,73 @@
         </div>
     </div>
 </div> <!-- CONTENT -->
+@else 
 
+<div class="__inner_search">
+    <h3>Become a member to view this profile</h3>
+
+    <div class="__breadcrumbs">
+        <ul>
+            <li><a href="{{route('home')}}">Home</a> / </li>
+            <li><a href="#">Companies</a> / </li>
+            <li>**************</li>
+        </ul>
+    </div>
+</div>
+
+<div class="__main_content container">
+    <div class="row __job_lists">
+        <div class="col-lg-3 col-md-4 col-sm-12 col-xs-12">
+            <div class="__company_wrapper">
+            <div class="__company_box">
+                <img class="__company_logo __profile_logo __blur" src="{{upath('uploads/users/default.png')}}" />
+            </div>
+            <div class="__company_name __blur">
+                **************
+            </div>
+            <div class="__company_joined_date">
+                Joined {{date("M d, Y", strtotime($user->created_at))}}
+            </div>
+            
+            </div>
+            
+        </div>
+        <div class="col-lg-9 col-md-8 col-sm-12 col-xs-12">
+            @if($profile->summary != "")
+            <div class="__job_list_title">
+                <h5>About us</h5>
+            </div>
+            <div class="__about_wrapper">
+                <div class="__editor_box">
+                    *************************************************************
+                </div>
+            </div>
+            <div class="__gap_30"></div>
+            @endif 
+            @if($profile->description != "")
+            <div class="__job_list_title">
+                <h5>Projects we've worked on</h5>
+            </div>
+            <div class="__job_requirements">
+                <div class="__editor_box">
+                    *************************************************************
+                </div>
+            </div>
+            <div class="__gap_30"></div>
+            @endif
+            <div class="__job_list_title">
+                <h3>Open jobs</h3>
+              </div>
+              <div id="ajax-job-list">
+              </div>
+              <div class="__gap_30"></div>
+              <div class="__loading"></div>
+              <div class="__gap_30"></div>
+
+        </div>
+    </div>
+</div> <!-- CONTENT -->
+@endif
 @endsection
 
 @section('custom-scripts')
@@ -94,6 +165,8 @@ function listJobs(page = 1){
 var csrf = $('meta[name="csrf-token"]').attr("content");
 var baseUrl = $('meta[name="base"]').attr("content");
 var jobListAPI = baseUrl + "/api/jobs";
+var jobDetail = baseUrl + "/job";
+
 $.ajaxSetup({
     headers: {
         "X-CSRF-TOKEN": csrf,
@@ -126,8 +199,8 @@ if(totalPage == "0" || parseInt(currentPage) <= parseInt(totalPage)){
             $.each(jobs, function(index, value) {
                 html += "<div class='__list_wrapper'>"+
                             "<div class='__favorite_job'><i class='far fa-heart'></i></div>"+
-                            "<h2>"+value.title+"</h2>" +
-                            "<p class='__sub_title'>"+value.published_date+" by <strong><a href='"+baseUrl + "/company/"+ value.user_slug +"' target='_blank'>"+value.user_name+"</a></strong></p>" +
+                            "<h2><a href='"+jobDetail+"/"+value.slug+"' target='_blank'>"+value.title+"</h2></a>" +
+                            "<p class='__sub_title'>"+value.published_date+" by <strong class='__blur'>***************</strong></p>" +
                             "<ul class='__job_features'>";
                 if(parseInt(value.salary_max) < parseInt(value.salary_min))  
                 {

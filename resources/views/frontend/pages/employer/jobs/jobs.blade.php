@@ -68,7 +68,7 @@
             <div class="__gap_30"></div>
             <ul class="__job_btns">
               <li><a href="{{route('dashboard.jobs.edit', ['id' => $job->id])}}" class="__btn __publish_btn">Edit Job</a></li>
-              <li><a href="" class="__btn __publish_btn">View Job</a></li>
+              <li><a href="{{route('jobs.detail', ['slug' => $job->slug])}}" class="__btn __publish_btn">View Job</a></li>
             </ul>
           </div><!-- List Wrapper--> 
           @endforeach

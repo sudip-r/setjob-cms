@@ -70,6 +70,7 @@ var paymentRequest = stripe.paymentRequest({
       prButton.mount('#payment-request-button');
     } else {
       document.getElementById('payment-request-button').style.display = 'none';
+      $(".__wallet").fadeOut(200);
       addMessage('Pay support not found. Check the pre-requisites above and ensure you are testing in a supported browser.');
     }
   });
@@ -194,4 +195,14 @@ function addCardAndSubscribe(token, card)
 
     },
   });
+}
+
+function addMessage(message)
+{
+  // Swal.fire({
+  //   icon: 'info',
+  //   title: 'Message',
+  //   text: message
+  // });
+  console.log(message);
 }

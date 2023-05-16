@@ -67,7 +67,10 @@ class JobRepository extends Repository
             ->where($condition);
 
         if ($searchCondition != "") {
-            $q = $q->where('title', 'like', '%' . $searchCondition . '%');
+            $q = $q->where(function ($query) use ($searchCondition) {
+                $query = $query->where('title', 'like', '%' . $searchCondition . '%')
+                    ->orWhere('location_text', 'like', $searchCondition . '%');
+            });
         }
         if (count($filters) > 0) {
             $q = $q->where(function ($query) use ($filters) {
@@ -82,6 +85,18 @@ class JobRepository extends Repository
                 }
                 if (isset($filters["type"]["various"]) && $filters["type"]["various"] == "true") {
                     $query->orWhere('type', 'like', "Various");
+                }
+            });
+
+            $q = $q->where(function ($query) use ($filters) {
+                if (isset($filters["salary_type"]["per_annum"]) && $filters["salary_type"]["per_annum"] == "true") {
+                    $query->orWhere('salary_type', 'like', "Per Annum");
+                }
+                if (isset($filters["salary_type"]["per_hour"]) && $filters["salary_type"]["per_hour"] == "true") {
+                    $query->orWhere('salary_type', 'like', "Per Hour");
+                }
+                if (isset($filters["salary_type"]["freelance"]) && $filters["salary_type"]["freelance"] == "true") {
+                    $query->orWhere('salary_type', 'like', "Freelance");
                 }
             });
 
@@ -138,7 +153,10 @@ class JobRepository extends Repository
             ->where($condition);
 
         if ($searchCondition != "") {
-            $q = $q->where('title', 'like', '%' . $searchCondition . '%');
+            $q = $q->where(function ($query) use ($searchCondition) {
+                $query = $query->where('title', 'like', '%' . $searchCondition . '%')
+                    ->orWhere('location_text', 'like', $searchCondition . '%');
+            });
         }
         
         $q = $q->orderBy($orderBy, $orderType)

@@ -116,12 +116,16 @@
     </div>
     <div class="card-body">
       <div class="form-group">
+        {!! Form::label('salary-type',"Salary Type") !!}
+        {!! Form::select('salary_type', ['Per Annum' => 'Per Annum',  'Per Hour' => 'Per Hour', 'freelance' => 'Freelance'], null, ['class' => 'form-control', 'id' => 'salary-type']) !!}
+      </div>
+      <div class="form-group">
         {!! Form::label('salary-min',"Minimum Salary") !!}
-        {!! Form::number('salary_min', null, ['class' => 'form-control', 'placeholder' => 'Min Salary (£ per year)', 'id' => 'salary-min']) !!}
+        {!! Form::number('salary_min', null, ['class' => 'form-control', 'placeholder' => 'Min Salary / Fixed Budget / Per Hour', 'id' => 'salary-min']) !!}
       </div>
       <div class="form-group">
         {!! Form::label('salary-max',"Maximum Salary [Optional if fixed salary]") !!}
-        {!! Form::number('salary_max', null, ['class' => 'form-control', 'placeholder' => 'Max Salary (£ per year)', 'id' => 'salary-max']) !!}
+        {!! Form::number('salary_max', null, ['class' => 'form-control', 'placeholder' => 'Max Salary', 'id' => 'salary-max']) !!}
       </div>
     </div>
   </div>

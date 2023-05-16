@@ -2,7 +2,7 @@
 
 @section("content")
 <div class="__inner_search">
-    <h3>Add a Job</h3>
+    <h3>Find your next employee!</h3>
   
     <div class="__breadcrumbs">
         <ul>
@@ -44,26 +44,41 @@
             </div>
 
             <div class="__profile_form __relative">
-                <label for="title">Job Type</label>
+                <label for="type">Job Type</label>
                 <div class="__err_abs" id="type-err"></div>
                 <select name="type" id="type" class="__select_2">
-                    <option value="full-time">Full time</option>
-                    <option value="part-time">Part time</option>
-                    <option value="freelance">Freelance</option>
-                    <option value="contract">Contract</option>
+                    <option value="Workshop">Workshop</option>
+                    <option value="On Site">On Site</option>
+                    <option value="Abroad">Abroad</option>
+                    <option value="Various">Various</option>
                 </select>
             </div>
+
+            <div class="__profile_form __relative">
+              <label for="salary-type">Salary Type</label>
+              <div class="__err_abs" id="salary-type-err"></div>
+              <select name="salary_type" id="salary-type" class="__select_2">
+                  <option value="Per Annum">Per Annum</option>
+                  <option value="Per Hour">Per Hour</option>
+                  <option value="Freelance">Freelance</option>
+              </select>
+          </div>
+
+          <div class="__profile_form __relative">
+            {!! Form::label('categories',"Category") !!}
+            {!! Form::select('category_id', $categories, null, ['class' => '__select_2', 'id' => 'categories']) !!}
+          </div>
 
             <div class="__profile_form_half __relative">
             <label for="salary-min">Salary Range (Min)</label>
             <div class="__err_abs" id="salary-min-err"></div>
-            <input type="number" name="salary_min" id="salary-min" class="__form_input" placeholder="Min Salary (£ per year)" />
+            <input type="number" name="salary_min" id="salary-min" class="__form_input" placeholder="Min Salary / Fixed Budget / Per Hour" />
             </div>
 
             <div class="__profile_form_half __ml_2per">
             <label for="salary-max">Salary Range (Max) <em>[Optional if fixed]</em></label>
             <div class="__err_abs" id="salary-max-err"></div>
-            <input type="text" name="salary_max" id="salary-max" class="__form_input" placeholder="Max Salary (£ per year)" />
+            <input type="text" name="salary_max" id="salary-max" class="__form_input" placeholder="Not applicable for Fixed / Hourly basis" />
             </div>
 
             <div class="__clear"></div>
@@ -83,22 +98,22 @@
             </div>
 
             <div class="__profile_form">
-            <label for="description">Description</label>
+            <label for="description">Description <em>(Optional)</em></label>
             <textarea name="description" id="description" class="__form_input __textarea" placeholder="Full description of the job"></textarea>
             </div>
             
             <div class="__profile_form">
-                <label for="deadline">Submission Deadline</label>
+                <label for="deadline">Submission Deadline <em>(Optional)</em></label>
                 <input type="text" name="deadline" id="deadline" class="__form_input" placeholder="Last apply date">
             </div>
 
             <div class="__profile_form">
-                <label for="responsibilities">Responsibilities</label>
+                <label for="responsibilities">Responsibilities <em>(Optional)</em></label>
                 <textarea name="responsibilities" id="responsibilities" class="__form_input __textarea" placeholder="Responsibilites of the job"></textarea>
             </div>
 
             <div class="__profile_form">
-                <label for="requirements">Requirements</label>
+                <label for="requirements">Requirements <em>(Optional)</em></label>
                 <textarea name="required_skills" id="requirements" class="__form_input __textarea" placeholder="Skills / Education requirements of the job"></textarea>
             </div>
 

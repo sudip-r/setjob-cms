@@ -2,7 +2,7 @@
 
 @section("content")
 <div class="__inner_search">
-    <h3>Edit a Job</h3>
+    <h3>Find your next employee!</h3>
   
     <div class="__breadcrumbs">
         <ul>
@@ -47,12 +47,27 @@
                 <label for="title">Job Type</label>
                 <div class="__err_abs" id="type-err"></div>
                 <select name="type" id="type" class="__select_2">
-                    <option value="full-time" @if($job->type == 'full-time') selected="" @endif>Full time</option>
-                    <option value="part-time" @if($job->type == 'part-time') selected="" @endif>Part time</option>
-                    <option value="freelance" @if($job->type == 'freelance') selected="" @endif>Freelance</option>
-                    <option value="contract" @if($job->type == 'contract') selected="" @endif>Contract</option>
+                    <option value="Workshop" @if($job->type == 'Workshop') selected="" @endif>Workshop</option>
+                    <option value="On Site" @if($job->type == 'On Site') selected="" @endif>On Site</option>
+                    <option value="Abroad" @if($job->type == 'Abroad') selected="" @endif>Abroad</option>
+                    <option value="Various" @if($job->type == 'Various') selected="" @endif>Various</option>
                 </select>
             </div>
+
+            <div class="__profile_form __relative">
+              <label for="salary-type">Salary Type</label>
+              <div class="__err_abs" id="salary-type-err"></div>
+              <select name="salary_type" id="salary-type" class="__select_2">
+                  <option value="Per Annum" @if($job->salary_type == 'Per Annum') selected="" @endif>Per Annum</option>
+                  <option value="Per Hour" @if($job->salary_type == 'Per Hour') selected="" @endif>Per Hour</option>
+                  <option value="Freelance" @if($job->salary_type == 'Freelance') selected="" @endif>Freelance</option>
+              </select>
+          </div>
+
+          <div class="__profile_form __relative">
+            {!! Form::label('categories',"Category") !!}
+            {!! Form::select('category_id', $categories, $job->category_id, ['class' => '__select_2', 'id' => 'categories']) !!}
+          </div>
 
             <div class="__profile_form_half __relative">
             <label for="salary-min">Salary Range (Min)</label>

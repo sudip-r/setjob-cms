@@ -39,6 +39,15 @@
                 for="filter-various">Various</label></p>
           </div>
           <div class="__filter_type">
+            <h4>Salary type <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
+            <p><input type="checkbox" id="filter-per-annum" class="__form_checkbox" /> <label
+                for="filter-per-annum">Per Annum</label></p>
+            <p><input type="checkbox" id="filter-per-hour" class="__form_checkbox" /> <label
+                for="filter-per-hour">Per Hour</label></p>
+            <p><input type="checkbox" id="filter-freelance" class="__form_checkbox" /> <label
+                for="filter-freelance">Freelance</label></p>
+          </div>
+          <div class="__filter_type">
             <h4>Salary Range <i class="fa fa-spinner fa-spin __filter_loading"></i></h4>
             <p>
             <label for="salary-range" class="form-label" id="salary-range-label">£{{number_format($min, 0)}} - £{{number_format($max, 0)}}</label>
@@ -122,6 +131,11 @@ var filters = {
     abroad:false,
     various:false
   },
+  salary_type: {
+    per_annum: false,
+    per_hour: false,
+    freelance: false
+  },
   salary:{
     min:{{$min}},
     max:0
@@ -156,17 +170,35 @@ function listFilters(){
   {
     $(".__filters").append("<span class='__filter_tags'>Workshop <span class='__remove_tag' alt='workshop'>X</span></span>");
   }
+
   if(filters.type.on_site)
   {
     $(".__filters").append("<span class='__filter_tags'>On site <span class='__remove_tag' alt='on_site'>X</span></span>");
   }
+
   if(filters.type.abroad)
   {
     $(".__filters").append("<span class='__filter_tags'>Abroad <span class='__remove_tag' alt='abroad'>X</span></span>");
   }
+
   if(filters.type.various)
   {
     $(".__filters").append("<span class='__filter_tags'>Various <span class='__remove_tag' alt='various'>X</span></span>");
+  }
+
+  if(filters.salary_type.per_annum)
+  {
+    $(".__filters").append("<span class='__filter_tags'>Per Annum <span class='__remove_tag' alt='per_annum'>X</span></span>");
+  }
+  
+  if(filters.salary_type.per_hour)
+  {
+    $(".__filters").append("<span class='__filter_tags'>Per Hour <span class='__remove_tag' alt='per_hour'>X</span></span>");
+  }
+  
+  if(filters.salary_type.freelance)
+  {
+    $(".__filters").append("<span class='__filter_tags'>Freelance <span class='__remove_tag' alt='freelance'>X</span></span>");
   }
 
   if(filters.salary.max != 0)
@@ -209,6 +241,18 @@ function listFilters(){
                 filters.type.abroad = false;
                 $("#filter-abroad").prop('checked', false);
             break;
+            case "per_annum":
+                filters.salary_type.per_annum = false;
+                $("#filter-per-annum").prop('checked', false);
+            break;
+            case "per_hour":
+                filters.salary_type.per_hour = false;
+                $("#filter-per-hour").prop('checked', false);
+            break;
+            case "freelance":
+                filters.salary_type.freelance = false;
+                $("#filter-freelance").prop('checked', false);
+            break;
             case "salary": 
               filters.salary.max = 0;
               $("#salary-range").val({{$min}});
@@ -243,6 +287,7 @@ function listJobs(_filters, page = 1){
 var csrf = $('meta[name="csrf-token"]').attr("content");
 var baseUrl = $('meta[name="base"]').attr("content");
 var jobListAPI = baseUrl + "/api/jobs";
+var jobDetail = baseUrl + "/job";
 var conditions = null;
 
 if(_filters)
@@ -297,15 +342,19 @@ if(readyForNextBatch && !finished && (totalPage == "0" || parseInt(currentPage) 
             var html = "";
             $.each(jobs, function(index, value) {
                 html += "<div class='__list_wrapper __list_wrapper_jobs'>"+
-                            "<div class='__favorite_job'><i class='far fa-heart'></i></div>"+
-                            "<h2>"+value.title+"</h2>" +
+                            {{-- "<div class='__favorite_job'><i class='far fa-heart'></i></div>"+ --}}
+                            "<h2><a href='"+jobDetail+"/"+value.slug+"' target='_blank'>"+value.title+"</h2></a>" +
+                            @if($member)
                             "<p class='__sub_title'>"+value.published_date+" by <strong><a href='"+baseUrl + "/company/"+ value.user_slug +"' target='_blank'>"+value.user_name+"</a></strong></p>" +
+                            @else
+                            "<p class='__sub_title'>"+value.published_date+" by <strong class='__blur'>***************</strong> (Become a member to view this profile)</p>" +
+                            @endif
                             "<ul class='__job_features'>";
                 if(parseInt(value.salary_max) < parseInt(value.salary_min))  
                 {
-                  html +=    "<li><i class='fas fa-pound-sign __right_10'></i> £"+value.salary_min_formatted+" per annum</li>";
+                  html +=    "<li><i class='fas fa-pound-sign __right_10'></i> £"+value.salary_min_formatted+" ("+value.salary_type+")</li>";
                 } else {
-                  html +=    "<li><i class='fas fa-pound-sign __right_10'></i> £"+value.salary_min_formatted+" - £"+value.salary_max_formatted+" per annum</li>";
+                  html +=    "<li><i class='fas fa-pound-sign __right_10'></i> £"+value.salary_min_formatted+" - £"+value.salary_max_formatted+" ("+value.salary_type+")</li>";
                 } 
                   html +=     "<li><i class='fas fa-map-marker-alt __right_10'></i> "+value.location_name+"</li>" +
                   "<li><i class='fas fa-bars __right_10'></i> "+value.category_name+"</li>" +

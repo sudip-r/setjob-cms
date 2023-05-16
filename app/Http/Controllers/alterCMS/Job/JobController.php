@@ -9,6 +9,7 @@ use App\AlterBase\Repositories\Media\MediaRepository;
 use App\AlterBase\Repositories\User\UserRepository;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\JobRequest;
+use App\AlterBase\Models\Meta\City;
 use Carbon\Carbon;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Http\Request;
@@ -143,7 +144,20 @@ class JobController extends Controller
             $this->db->beginTransaction();
 
             $input = $request->only([
-                'title', 'summary', 'description', 'user_id', 'responsibilities', 'required_skills', 'deadline', 'type', 'category_id', 'published_on', 'salary_min', 'salary_max', 'location',
+                'title', 
+                'summary', 
+                'description', 
+                'user_id', 
+                'responsibilities', 
+                'required_skills', 
+                'deadline', 
+                'type', 
+                'category_id', 
+                'published_on', 
+                'salary_min', 
+                'salary_max', 
+                'location',
+                'salary_type'
             ]);
 
             $input['slug'] = strtolower(str_replace(" ", "-", $input['title'])) . "-" . date("his");
@@ -153,6 +167,8 @@ class JobController extends Controller
             if (isset($request->publish)) {
                 $input['publish'] = 1;
             }
+
+            $input['location_text'] = $this->getCityById($input['location']);
 
             $job = $this->job->store($input);
 
@@ -205,7 +221,20 @@ class JobController extends Controller
             $this->db->beginTransaction();
 
             $input = $request->only([
-                'title', 'summary', 'description', 'user_id', 'responsibilities', 'required_skills', 'deadline', 'type', 'category_id', 'published_on', 'salary_min', 'salary_max', 'location',
+                'title', 
+                'summary', 
+                'description', 
+                'user_id', 
+                'responsibilities', 
+                'required_skills', 
+                'deadline', 
+                'type', 
+                'category_id', 
+                'published_on', 
+                'salary_min', 
+                'salary_max', 
+                'location',
+                'salary_type'
             ]);
 
             $input['publish'] = 0;
@@ -213,6 +242,7 @@ class JobController extends Controller
             if (isset($request->publish)) {
                 $input['publish'] = 1;
             }
+            $input['location_text'] = $this->getCityById($input['location']);
 
             $this->job->update($id, $input);
 
@@ -356,5 +386,18 @@ class JobController extends Controller
             return response('Something went wrong ' . $e->getMessage(), 500);
 
         }
+    }
+
+    /**
+     * Get City name by ID
+     * 
+     * @param $location
+     * @return String
+     */
+    private function getCityById($location)
+    {
+        $city = new City();
+
+        return $city->find($location)->name;
     }
 }

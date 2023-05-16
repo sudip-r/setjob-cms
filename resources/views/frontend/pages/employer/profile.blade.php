@@ -32,7 +32,7 @@
         <div class="__job_list_title __relative">
           <h3>Basic Details</h3>
           <div class="__post_job_wrapper">
-          <a class="__post_job" href="{{route('employer.detail', ['user' => $user->slug])}}" target="_blank"><i class="fa fa-eye"></i> Profile</a>
+          <a class="__post_job" href="{{route('employer.detail', ['user' => $slug])}}" target="_blank"><i class="fa fa-eye"></i> Profile</a>
           </div>
         </div>
         <div class="__about_wrapper">
@@ -81,7 +81,7 @@
             </div>
 
             <div class="__profile_form __relative">
-              <label for="website">Website</label>
+              <label for="website">Website <em>(Optional)</em></label>
               <div class="__err_abs" id="website-err"></div>
               <input type="text" name="mobile" id="website" class="__form_input" placeholder="Website" value="{{$user->profile()->mobile}}">
             </div>
@@ -92,19 +92,19 @@
           </div>
           <div class="__about_wrapper">
               <div class="__profile_form">
-                  <label for="linkedin">Linkedin</label>
+                  <label for="linkedin">Linkedin <em>(Optional)</em></label>
                   <input type="text" name="linkedin" id="linkedin" class="__form_input" placeholder="Linkedin link" value="{{$user->profile()->linkedin}}">
               </div>
               <div class="__profile_form">
-                <label for="twitter">Twitter</label>
+                <label for="twitter">Twitter <em>(Optional)</em></label>
                 <input type="text" name="twitter" id="twitter" class="__form_input" placeholder="Twitter link" value="{{$user->profile()->twitter}}">
             </div>
             <div class="__profile_form">
-                <label for="facebook">Facebook</label>
+                <label for="facebook">Facebook <em>(Optional)</em></label>
                 <input type="text" name="facebook" id="facebook" class="__form_input" placeholder="Facebook link" value="{{$user->profile()->facebook}}">
             </div>
             <div class="__profile_form">
-                <label for="instagram">Instagram</label>
+                <label for="instagram">Instagram <em>(Optional)</em></label>
                 <input type="text" name="instagram" id="instagram" class="__form_input" placeholder="Instagram link" value="{{$user->profile()->instagram}}">
             </div>
               
@@ -116,12 +116,12 @@
           </div>
           <div class="__about_wrapper">
               <div class="__profile_form">
-                  <label for="about">About Us</label>
+                  <label for="about">About Us <em>(Optional)</em></label>
                   <textarea name="summary" id="about" class="__form_input __textarea" placeholder="Write about your company">{{$user->profile()->summary}}</textarea>
               </div>
              
               <div class="__profile_form">
-                <label for="projects">Projects</label>
+                <label for="projects">Projects <em>(Optional)</em></label>
                 <textarea name="description" id="projects" class="__form_input __textarea" placeholder="Write about your recent project you've handled">{{$user->profile()->description}}</textarea>
             </div>
               

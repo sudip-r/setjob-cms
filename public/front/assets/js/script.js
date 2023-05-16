@@ -279,6 +279,33 @@ $(document).ready(function () {
             
         listFilters();
     });
+
+    $("#filter-per-annum").change(function(){
+        if(filters.salary_type.per_annum == true)
+            filters.salary_type.per_annum = false;
+        else
+            filters.salary_type.per_annum = true;
+            
+        listFilters();
+    });
+
+    $("#filter-per-hour").change(function(){
+        if(filters.salary_type.per_hour == true)
+            filters.salary_type.per_hour = false;
+        else
+            filters.salary_type.per_hour = true;
+            
+        listFilters();
+    });
+
+    $("#filter-freelance").change(function(){
+        if(filters.salary_type.freelance == true)
+            filters.salary_type.freelance = false;
+        else
+            filters.salary_type.freelance = true;
+            
+        listFilters();
+    });
     
     $("#filter-location").on("change", function () {
         var id = $('#filter-location').val();
@@ -457,7 +484,15 @@ $(document).ready(function () {
             $("#register-contact-number-err").html(
                 "Contact number is required!"
             );
-        } else {
+        } 
+        else if(!validateContact(contact))
+        {
+            localReg = false;
+            $("#register-contact-number-err").html(
+                "Please enter a valid number!"
+            );
+        }
+        else {
             $("#register-contact-number-err").html("");
         }
 
@@ -709,7 +744,16 @@ $(document).ready(function () {
             valid = false;
             $("#contact-err").html("Contact information cannot be removed");
             scrollToDiv("#contact-err");
-        } else {
+        } 
+        else if(!validateContact(contact))
+        {
+            valid = false;
+            $("#contact-err").html(
+                "Please enter a valid number!"
+            );
+            scrollToDiv("#contact-err");
+        }
+        else {
             $("#contact-err").html("");
         }
 
@@ -942,6 +986,17 @@ function validatePassword(password) {
     if (!capitalLetterRegex.test(password) || !symbolRegex.test(password)) {
         return false;
     }
+    return true;
+}
+
+function validateContact(contact) {
+    // Regular expression pattern for UK contact number
+    var pattern = /^(?:(?:\+|00)44\s?|0)[\d]{10,12}$/;
+
+    if (!pattern.test(contact)) {
+      return false; // Prevent form submission
+    }
+
     return true;
 }
 
