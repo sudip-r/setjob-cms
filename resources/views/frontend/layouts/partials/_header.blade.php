@@ -1,7 +1,7 @@
 <header>
     <div class="__logo_bar">
       <div class="__logo">
-        <a href="{{route('home')}}"><img src="{{asset('front/assets/images/logo.png')}}" /></a>
+        <a href="{{route('home')}}"><img src="{{asset('front/assets/images/logo.png')}}?v1.1" /></a>
       </div>
       <div class="__nav_btn __icon_outside">
         <div class="__burger_icon">
