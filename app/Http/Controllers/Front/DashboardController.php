@@ -9,6 +9,7 @@ use App\AlterBase\Repositories\Job\JobRepository;
 use App\AlterBase\Repositories\Setting\SettingRepository;
 use App\AlterBase\Repositories\Setting\StripeRepository;
 use App\AlterBase\Repositories\Category\CategoryRepository;
+use App\AlterBase\Repositories\User\EmailSubscriptionRepository;
 use Intervention\Image\Facades\Image;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -57,6 +58,11 @@ class DashboardController extends Controller
     private $category;
 
     /**
+     * EmailSubscriptionRepository $email
+     */
+    private $email;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -68,6 +74,7 @@ class DashboardController extends Controller
         SettingRepository $setting,
         StripeRepository $stripe,
         CategoryRepository $category,
+        EmailSubscriptionRepository $email,
         LoggerInterface $log) {
         $this->user = $user;
         $this->profile = $profile;
@@ -75,6 +82,7 @@ class DashboardController extends Controller
         $this->setting = $setting;
         $this->stripe = $stripe;
         $this->category = $category;
+        $this->email = $email;
         $this->log = $log;
     }
 
@@ -337,6 +345,11 @@ class DashboardController extends Controller
             return redirect()->route('home');
         }
 
+        if ($subscription['user']->guard != "business")
+        {
+            return redirect()->route('user.dashboard');
+        }
+
         if($subscription['on_trial'] == false && $subscription['active_subscription'] == false)
         {
             return redirect()->route('user.dashboard');
@@ -512,6 +525,71 @@ class DashboardController extends Controller
         $profile = $user->profile();
 
         return view('frontend.pages.job-detail')->with('job', $job)->with('user', $user)->with('profile', $profile)->with('member', $member);
+    }
+
+    /**
+     * Settings Page
+     */
+    public function employeeSettings()
+    {
+        $id = auth()->user()->id;
+
+        if($id == null)
+            abort(404);
+
+        $user = $this->user->find($id);
+
+        $categories = $this->category->getWithCondition(['type' => 'Jobs', 'publish' => 1]);
+
+        $subs = $this->email->getWithCondition(['user_id' => $id]);
+
+        $selectedCategory = [];
+        $selectedType = [];
+
+        foreach($subs as $sub)
+        {
+            if($sub->category_id != NULL)
+                $selectedCategory[] = $sub->category_id;
+            
+            if($sub->type != NULL)
+                $selectedType[] = $sub->type;
+        }
+
+        return view('frontend.pages.employee.settings')
+            ->with('user', $user)
+            ->with('categories', $categories)
+            ->with('selectedType', $selectedType)
+            ->with('selectedCategory', $selectedCategory);
+    }
+
+    public function employeeUpdateEmailSubscription(Request $request)
+    {
+        try{
+        $this->email->truncateSubscription($request->user_id);
+
+        $categories = $request->category;
+        $types = $request->type;
+
+        foreach($categories as $category)
+        {
+            $this->email->store(['user_id' => $request->user_id, 'category_id' => $category]);
+        }
+
+        foreach($types as $type)
+        {
+            $this->email->store(['user_id' => $request->user_id, 'type' => $type]);
+        }
+        
+        return redirect()->route('dashboard.employee.settings')
+            ->with('success', "Job updated");
+        }catch(\Exception $e)
+        {
+            $this->log->error((string) $e);
+
+            return redirect()->route('dashboard.employee.settings')
+                ->with('error', "Failed to update.")
+                ->withInput();
+        }
     }
 
     /**

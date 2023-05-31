@@ -59,6 +59,9 @@ Route::post('/dashboard/jobs/update/{id}', [App\Http\Controllers\Front\Dashboard
 /** Employee Routes */
 Route::post('/employee/update/profile', [App\Http\Controllers\Front\DashboardController::class, 'employeeUpdateProfile'])->name('employee.update.profile');
 
+Route::get('/employee/settings', [App\Http\Controllers\Front\DashboardController::class, 'employeeSettings'])->name('dashboard.employee.settings');
+
+Route::post('/employee/email-subscription', [App\Http\Controllers\Front\DashboardController::class, 'employeeUpdateEmailSubscription'])->name('dashboard.employee.email.subscription');
 
 /** Front Routes */
 Route::get('/jobs', [App\Http\Controllers\Front\HomeController::class, 'jobs'])->name('jobs.list');

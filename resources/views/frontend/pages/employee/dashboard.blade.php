@@ -21,6 +21,7 @@
                   <li class="active">Dashboard</li>
                   <li><a href="{{route('user.profile')}}">Profile</a></li>
                   <li><a href="{{route('dashboard.jobs')}}">Jobs</a></li>
+                  <li><a href="{{route('dashboard.employee.settings')}}">Settings</a></li>
                   <li><a href="{{route('logout')}}">Logout</a></li>
               </ul>
           </div>

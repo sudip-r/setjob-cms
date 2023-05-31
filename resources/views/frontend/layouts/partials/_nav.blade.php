@@ -10,6 +10,7 @@
     <div class="__menu">
       <ul class="__jobs">
         <li><a href="{{route('jobs.list')}}">Find a Job</a></li>
+        <li><a href="javascript:void(0);" @if(!auth()->user())id="go-to-post-nav"@endif>Post a Job</a></li>
       </ul>
       <hr class="__hr __hidden_small_desktop" />
       <div class="__vl __hidden_large_desktop"></div>

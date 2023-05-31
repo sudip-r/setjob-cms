@@ -135,6 +135,12 @@ $(document).ready(function () {
         // $('html, body').animate({ scrollTop: 0 }, 200);
         $(".__register_title").trigger("click");
     });
+    $("#go-to-post-nav").click(function(){
+        $(".__modal").fadeIn(200);
+        $(".__body").addClass("__locked");
+        // $('html, body').animate({ scrollTop: 0 }, 200);
+        $(".__register_title").trigger("click");
+    });
     $(".__close").click(function () {
         $(".__modal").fadeOut(200);
         $(".__body").removeClass("__locked");

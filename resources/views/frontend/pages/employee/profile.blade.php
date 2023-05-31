@@ -21,6 +21,7 @@
                   <li><a href="{{route('user.dashboard')}}">Dashboard</a></li>
                   <li class="active">Profile</li>
                   <li><a href="{{route('dashboard.jobs')}}">Jobs</a></li>
+                  <li><a href="{{route('dashboard.employee.settings')}}">Settings</a></li>
                   <li><a href="{{route('logout')}}">Logout</a></li>
               </ul>
           </div>
@@ -36,12 +37,12 @@
           </div>
         </div>
         <div class="__about_wrapper">
-            {{-- <div class="__profile_form __relative">
+            <div class="__profile_form __relative">
                 <label for="profile-upload">Profile Image <em>[Recommended size: 250x250 px]</em></label>
                 <div class="__err_abs __err_abs_left" id="logo-err"></div>
                 <img class="__profile_upload_img" id="profile-image-box" src="{{upath('uploads/users/'.$user->profile_image)}}">
                 <input type="file" name="profile_image" id="profile-upload" class="__form_input">
-            </div> --}}
+            </div>
             <div class="__profile_form __relative">
                 <label for="name">Full name</label>
                 <div class="__err_abs" id="name-err"></div>
