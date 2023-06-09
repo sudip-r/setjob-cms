@@ -51,45 +51,5 @@ class UserTableSeeder extends Seeder
         ];
 
         Role::create($data);
-
-        $data = [
-            'id' => '2',
-            'name' => "Test Business",
-            'slug' => 'test-business',
-            'email' => "test-business@webifi.co.uk",
-            'password' => "abc@112",
-            'verified' => 1,
-            'active' => 1,
-            'guard' => 'business',
-            'user_type' => 'business',
-        ];
-
-        $user = User::create($data);
-
-        $profile = Profile::create([
-            'user_id' => "2",
-            'city_id' => rand(48157, 50000),
-            'name' => "Test Business"
-        ]);
-
-        $data = [
-            'id' => '3',
-            'name' => "Test Business 2",
-            'slug' => 'test-business-2',
-            'email' => "test-business2@webifi.co.uk",
-            'password' => "abc@112",
-            'verified' => 1,
-            'active' => 1,
-            'guard' => 'business',
-            'user_type' => 'business',
-        ];
-
-        $user = User::create($data);
-
-        $profile = Profile::create([
-            'user_id' => "3",
-            'name' => "Test Business 2",
-            'city_id' => rand(48157, 50000)
-        ]);
     }
 }

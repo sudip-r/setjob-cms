@@ -532,10 +532,10 @@ class DashboardController extends Controller
      */
     public function employeeSettings()
     {
+        if(auth()->user() == null)
+            return redirect()->route('home');
+            
         $id = auth()->user()->id;
-
-        if($id == null)
-            abort(404);
 
         $user = $this->user->find($id);
 

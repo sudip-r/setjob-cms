@@ -52,7 +52,7 @@ class CategoryController extends Controller
   public function index()
   {
     $this->authorize('view', Category::class);
-    $categories = $this->category->paginate();
+    $categories = $this->category->paginateWithCondition('type', 'Jobs');
     return view('cms.category.index')->with('categories', $categories);
   }
 

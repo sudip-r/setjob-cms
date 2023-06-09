@@ -156,8 +156,8 @@ class HomeController extends Controller
         $categories = $this->category->getWithCondition(['publish' => 1, 'type' => 'Jobs'], 'category', 'asc');
 
         return view('frontend.pages.jobs')
-            ->with('min', $min->salary_min)
-            ->with('max', $max->salary_max)
+            ->with('min', $min->salary_min ?? 0)
+            ->with('max', $max->salary_max ?? 0)
             ->with('search', $search)
             ->with('categories', $categories)
             ->with('member', $member);
