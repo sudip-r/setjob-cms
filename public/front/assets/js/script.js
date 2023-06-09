@@ -13,7 +13,8 @@ $(document).ready(function () {
     }
 
     $("#search-text").click(function(){
-        $(this).val("");
+       if( $(this).val() == "Search by Job Title" )
+            $(this).val("");
     });
 
     $(".__hamburger").click(function () {
