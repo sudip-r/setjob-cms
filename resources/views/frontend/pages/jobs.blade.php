@@ -11,7 +11,7 @@
       </div>
       <div class="__search_field">
         <input type="text" name="search_text" id="search-text" class="__search_text" value="{{$search == ""?" ":$search}}"
-          placeholder="Scenic Artist in London" autocomplete="{{$search == ""?" ":$search}}" />
+          placeholder="Scenic Artist in London" autocomplete="off" />
       </div>
       <div class="__search_btn_wrap">
         <input type="submit" name="search_btn" id="search-btn" class="__search_btn" value="Search" />
