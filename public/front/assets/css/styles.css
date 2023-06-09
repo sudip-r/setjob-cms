@@ -181,6 +181,8 @@ a:hover {
 .__relative{
     position: relative;
 }
+
+
 /*----------NAVIGATION---------*/
 .__navigation_bar {
     width: 0;
@@ -1511,4 +1513,9 @@ label em{
 }
 .__blur{
     filter: blur(8px);
+}
+
+.__reset_box {
+    height: calc(100vh - 270px);
+    padding-top: 180px;
 }

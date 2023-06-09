@@ -101,6 +101,9 @@
   .__home_search {
     height: auto;
   }
+  .__reset_box {
+    height: calc(100vh - 320px);
+  }
   .__content_dark {
     background-color: var(--black);
   }

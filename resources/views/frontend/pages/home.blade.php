@@ -8,7 +8,7 @@
 
     <div class="__search_box">
       <div class="__search_icon">
-        <img src="{{asset('front/assets/images/search_icon.png')}}" />
+        <img src="{{asset('front/assets/images/search_icon.png')}}" id="search-icon" />
       </div>
       <div class="__search_field">
         <input type="text" name="search_text" id="search-text" class="__search_text" placeholder="" value="Search by Job Title" autocomplete="off" />

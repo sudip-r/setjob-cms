@@ -26,7 +26,7 @@
       <label for="remember-me" class="__form_label __remember_label">
         Remember me
       </label>
-      <a href="#" class="__forgot_pw"><strong>Forgot password?</strong></a>
+      <a href="{{route("password.request")}}" class="__forgot_pw"><strong>Forgot password?</strong></a>
     </div>
     <div class="__form_group __top_30 __b_30">
       <input type="submit" name="login_btn" id="login-btn" class="__form_btn" value="Sign in">

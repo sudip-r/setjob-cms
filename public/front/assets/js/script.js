@@ -703,6 +703,14 @@ $(document).ready(function () {
         }
       });
 
+    $("#reset-password").click(function() {
+        $("#reset-password-form").submit();
+    });
+    $("#search-icon").click(function () {
+        if($("#search-text").val() != "Search by Job Title")
+            window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
+    });
+
     $("#profile-save-btn").on("click", function (e) {
         e.preventDefault();
         var valid = true;
