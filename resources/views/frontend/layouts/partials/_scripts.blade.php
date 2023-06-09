@@ -25,4 +25,4 @@
 @endif
 @yield('custom-scripts')
 
-<script src="{{asset('front/assets/js/script.js')}}?v1.11"></script>
+<script src="{{asset('front/assets/js/script.js')}}?v1.12"></script>

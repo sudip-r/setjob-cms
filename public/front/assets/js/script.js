@@ -694,10 +694,11 @@ $(document).ready(function () {
     });
 
     $("#search-btn").click(function () {
-        window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
+        if($("#search-text").val() != "Search by Job Title")
+            window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
     });
     $('#search-text').on('keypress', function(e) {
-        if (e.which === 13) { // check if Enter key pressed
+        if (e.which === 13 && $("#search-text").val() != "Search by Job Title") { // check if Enter key pressed
             window.location.href = baseUrl + "/jobs/?search="+$("#search-text").val();
         }
       });
