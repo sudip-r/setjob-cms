@@ -71,7 +71,9 @@ class StripeController extends Controller
 
         $data['verified'] = "1";
 
-        $data['pm_last_four'] = date("Y-m-d H:i:s"); 
+        // $data['pm_last_four'] = date("Y-m-d H:i:s"); 
+
+        $data['pm_date'] = date("Y-m-d H:i:s");
 
         $this->user->update($user->id, $data);
 

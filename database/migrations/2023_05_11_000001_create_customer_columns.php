@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('subscription_id')->nullable();
             $table->string('pm_type')->nullable();
             $table->string('pm_last_four', 4)->nullable();
+            $table->string('pm_date', 25)->nullable();
             $table->timestamp('trial_ends_at')->nullable();
         });
     }

@@ -34,6 +34,7 @@ class User extends Authenticatable
         'pm_type',
         'stripe_id',
         'pm_last_four',
+        'pm_date',
         'trial_ends_at',
     ];
 
