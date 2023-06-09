@@ -10,7 +10,7 @@
         <img src="{{asset("front/assets/images/search_icon.png")}}" />
       </div>
       <div class="__search_field">
-        <input type="text" name="search_text" id="search-text" class="__search_text" value="{{$search == ""?" ":$search}}"
+        <input type="text" name="search_text" id="search-text" class="__search_text" value="{{$search == ""?"Scenic Artist in London":$search}}"
           placeholder="Scenic Artist in London" autocomplete="off" />
       </div>
       <div class="__search_btn_wrap">

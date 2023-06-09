@@ -12,6 +12,10 @@ $(document).ready(function () {
         listJobs();
     }
 
+    $("#search-text").click(function(){
+        $(this).val("");
+    });
+
     $(".__hamburger").click(function () {
         $(".__mobile_side_nav").animate({ left: "0" }, "fast");
         $(".__mobile_side_nav_gap").fadeIn(200);
