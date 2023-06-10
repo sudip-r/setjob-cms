@@ -371,7 +371,7 @@
                                     <tr>
                                       <td align="left" class="center-text">
                                         <img style="width:120px;border:0px;display: inline!important;"
-                                          src="{{mpath("front/assets/images/logov3.png?v1.2")}}" width="120"
+                                          src="{{asset("front/assets/images/logov3.png")}}" width="120"
                                           border="0" alt="logo">
                                       </td>
                                     </tr>
@@ -461,20 +461,7 @@
                           <table data-inner-table border="0" align="center" cellpadding="0" cellspacing="0"
                             class="inner-table row container-padding" role="presentation" width="600"
                             style="width:600px;max-width:600px;">
-                            <tr>
-                                <td height="30" style="font-size:40px;line-height:30px;">&nbsp;</td>
-                              </tr>
-                              <td align="center"
-                                style="font-style:italic;font-family:'Raleway',Arial,Helvetica,sans-serif;font-size:20px;line-height:45px;font-weight:400;font-style:normal;color:#333333;text-decoration:none;letter-spacing:0px;">
-
-                                <div>
-                                  <h3>Welcome</h3>
-                                </div>
-
-                              </td>
-                            <tr>
-                              <td height="30" style="font-size:40px;line-height:30px;">&nbsp;</td>
-                            </tr>
+                            
                             <tr>
                               <td align="center"
                                 style="font-family:'Raleway',Arial,Helvetica,sans-serif;font-size:35px;line-height:45px;font-weight:400;font-style:normal;color:#333333;text-decoration:none;letter-spacing:0px;">
