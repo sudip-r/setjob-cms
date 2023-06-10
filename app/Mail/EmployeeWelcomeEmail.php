@@ -35,6 +35,6 @@ class EmployeeWelcomeEmail extends Mailable
      */
     public function build()
     {
-        return $this->subject(trim($this->subject, 'Welcome to Set Jobs'))->markdown('email.welcome_employee')->with('user', $this->user);
+        return $this->subject(trim('Welcome to Set Jobs', '-'))->markdown('email.welcome_employee')->with('user', $this->user);
     }
 }
