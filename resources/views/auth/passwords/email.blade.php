@@ -5,7 +5,7 @@
 <div class="__home_search __reset_box">
 
   <h3>Reset Password</h3>
-  <p>If your email is registered with us, the form below will send you the password reset link.</p>
+  <p>If your email is registered with us, we'll will send you the password reset link.</p>
   <div class="__search_box">
     <form method="POST" action="{{ route('password.email') }}" id="reset-password-form">
       @csrf

@@ -103,6 +103,7 @@
   }
   .__reset_box {
     height: calc(100vh - 320px);
+    padding-top: 30px;
   }
   .__content_dark {
     background-color: var(--black);
