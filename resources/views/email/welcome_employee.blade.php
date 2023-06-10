@@ -482,22 +482,27 @@
                                 <div>
                                   <p><strong>Dear {{ $user->name }},</strong></p>
                                   <br>
-                                  <p>Welcome to <strong>SetJobs</strong>! We are delighted to have you as a new member of our job search platform.</p>
-
+                                    <p>Welcome to <strong>SetJobs</strong>! We are delighted to have you as a new member of our job search platform.</p>
+                                    <br>
                                     <p>We are dedicated to helping job seekers like you find exciting opportunities that align with your skills, interests, and career goals. Our platform offers a user-friendly interface and a vast database of job listings from various industries and sectors.</p>
+                                    <br>
 
                                     <p>As a registered and subscribed member, you will have access to a range of features and benefits. Here's what you can expect:</p>
+                                    <br>
 
                                     <p><a href="https://setjobs.co.uk/jobs" target="_blank">Easy Job Search and Filtering</a>: Use our intuitive search filters to refine your job search based on location, industry, experience level, and more. Find the right opportunities efficiently and save time in the process.</p>
+                                    <br>
 
                                     <p>Job Alerts and Notifications: Stay up-to-date with the latest job opportunities by setting up personalized job alerts. Receive notifications directly in your inbox when new positions matching your criteria become available.</p>
+                                    <br>
 
                                     <p>Please update your profile with all the necessary information and upload your CV <a href="https://setjobs.co.uk/dashboard/profile" target="_blank">here</a></p>
-
+                                    <br>
                                     <p>Thank you for choosing <strong>SetJobs</strong> as your job search partner. We wish you the best of luck in your career journey!</p>
-
-                                    Warm regards,
-                                    SetJobs Team
+                                    <br>
+                                    <p>
+                                    Warm regards,<br>
+                                    SetJobs Team</p>
                                 </div>
 
                               </td>

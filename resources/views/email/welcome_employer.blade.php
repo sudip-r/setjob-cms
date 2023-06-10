@@ -483,23 +483,31 @@
                                   <p><strong>Dear {{ $user->name }},</strong></p>
                                   <br>
                                   <p>Welcome to <strong>SetJobs</strong>! We are thrilled to have you as a valued member of our job listing platform.</p>
+                                  <br>
 
                                     <p>We understand the importance of finding the right talent to drive your business forward. Our platform is designed to connect employers like you with qualified candidates who can contribute to your company's growth and success.</p>
+                                    <br>
 
                                     <p>As a registered employer and a subscribed member, you will have access to a range of features and benefits that will streamline your recruitment process. Here's what you can expect:</p>
+                                    <br>
 
                                     <p>Easily create and post job listings on our platform, providing detailed information about the positions you are looking to fill. Reach a wide pool of talented job seekers actively seeking opportunities in your industry.</p>
+                                    <br>
 
                                     <p>Job Alerts and Notifications: Job alerts to potential employees once you post a job</p>
+                                    <br>
 
                                     <p>Enhance your employer brand by creating a company profile that showcases your organization's values, culture, and unique selling points. Attract top talent by highlighting what sets your company apart.</p>
+                                    <br>
 
                                     <p>Please update your profile with all the necessary information <a href="https://setjobs.co.uk/dashboard/profile" target="_blank">here</a></p>
+                                    <br>
 
                                     <p>Thank you for choosing <strong>SetJobs</strong> as your job search partner. We wish you the best of luck in your career journey!</p>
+                                    <br>
 
-                                    Warm regards,
-                                    SetJobs Team
+                                    <p>Warm regards,<br>
+                                    SetJobs Team</p>
                                 </div>
 
                               </td>
