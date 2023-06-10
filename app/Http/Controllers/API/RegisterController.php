@@ -14,6 +14,9 @@ use Illuminate\Http\Request;
 use Psr\Log\LoggerInterface;
 use App\AlterBase\Models\User\Profile;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\EmployeeWelcomeEmail;
+use App\Mail\EmployerWelcomeEmail;
 
 class RegisterController extends Controller
 {
@@ -111,11 +114,13 @@ class RegisterController extends Controller
             if($type == "client")
             {
                 $user = $this->createClient($data);
+                Mail::to($user->email)->send(new EmployeeWelcomeEmail($user->id));
             }
     
             if($type == "business")
             {
                 $user = $this->createBusiness($data);
+                Mail::to($user->email)->send(new EmployerWelcomeEmail($user->id));
             }
         }catch(\Exception $e)
         {
