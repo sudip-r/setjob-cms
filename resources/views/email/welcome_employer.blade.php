@@ -362,8 +362,8 @@
                             <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation"
                               width="100%" style="width:100%;max-width:100%;">
                               <tr>
-                                <td class="rwd-col" align="center" width="33.33%"
-                                  style="width:33.33%;max-width:33.33%;">
+                                <td class="rwd-col" align="center" width="100%"
+                                  style="width:100%;max-width:100%;">
 
                                   <!-- column -->
                                   <table border="0" align="center" cellpadding="0" cellspacing="0" role="presentation"
@@ -467,6 +467,7 @@
                                 style="font-family:'Raleway',Arial,Helvetica,sans-serif;font-size:35px;line-height:45px;font-weight:400;font-style:normal;color:#333333;text-decoration:none;letter-spacing:0px;">
 
                                 <div>
+                                  <br>
                                   <p><strong>Dear {{ $user->name }},</strong></p>
                                   <br>
                                   <p>Welcome to <strong>SetJobs</strong>! We are thrilled to have you as a valued member of our job listing platform.</p>
