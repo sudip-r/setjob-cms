@@ -147,6 +147,67 @@ class DashboardController extends Controller
     }
 
     /**
+     * Show the user subscription status.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function subscription()
+    {
+        if (auth()->user() == null) {
+            return redirect()->route('home');
+        }
+
+        $setting = $this->loadSettings();
+
+        $user = auth()->user();
+
+        $userId = $user->id;
+
+        $user = $this->user->find($userId);
+
+        if($user->stripe_id == "")
+        {
+            $this->createStripeCustomer($user);
+        }
+
+        $days = dateDifference($user->created_at);
+
+        $expired = false;
+        $payment = false;
+
+        if($days > 30)
+            $expired = true;
+
+        if($user->verified == 1)
+            $payment = true;
+
+        $subscription = null;
+
+        try{
+            $subscription = $this->stripeSubscription($user);
+        }catch(\Exception $e)
+        {
+            $subscription = null;
+        }
+
+        
+
+        if ($user->guard == "client") {
+            return view('frontend.pages.employee.subscription')
+                ->with('user', $user)
+                ->with('expired', $expired)
+                ->with('payment', $payment)
+                ->with('days', $days);
+        }
+        return view('frontend.pages.employer.subscription')
+                ->with('user', $user)
+                ->with('expired', $expired)
+                ->with('payment', $payment)
+                ->with('days', $days);
+        
+    }
+
+    /**
      * Show the user profile
      *
      * @return \Illuminate\Contracts\Support\Renderable
@@ -562,6 +623,12 @@ class DashboardController extends Controller
             ->with('selectedCategory', $selectedCategory);
     }
 
+    /**
+     * Email subscriptions
+     * 
+     * @param $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function employeeUpdateEmailSubscription(Request $request)
     {
         try{
@@ -780,6 +847,34 @@ class DashboardController extends Controller
         $this->user->update($user->id, ['stripe_id' => $customer->id]);
 
         return true;
+    }   
+
+    /**
+     * Check stripe subscription
+     * 
+     * @param $user
+     * @return Object
+     */
+    private function stripeSubscription($user)
+    {
+        $stripe = $this->stripe->find(1);
+
+        $key = $stripe->live_secret_key;
+        if($stripe->live == 0)
+        {
+            //test
+            $key = $stripe->test_secret_key;
+        }
+
+        if($key == "")
+            return false;
+
+        $client = new \Stripe\StripeClient($key);
+
+        return $client->subscriptions->retrieve(
+            $user->subscription_id,
+            []
+          );
     }   
 
     /**

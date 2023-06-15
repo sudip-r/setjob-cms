@@ -1,3 +1,4 @@
+@if(auth()->user() == NULL)
 <div class="__modal_background __modal"></div>
 <div class="__loading_box"></div>
 
@@ -12,14 +13,15 @@
   <div class="__box_title">Sign in</div>
 
   <div class="__login_box">
+    <form method="post" name="login-form" action="javascript:void(0);">
     <div class="__gap"></div>
     <div class="__form_group">
       <div class="__err" id="login-email-err"></div>
-      <input type="text" name="email" id="login-name" class="__form_input" placeholder="Email" />
+      <input type="text" name="email" id="login-name" class="__form_input" placeholder="Email" autocomplete="off" />
     </div>
     <div class="__form_group">
       <div class="__err" id="login-password-err"></div>
-      <input type="password" name="password" id="login-password" class="__form_input" placeholder="Password" />
+      <input type="password" name="password" id="login-password" class="__form_input" placeholder="Password" autocomplete="off" />
     </div>
     <div class="__form_group __top_10">
         <input type="checkbox" name="remember_me" id="remember-me" class="__form_checkbox __remember_me">
@@ -35,18 +37,20 @@
     <div class="__form_message">
       <p>Don't have an account? <strong><a href="javascript:void(0);" class="__register_link">Register</a></strong></p>
     </div>
+    </form>
   </div>
 
   <div class="__register_box">
+    <form method="post" name="register-form" action="javascript:void(0);">
     <div class="__gap"></div>
     <div class="__register_step_1">
       <div class="__form_group">
         <div class="__err" id="register-email-err"></div>
-        <input type="text" name="register_name" id="register-name" class="__form_input" placeholder="Email" />
+        <input type="text" name="register_name" id="register-name" class="__form_input" placeholder="Email" autocomplete="off" />
       </div>
       <div class="__form_group">
         <div class="__err" id="register-password-err"></div>
-        <input type="password" name="register_password" id="register-password" class="__form_input" placeholder="Password" />
+        <input type="password" name="register_password" id="register-password" class="__form_input" placeholder="Password" autocomplete="off" />
       </div>
       <div class="__form_group __top_10 __mobile_left">
       <div class="__err" id="terms-err"></div>
@@ -64,7 +68,7 @@
     </div>
     <div class="__register_step_2">
       <div class="__form_group">
-        <label for="register-contact-number">Are you an Employee or Employer?</label>
+        <p>Are you an Employee or Employer?</p>
         <div class="__err" id="register-employee-employer-err"></div>
       </div>
       <div class="__form_half_group __top_10">
@@ -89,7 +93,7 @@
         <input type="text" name="register_full_name" id="register-full-name" class="__form_input" placeholder="Full name" />
       </div>
       <div class="__form_group __top_20 __address_box" id="address-box">
-        <label for="register-address-err">Street Address</label>
+        <label for="register-street-address-1">Street Address</label>
         <div class="__err" id="register-address-err"></div>
         <input type="text" name="register_street_address_1" id="register-street-address-1" class="__form_input" placeholder="House number and street name" />
         <br>
@@ -129,5 +133,7 @@
       
 
     </div>
+    </form>
   </div>
 </div>
+@endif

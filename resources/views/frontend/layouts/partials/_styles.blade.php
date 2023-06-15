@@ -11,5 +11,5 @@
 
 @yield('custom-styles')
 
-<link href="{{ asset('front/assets/css/styles.css')}}?v1.11" rel="stylesheet">
-<link href="{{ asset('front/assets/css/responsive.css')}}?v1.11" rel="stylesheet">
+<link href="{{ asset('front/assets/css/styles.css')}}?v1.12" rel="stylesheet">
+<link href="{{ asset('front/assets/css/responsive.css')}}?v1.12" rel="stylesheet">

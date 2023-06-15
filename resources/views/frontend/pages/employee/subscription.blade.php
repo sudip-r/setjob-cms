@@ -101,48 +101,10 @@
               </div> --}}
               </div>
             @else
-            <p>Ready to find your next perfect job? </p>
-            <br>
-            <p>To get started, simply edit your profile. Provide as much relevant information as you can for 
-              the employer to see so you stand out from the rest of the crowd!</p>
+            
             @endif
           </div>
         </div>
-          <div class="__gap_30"></div>
-          <div class="__job_list_title">
-            <h3>Saved Jobs</h3>
-          </div>
-          @if($jobs->count() > 0)
-          @foreach($jobs as $job)
-          <div class="__list_wrapper">
-            {{-- <div class="__favorite_job"><i class="far fa-heart"></i></div> --}}
-            <h2>{{$job->title}}</h2>
-            <p class="__sub_title">{{date('M d, Y', strtotime($job->published_on))}} by <strong><a href="">{{$job->user()->name}}</a></strong></p>
-            <ul class="__job_features">
-              @if($job->salary_max == "")
-              <li><i class="fas fa-pound-sign __right_10"></i> £{{$job->salary_min}} per annum</li>
-              @else 
-              <li><i class="fas fa-pound-sign __right_10"></i> £{{$job->salary_min}} - £{{$job->salary_max}} per annum</li>
-              @endif
-              <li><i class="fas fa-map-marker-alt __right_10"></i> {{$job->city()->name}}</li>
-              <li><i class="fas fa-briefcase __right_10"></i>{{$job->type}}</li>
-            </ul>
-            <p class="__job_summary">{{$job->summary}}</p>
-          </div><!-- List Wrapper--> 
-          @endforeach
-
-          <div class="__pagination">
-            {!! $jobs->appends($_GET)->links() !!}
-          </div>
-
-          @else
-          <div class="__list_wrapper">
-            Looks like you haven't saved any jobs yet.
-          </div>
-          @endif
-
-          <div class="__gap_30"></div>
-          <div class="__gap_30"></div>
           <div class="__gap_30"></div>
           <div class="__gap_30"></div>
           <div class="__gap_30"></div>
@@ -158,13 +120,6 @@
 @endsection
 
 @section('custom-scripts')
-@if($payment == false && $expired == false)
 <script src="https://js.stripe.com/v3/"></script>
 <script src="{{asset('front/assets/js/client.js')}}"></script>
-@elseif($expired == true)
-<script src="https://js.stripe.com/v3/"></script>
-<script src="{{asset('front/assets/js/client.js')}}"></script>
-@else
-
-@endif
 @endsection

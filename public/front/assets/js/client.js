@@ -45,7 +45,7 @@ $("#add-card").click(function(){
   }
 });
 });
-
+/*
 //Wallet pay
 var paymentRequest = stripe.paymentRequest({
     country: 'GB',
@@ -142,6 +142,8 @@ var paymentRequest = stripe.paymentRequest({
 
     addMessage(`Payment ${paymentIntent.status}: ${paymentIntent.id}`);
   }); //Wallet pay
+
+  */
 });
 
 function addCardAndSubscribe(token, card)

@@ -212,6 +212,27 @@ a:hover {
     overflow: hidden;
     display: none;
 }
+.__menu {
+    /* scrollbar-width: auto;
+  scrollbar-color: #ffffffff #ffffffff; */
+    scrollbar-color: #fcf4d0 #fcf4d0;
+    scrollbar-width: thin;
+}
+
+/* Chrome, Edge, and Safari */
+.__menu::-webkit-scrollbar{
+    width: 4px;
+}
+
+.__menu::-webkit-scrollbar ::-webkit-scrollbar-track {
+    background: #fcf4d0;
+}
+
+.__menu::-webkit-scrollbar-thumb {
+    background-color: #000000;
+    border-radius: 1px;
+    border: 1px none #000000;
+}
 .__general {
     width: 100%;
     margin-top: 60px;

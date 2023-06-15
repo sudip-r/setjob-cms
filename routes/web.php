@@ -56,6 +56,8 @@ Route::get('/dashboard/jobs/edit/{id}', [App\Http\Controllers\Front\DashboardCon
 
 Route::post('/dashboard/jobs/update/{id}', [App\Http\Controllers\Front\DashboardController::class, 'updateJob'])->name('dashboard.jobs.update');
 
+Route::get('/dashboard/subscription', [App\Http\Controllers\Front\DashboardController::class, 'subscription'])->name('dashboard.subscription');
+
 /** Employee Routes */
 Route::post('/employee/update/profile', [App\Http\Controllers\Front\DashboardController::class, 'employeeUpdateProfile'])->name('employee.update.profile');
 
