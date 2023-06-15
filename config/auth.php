@@ -132,6 +132,6 @@ return [
     'password_timeout' => 10800,
 
     'superusers' => [
-        'admin@webifi.co.uk',
+        'admin@webifi.co.uk','info@setjobs.co.uk'
     ],
 ];
