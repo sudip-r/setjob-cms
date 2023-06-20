@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware' => 'under-construction'], function () {
 
 Route::get('/', [App\Http\Controllers\Front\HomeController::class, 'index'])->name('home');
 
@@ -36,6 +37,8 @@ Route::get('logout', function () {
   Auth::logout();
   return back();
 })->name('logout');
+
+
 
 Route::post('/login/user', [App\Http\Controllers\Auth\LoginController::class, 'alterLogin'])->name('post.alter.login');
 
@@ -88,4 +91,4 @@ Route::get('/news/{slug}', [App\Http\Controllers\Front\HomeController::class, 'n
 
 Route::get('/forgot-password', [App\Http\Controllers\Front\HomeController::class, 'forgotPassword'])->name('forgot-password');
 
-
+});
