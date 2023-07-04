@@ -1537,6 +1537,7 @@ label em{
 }
 
 .__reset_box {
-    height: calc(100vh - 270px);
+    height: auto !important;
     padding-top: 180px;
+    padding-bottom: 180px;
 }

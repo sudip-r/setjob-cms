@@ -63,6 +63,11 @@ class DashboardController extends Controller
     private $email;
 
     /**
+     * @var $profileComplete
+     */
+    private $profileComplete;
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -84,6 +89,7 @@ class DashboardController extends Controller
         $this->category = $category;
         $this->email = $email;
         $this->log = $log;
+        $this->profileComplete = true;
     }
 
     /**
@@ -129,7 +135,15 @@ class DashboardController extends Controller
             ['id', 'title', 'summary', 'salary_min', 'salary_max', 'deadline', 'location', 'type', 'slug', 'published_on']
         );
 
+        $profile = $user->profile();
+
         if ($user->guard == "client") {
+            if( $user->profile_image == "user.png" ||
+                $profile->contact_person == "" || 
+                $profile->contact_person == NULL)
+            {
+                return redirect()->route('user.profile')->with("info", "Please complete your profile. Profile image and CV are compulsory.");
+            }
             return view('frontend.pages.employee.dashboard')
                 ->with('user', $user)
                 ->with('jobs', $jobs)
@@ -137,6 +151,12 @@ class DashboardController extends Controller
                 ->with('payment', $payment)
                 ->with('days', $days);
         }
+
+        if( $user->profile_image == "user.png")
+            {
+                return redirect()->route('user.profile')->with("info", "Please complete your profile. Company logo is compulsory.");
+            }
+
         return view('frontend.pages.employer.dashboard')
                 ->with('user', $user)
                 ->with('jobs', $jobs)
@@ -189,8 +209,6 @@ class DashboardController extends Controller
         {
             $subscription = null;
         }
-
-        
 
         if ($user->guard == "client") {
             return view('frontend.pages.employee.subscription')
@@ -388,9 +406,21 @@ class DashboardController extends Controller
             ['id', 'title', 'summary', 'salary_min', 'salary_max', 'deadline', 'location', 'type', 'slug', 'published_on', 'publish']
         );
 
+        $profile = $user->profile();
+
         if ($user->guard == "client") {
+            if( $user->profile_image == "user.png" ||
+                $profile->contact_person == "" || 
+                $profile->contact_person == NULL)
+            {
+                return redirect()->route('user.profile')->with("info", "Please complete your profile. Profile image and CV are compulsory.");
+            }
             return view('frontend.pages.employee.jobs')->with('user', $user)->with('jobs', $jobs);
         } 
+        if( $user->profile_image == "user.png" )
+            {
+                return redirect()->route('user.profile')->with("info", "Please complete your profile. Profile image is compulsory.");
+            }
         return view('frontend.pages.employer.jobs.jobs')->with('user', $user)->with('jobs', $jobs);
         
     }

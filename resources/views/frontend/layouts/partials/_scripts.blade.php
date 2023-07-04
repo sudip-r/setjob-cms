@@ -4,6 +4,16 @@
 <script src="{{asset('front/assets/vendors/select2/select2.min.js')}}"></script>
 <script src="{{asset('front/assets/vendors/sweetalert2/sweetalert2.all.min.js')}}"></script>
 
+@if(Session::has('info'))
+<script>
+    Swal.fire({
+        icon: 'info',
+        title: 'Info!',
+        text: '{!! Session::get('info') !!}'
+    });
+</script>
+@endif
+
 @if(Session::has('error'))
 <script>
     Swal.fire({
