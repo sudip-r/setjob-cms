@@ -56,5 +56,17 @@ class PageTableSeeder extends Seeder
 
         Page::create($data);
 
+        $data = [
+            'id' => 4,
+            'page' => "GDPR Cookie policy",
+            'slug' =>strtolower(str_replace(" ", "-","cookie-policy")),
+            'summary' => "",
+            'description' => "",
+            'publish' => 1,
+
+        ];
+
+        Page::create($data);
+
     }
 }

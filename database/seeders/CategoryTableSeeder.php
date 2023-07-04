@@ -69,8 +69,8 @@ class CategoryTableSeeder extends Seeder
 
         $data = [
             'id' => 5,
-            'category' => "Scenic Draughtsman",
-            'slug' => "scenic-draughtsman",
+            'category' => "Scenic Draughtsperson",
+            'slug' => "scenic-draughtsperson",
             'parent' => "0",
             'publish' => 1,
             'summary' => "",
